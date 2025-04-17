@@ -246,7 +246,7 @@ function VendorPage({ params }: { params: Promise<{ vendor_id: string }> }) {
   return (
     <section className="relative bg-slate-100/50 w-full p-4 xs:max-md:p-2 flex xs:max-md:flex-col items-start gap-5">
       {/* aside: to show details, inormation about the vendor */}
-      <aside className="w-[40%] xs:max-md:w-full xs:max-md:max-w-full max-w-[400px] sticky xs:max-md:static top-24 ">
+      <aside className="w-[40%] xs:max-md:w-full xs:max-md:max-w-full max-w-[400px] sticky xs:max-md:static top-0">
         {/* Back */}
         <div className="mb-2 xs:max-md:hidden">
           <Back />

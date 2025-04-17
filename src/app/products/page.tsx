@@ -17,7 +17,7 @@ import { ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Back from "@/components/Back";
 import ImageFallback from "@/components/ImageFallback";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   cachePageBeforeRedirect,
   clearRedirectCache,
@@ -26,7 +26,7 @@ import { makeOrder } from "../features/order/thunk";
 import { connectWebSocket } from "../features/notification/notificationSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { getPublicProduct, getPublicVendor } from "../features/public/thunk";
-import { FetchAProductArgumentsType } from "../features/public/interface";
+// import { FetchAProductArgumentsType } from "../features/public/interface";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
 
 const statusColorCode = {
@@ -141,12 +141,9 @@ function ProductDetailsPageSkeleton() {
   );
 }
 
-function ProductDetailsPage({
-  searchParams,
-}: {
-  searchParams: Promise<FetchAProductArgumentsType>;
-}) {
+function ProductDetailsPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const searchParams =  useSearchParams()
   const router = useRouter();
 
   const {
@@ -176,7 +173,12 @@ function ProductDetailsPage({
 
   // fetch the product by filter
   async function resolveSearchParams() {
-    const _filter = await searchParams; //Resolve searchParams asynchronously
+    const vendor_id = searchParams.get('vendor_id') || '-1';
+    const category = searchParams.get('category') || '-1';
+    const product_id = searchParams.get('product_id') || '-1';
+
+    const _filter = {vendor_id, product_id,  category }
+
 
     setProductFilter(_filter); //Temporarily store filter option in state
 
@@ -192,7 +194,7 @@ function ProductDetailsPage({
   useEffect(() => {
     clearRedirectCache("login");
     resolveSearchParams();
-  }, [productFilter]);
+  }, []);
 
   useEffect(() => {
     valid_product && setActiveImage(product.images[0]);

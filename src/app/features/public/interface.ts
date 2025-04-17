@@ -72,10 +72,3 @@ export interface FetchAProductArgumentsType {
   category: string;
   product_id: string;
 }
-
-// export interface GetVendorDetailsResponseType {
-//   message: string;
-//   isVendorProfileComplete: boolean;
-//   vendor: Vendor;
-//   vendorProducts: Record<string, Product[]> | null;
-// }
