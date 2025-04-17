@@ -4,8 +4,6 @@ import api from "@/utils/axios/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { UpdateOrderArgumentType, UpdateOrderResponseType } from "./interface";
-import { getAuthenticatedCustomerOrders } from "../customers/thunk";
-import { getAuthenticatedVendorOrders } from "../vendors/thunk";
 
 export const makeOrder = createAsyncThunk<void, OrderType>(
   "order/makeOrder",
@@ -32,7 +30,6 @@ export const updateOrder = createAsyncThunk<
       customer_id,
       vendor_completed_flag,
       customer_completed_flag,
-      ...pickedOrder
     } = order;
     const response = await api.post(ORDER.update_order, {
       status,

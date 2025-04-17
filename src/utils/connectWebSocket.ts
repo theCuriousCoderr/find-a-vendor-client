@@ -15,7 +15,7 @@ function connect() {
   };
 
   ws.onerror = (err) => {
-    console.warn("⚠️ WebSocket error:");
+    console.warn("⚠️ WebSocket error:", err);
   };
 
   ws.onclose = () => {
