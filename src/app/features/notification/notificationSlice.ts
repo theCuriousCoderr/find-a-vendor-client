@@ -1,5 +1,4 @@
 import ws, { forceWebSocketReconnect } from "@/utils/connectWebSocket";
-// import { SERVER_WEBSOCKET_URL } from "@/utils/getEnvUrl";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 function _connectWebSocket() {
@@ -10,8 +9,7 @@ function _connectWebSocket() {
   //   handshake = true;
   // };
 
-  // const ws = new WebSocket(SERVER_WEBSOCKET_URL);
-
+ 
   if (ws && ws.readyState === WebSocket.OPEN) {
     handshake = true;
   } else {

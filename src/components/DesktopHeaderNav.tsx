@@ -17,24 +17,19 @@ import Cookies from "js-cookie";
 function DesktopHeaderNav() {
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
-  const [notifCount, setNotifCount] = useState({
-    customer: 0,
-    vendor: 0,
-  });
   const [mounted, setMounted] = useState(false);
   const { isAuthenticated, loggingOut } = useSelector(
     (state: RootState) => state.auth
   );
-  const { vendor_notif_count, customer_notif_count } = useSelector(
-    (state: RootState) => state.notification
-  );
-  const { authenticatedVendor: vendor } = useSelector(
-    (state: RootState) => state.vendors
-  );
 
-    const { authenticatedCustomer: customer } = useSelector(
-      (state: RootState) => state.customers
-    );
+  const { authenticatedVendor: vendor, authenticatedVendorNotifications } =
+    useSelector((state: RootState) => state.vendors);
+
+  const {
+    authenticatedCustomer: customer,
+    authenticatedCustomerNotifications,
+  } = useSelector((state: RootState) => state.customers);
+
   const isProtectedRoute = pathname.includes("dashboard");
 
   const [isOpen, setIsOpen] = useState({
@@ -49,11 +44,7 @@ function DesktopHeaderNav() {
 
   useEffect(() => {
     setMounted(true);
-    setNotifCount({
-      customer: customer_notif_count,
-      vendor: vendor_notif_count,
-    });
-  }, [vendor_notif_count, customer_notif_count]);
+  }, []);
 
   useEffect(() => {
     setLoading({
@@ -62,18 +53,28 @@ function DesktopHeaderNav() {
     });
   }, [pathname]);
 
-  const isCustomer = Boolean(Cookies.get("customer_id")) || false;
+  const isCustomer = Boolean(Cookies.get("customer_id")) ?? false;
   const account = isCustomer
     ? {
         route: "/dashboard/customer/orders",
         image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
-        notifications: "/",
+        notifications: "/dashboard/customer/notifications",
+        unread_notif:
+          authenticatedCustomerNotifications.length > 0
+            ? authenticatedCustomerNotifications.filter(
+                (notif) => !notif.opened
+              )
+            : [],
         dashboard: "Go to Customer Dashboard",
       }
     : {
         route: "/dashboard/vendor/products",
         image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
         notifications: "/dashboard/vendor/notifications",
+        unread_notif:
+          authenticatedVendorNotifications.length > 0
+            ? authenticatedVendorNotifications.filter((notif) => !notif.opened)
+            : [],
         dashboard: "Go to Vendor Dashboard",
       };
 
@@ -143,15 +144,9 @@ function DesktopHeaderNav() {
               href={account.notifications}
               className="relative size-full rounded-ful"
             >
-              {!isCustomer && Boolean(notifCount.vendor) && (
-                <div className="absolute -top-2 -right-1 bg-green-950 text-white rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
-                  {notifCount.vendor}
-                </div>
-              )}
-
-              {isCustomer && Boolean(notifCount.customer) && (
-                <div className="absolute -top-2 -right-1 bg-green-950 text-white rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
-                  {notifCount.customer}
+              {Boolean(account.unread_notif?.length || 0) && (
+                <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
+                  {account.unread_notif.length}
                 </div>
               )}
 

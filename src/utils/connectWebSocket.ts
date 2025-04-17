@@ -11,7 +11,6 @@ function connect() {
 
   ws.onopen = () => {
     console.log("✅ Connected");
-    // send initial auth or sync message if needed
   };
 
   ws.onerror = (err) => {

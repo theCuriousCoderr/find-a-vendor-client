@@ -48,20 +48,28 @@ function MobileSideNav() {
     setMounted(true);
   }, []);
 
-  const isCustomer = Cookies.get("customer_id");
+  const isCustomer = Cookies.get("customer_id") ?? false;
   const account = isCustomer
     ? {
         route: "/dashboard/customer/orders",
         image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
         notifications: "/dashboard/customer/notifications",
-        unread_notif: authenticatedCustomerNotifications.filter(notif => !notif.opened),
+        unread_notif:
+          authenticatedCustomerNotifications.length > 0
+            ? authenticatedCustomerNotifications.filter(
+                (notif) => !notif.opened
+              )
+            : [],
         dashboard: "Go to Customer Dashboard",
       }
     : {
         route: "/dashboard/vendor/products",
         image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
         notifications: "/dashboard/vendor/notifications",
-        unread_notif: authenticatedVendorNotifications.filter(notif => !notif.opened),
+        unread_notif:
+          authenticatedVendorNotifications.length > 0
+            ? authenticatedVendorNotifications.filter((notif) => !notif.opened)
+            : [],
         dashboard: "Go to Vendor Dashboard",
       };
 
@@ -105,7 +113,7 @@ function MobileSideNav() {
               href={account.notifications}
               className="relative size-full rounded-ful"
             >
-              {Boolean(account.unread_notif.length) && (
+              {Boolean(account.unread_notif?.length || 0) && (
                 <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
                   {account.unread_notif.length}
                 </div>
@@ -198,7 +206,7 @@ function MobileSideNav() {
                       href={account.notifications}
                       className="relative size-full rounded-ful"
                     >
-                      {Boolean(account.unread_notif.length) && (
+                      {Boolean(account.unread_notif?.length || 0) && (
                         <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
                           {account.unread_notif.length}
                         </div>
