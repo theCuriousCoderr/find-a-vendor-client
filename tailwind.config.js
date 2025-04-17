@@ -11,7 +11,15 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        xs: "300px"
+        xs: "300px",
+        "400": "400px",
+        "500": "500px",
+        "600": "600px",
+        "700": "700px",
+      },
+      colors: {
+        peach: "#ff7070",
+        lavender: "#5C1B86"
       }
     },
   },
