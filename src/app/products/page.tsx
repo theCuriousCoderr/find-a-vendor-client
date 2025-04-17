@@ -26,7 +26,6 @@ import { makeOrder } from "../features/order/thunk";
 import { connectWebSocket } from "../features/notification/notificationSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { getPublicProduct, getPublicVendor } from "../features/public/thunk";
-// import { FetchAProductArgumentsType } from "../features/public/interface";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
 
 const statusColorCode = {
