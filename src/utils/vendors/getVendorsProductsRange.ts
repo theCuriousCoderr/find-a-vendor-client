@@ -1,4 +1,5 @@
-import { Vendor } from "@/app/features/vendors/interface";
+import { Vendor } from "@/types";
+
 
 function getVendorsProductsRange(vendors: Vendor[]) {
   const productsRange = vendors?.map((vendor) => vendor.categories).flat(2);

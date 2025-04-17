@@ -32,7 +32,7 @@ export const updateVendorDetails = createAsyncThunk<
       ...vendorInfo,
     });
     await thunkAPI.dispatch(
-      getAuthenticatedVendor({ vendor_id: vendorInfo.vendor_id })
+      getAuthenticatedVendor()
     );
     thunkAPI.dispatch(updateSettingsVendorInfo({ vendorInfo }));
     return response.data;

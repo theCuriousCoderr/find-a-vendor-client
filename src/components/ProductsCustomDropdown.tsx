@@ -1,17 +1,16 @@
 import { CustomDropdownPropsType, Product } from "@/types";
 import { Check, ChevronDown } from "lucide-react";
-import React, { ChangeEvent, useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { updateFilter } from "@/app/features/dropdownFilter/dropdownFilterSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { motion } from "motion/react";
-import { Vendor } from "@/app/features/vendors/interface";
 import updateCustomDropdownOptions from "@/utils/vendors/updateCustomDropdownOptions";
 import statesOfNigeria from "@/static-data/statesOfNigeria";
 import priceFilterOptions from "@/static-data/priceFilterOptions";
-import getVendorsProductsRange from "@/utils/vendors/getVendorsProductsRange";
 import filterProducts from "@/utils/products/filterProducts";
 import { updateFilteredProducts } from "@/app/features/products/productsSlice";
+import productCategories from "@/static-data/productCategories";
 
 type OptionsKey = "Name" | "Price" | "Products" | "Location";
 
@@ -26,15 +25,10 @@ function ProductsCustomDropdown({
     (state: RootState) => state.dropdownFilter
   );
   const { products } = useSelector((state: RootState) => state.products);
-  const { vendors } = useSelector((state: RootState) => state.vendors);
-  const productsOption = useMemo(
-    () => getVendorsProductsRange(vendors as Vendor[]),
-    []
-  );
   const [options, setOptions] = useState({
     Name: ["Ola"],
     Price: priceFilterOptions,
-    Products: productsOption,
+    Products: productCategories,
     Location: statesOfNigeria,
   });
 
@@ -45,25 +39,21 @@ function ProductsCustomDropdown({
 
   function handleProductsFilter(e: ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
-    // console.log(value)
-    // console.log(productsOption)
     if (value === "") {
-      setOptions({ ...options, Products: productsOption });
+      setOptions({ ...options, Products: productCategories });
       return;
     }
-    const newProductsOption = productsOption.filter((product) =>
+    const newProductsOption = productCategories.filter((product) =>
       product.includes(value.toLowerCase())
     );
     setOptions({ ...options, Products: newProductsOption });
   }
 
   useEffect(() => {
-    // const _productsOption = getVendorsProductsRange(vendors as Vendor[]);
-    // console.log(_productsOption)
     setOptions({
       Name: ["Ola"],
       Price: priceFilterOptions,
-      Products: productsOption,
+      Products: productCategories,
       Location: statesOfNigeria,
     });
   }, []);
@@ -96,7 +86,7 @@ function ProductsCustomDropdown({
     setOptions({
       Name: ["Ola"],
       Price: priceFilterOptions,
-      Products: productsOption,
+      Products: productCategories,
       Location: statesOfNigeria,
     });
   }
