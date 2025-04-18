@@ -65,13 +65,13 @@ function VendorLogIn() {
 
     try {
       if (emailVerification === "valid") {
-        await dispatch(logInVendor(vendorInfo));
-        router.push(`/dashboard/vendor/products`);
+        const { vendor_id } = await dispatch(logInVendor(vendorInfo)).unwrap();
+        if (vendor_id) router.push(`/dashboard/vendor/products`);
       } else {
         dispatch(updateLoginError("Invalid Email"));
       }
     } catch (error) {
-      router.push("/login?role=customer");
+      router.push("/login?role=vendor");
     }
   }
 
@@ -207,8 +207,10 @@ function CustomerLogIn() {
 
     try {
       if (emailVerification === "valid") {
-        await dispatch(logInCustomer(customerInfo));
-        router.push(`/dashboard/customer/orders`);
+        const { customer_id } = await dispatch(
+          logInCustomer(customerInfo)
+        ).unwrap();
+        if (customer_id) router.push(`/dashboard/customer/orders`);
       } else {
         dispatch(updateLoginError("Invalid Email"));
       }

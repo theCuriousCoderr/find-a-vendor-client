@@ -85,8 +85,10 @@ function VendorSignUp() {
 
     try {
       if (emailVerification === "valid") {
-        await dispatch(signUpVendor(_vendorInfo));
-        router.push(`/dashboard/vendor/products`);
+        const { vendor_id } = await dispatch(
+          signUpVendor(_vendorInfo)
+        ).unwrap();
+        if (vendor_id) router.push(`/dashboard/vendor/products`);
       } else {
         dispatch(updateSignUpError("Invalid Email"));
       }
@@ -229,8 +231,10 @@ function CustomerSignUp() {
 
     try {
       if (emailVerification === "valid") {
-        await dispatch(signUpCustomer(customerInfo));
-        router.push(`/dashboard/customer/orders`);
+        const { customer_id } = await dispatch(
+          signUpCustomer(customerInfo)
+        ).unwrap();
+        if (customer_id) router.push(`/dashboard/customer/orders`);
       } else {
         dispatch(updateSignUpError("Invalid Email"));
       }
