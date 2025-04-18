@@ -326,7 +326,6 @@ function ProductDetailsPage() {
           {/* Product Info  */}
           <section className="p-5 xs:max-md:px-0 rounded-md bg-white space-y-5">
             <h2 className="text-xl xs:max-md:px-5">Product Info</h2>
-            {/* <p className="hidden xs:max-md:block px-5 font-medium text-lg">{product.images.length} image</p> */}
             <div className="flex xs:max-md:flex-col gap-3">
               {/* Desktop Images */}
               <div className="xs:max-md:hidden w-80 xs:max-md:w-full space-y-2">
