@@ -24,12 +24,12 @@ export const logInCustomer = createAsyncThunk<
       headers,
     });
     const data = response.data as LoginCustomerResponseType;
-    if (response.status === 201) {
+    
       const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
       if (!isAuthenticated) {
         thunkAPI.dispatch(setIsAuthenticated(true));
       }
-    }
+    
     return data;
   } catch (error) {
     const data = (error as AxiosError).response?.data as { message: string };

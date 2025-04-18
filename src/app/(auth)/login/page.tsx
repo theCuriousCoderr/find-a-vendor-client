@@ -25,8 +25,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 function VendorLogIn() {
   const [vendorInfo, setVendorInfo] = useState({
-    email: "",
-    password: "",
+    email: "martilo@gmail.com",
+    password: "jama_jama",
   });
 
   const [emailVerify, setEmailVerify] = useState("");
@@ -102,6 +102,8 @@ function VendorLogIn() {
           {emailVerify === "invalid" && <CircleX size={20} color="#FF0000" />}
         </div>
         <Input
+        readOnly={true}
+        value={vendorInfo.email}
           name="email"
           label="Your Email"
           type="email"
@@ -112,6 +114,8 @@ function VendorLogIn() {
 
       {/* Password */}
       <Input
+      readOnly={true}
+      value={vendorInfo.password}
         name="password"
         label="Password"
         onChange={handleInputChange}
@@ -153,8 +157,8 @@ function VendorLogIn() {
 
 function CustomerLogIn() {
   const [customerInfo, setCustomerInfo] = useState({
-    email: "",
-    password: "",
+    email: "segunsunday619@gmail.com",
+    password: "GOOGLE_SSO",
   });
 
   const [emailVerify, setEmailVerify] = useState("");
@@ -210,7 +214,9 @@ function CustomerLogIn() {
         const { customer_id } = await dispatch(
           logInCustomer(customerInfo)
         ).unwrap();
-        if (customer_id) router.push(`/dashboard/customer/orders`);
+        if (customer_id) {
+          router.push(`/dashboard/customer/orders`);
+        }
       } else {
         dispatch(updateLoginError("Invalid Email"));
       }
@@ -239,7 +245,10 @@ function CustomerLogIn() {
 
       <div>
         <button
-          onClick={() => continueWithGoogle()}
+          onClick={() => {
+            return;
+            continueWithGoogle();
+          }}
           type="button"
           className="size-full border rounded-md flex items-center justify-center gap-3 py-2 hover:bg-slate-100"
         >
@@ -272,6 +281,8 @@ function CustomerLogIn() {
           {emailVerify === "invalid" && <CircleX size={20} color="#FF0000" />}
         </div>
         <Input
+          readOnly={true}
+          value={customerInfo.email}
           name="email"
           label="Your Email"
           type="email"
@@ -282,6 +293,8 @@ function CustomerLogIn() {
 
       {/* Password */}
       <Input
+        readOnly={true}
+        value={customerInfo.password}
         name="password"
         label="Password"
         onChange={handleInputChange}
@@ -361,8 +374,9 @@ function LogIn() {
 
   if (activeRole === "" || redirect) {
     return (
-      <div className="fixed z-30 w-full -mt-20 h-screen flex items-center justify-center">
+      <div className="fixed z-30 w-full -mt-20 h-screen flex flex-col items-center justify-center">
         <Spinner color="border-t-blue-500" />
+        {redirect && <p>Redirecting you to your dashboard ...</p>}
       </div>
     );
   }

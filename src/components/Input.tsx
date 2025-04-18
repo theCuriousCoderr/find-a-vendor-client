@@ -17,6 +17,7 @@ function Input({
   Icon2,
   labelStyle = "text-xl",
   labelGap = "space-y-2",
+  readOnly
 }: InputPropsType) {
   const isIconPresent = Icon1 && Icon2;
   const showPassword = iconClickEffect ? type : "password";
@@ -31,6 +32,7 @@ function Input({
         {
         // value ? (
           <input
+          readOnly={readOnly}
           disabled={disabled}
             value={value}
             required={required}

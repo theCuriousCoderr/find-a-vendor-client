@@ -71,6 +71,7 @@ export interface InputPropsType {
   Icon2?: LucideIcon;
   labelStyle?: string;
   labelGap?: string;
+  readOnly?: boolean;
 }
 
 export interface VendorFilterPropsType {

@@ -61,6 +61,8 @@ function VendorSignUp() {
 
   async function submitVendorSignUpForm(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
+    alert("Go to Login page")
+    return
     setEmailVerify("");
     dispatch(updateSignUpLoading(true));
     const _storeTag = vendorInfo.storeName
@@ -88,7 +90,9 @@ function VendorSignUp() {
         const { vendor_id } = await dispatch(
           signUpVendor(_vendorInfo)
         ).unwrap();
-        if (vendor_id) router.push(`/dashboard/vendor/products`);
+        if (vendor_id) {
+          router.push(`/dashboard/vendor/products`);
+        }
       } else {
         dispatch(updateSignUpError("Invalid Email"));
       }
@@ -222,6 +226,8 @@ function CustomerSignUp() {
 
   async function submitCustomerSignUpForm(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
+    alert("Go to Login page")
+    return
     setEmailVerify("");
     dispatch(updateSignUpLoading(true));
     const emailVerification = await verifyEmail(customerInfo.email);
@@ -234,7 +240,9 @@ function CustomerSignUp() {
         const { customer_id } = await dispatch(
           signUpCustomer(customerInfo)
         ).unwrap();
-        if (customer_id) router.push(`/dashboard/customer/orders`);
+        if (customer_id) {
+          router.push(`/dashboard/customer/orders`);
+        }
       } else {
         dispatch(updateSignUpError("Invalid Email"));
       }
@@ -259,7 +267,7 @@ function CustomerSignUp() {
 
       <div>
         <button
-          onClick={() => continueWithGoogle()}
+          onClick={() => { return; continueWithGoogle() }}
           type="button"
           className="size-full border rounded-md flex items-center justify-center gap-3 py-2 hover:bg-slate-100"
         >
