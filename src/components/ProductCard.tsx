@@ -41,7 +41,7 @@ function ProductCard({
         href={constructProductUrl(
           product.vendor_id.toString(),
           product.category,
-          product._id.toString()
+          product.product_id.toString()
         )}
         onClick={() => setRedirecting(true)}
       >

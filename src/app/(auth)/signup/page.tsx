@@ -20,7 +20,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { CheckCircle2Icon, CircleX, Eye, EyeOff } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,6 +33,7 @@ function VendorSignUp() {
   });
 
   const [emailVerify, setEmailVerify] = useState("");
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
   const [showPassword, setShowPassword] = useState(false);
@@ -78,13 +79,20 @@ function VendorSignUp() {
       location,
     };
     const emailVerification = await verifyEmail(_vendorInfo.email);
-    verifiedEmail.saveStatus(_vendorInfo.email, emailVerification)
+    verifiedEmail.saveStatus(_vendorInfo.email, emailVerification);
     setEmailVerify(emailVerification as string);
     dispatch(updateSignUpLoading(false));
-    // console.log(_vendorInfo)
-    emailVerification === "valid"
-      ? dispatch(signUpVendor(_vendorInfo))
-      : dispatch(updateSignUpError("Invalid Email"));
+
+    try {
+      if (emailVerification === "valid") {
+        await dispatch(signUpVendor(_vendorInfo));
+        router.push(`/dashboard/vendor/products`);
+      } else {
+        dispatch(updateSignUpError("Invalid Email"));
+      }
+    } catch (error) {
+      router.push("/signup?role=customer");
+    }
   }
 
   return (
@@ -175,6 +183,7 @@ function CustomerSignUp() {
   });
 
   const [emailVerify, setEmailVerify] = useState("");
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
   const [showPassword, setShowPassword] = useState(false);
@@ -214,12 +223,20 @@ function CustomerSignUp() {
     setEmailVerify("");
     dispatch(updateSignUpLoading(true));
     const emailVerification = await verifyEmail(customerInfo.email);
-    verifiedEmail.saveStatus(customerInfo.email, emailVerification)
+    verifiedEmail.saveStatus(customerInfo.email, emailVerification);
     setEmailVerify(emailVerification as string);
     dispatch(updateSignUpLoading(false));
-    emailVerification === "valid"
-      ? dispatch(signUpCustomer(customerInfo))
-      : dispatch(updateSignUpError("Invalid Email"));
+
+    try {
+      if (emailVerification === "valid") {
+        await dispatch(signUpCustomer(customerInfo));
+        router.push(`/dashboard/customer/orders`);
+      } else {
+        dispatch(updateSignUpError("Invalid Email"));
+      }
+    } catch (error) {
+      router.push("/signup?role=customer");
+    }
   }
 
   return (
@@ -316,15 +333,12 @@ function CustomerSignUp() {
   );
 }
 
-function SignUp({
-  searchParams,
-}: {
-  searchParams: Promise<{ role: RolesType }>;
-}) {
+function SignUp() {
   const { activeRole, redirect } = useSelector(
     (state: RootState) => state.signup
   );
   const dispatch = useDispatch();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [windowHeight, setWindowHeight] = useState(0);
   const [alreadyHaveAnAccount, setAlreadyHaveAnAccount] = useState(false);
@@ -349,7 +363,7 @@ function SignUp({
   }, []);
 
   async function resolveSignUpSearchParams() {
-    let { role: _role } = await searchParams;
+    let _role = (searchParams.get("role") || "vendor") as RolesType;
     if (activeRole === _role) return;
     if (_role !== "vendor" && _role !== "customer") {
       router.push("/signup?role=vendor");

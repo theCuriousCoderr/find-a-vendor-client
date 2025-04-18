@@ -28,12 +28,6 @@ export const logInCustomer = createAsyncThunk<
       const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
       if (!isAuthenticated) {
         thunkAPI.dispatch(setIsAuthenticated(true));
-
-        const origin =
-          process.env.NODE_ENV === "development"
-            ? process.env.NEXT_PUBLIC_CLIENT_DEV_URL
-            : process.env.NEXT_PUBLIC_CLIENT_PROD_URL;
-        window.location.href = `${origin}/dashboard/customer/orders`;
       }
     }
     return data;
@@ -59,12 +53,6 @@ export const logInVendor = createAsyncThunk<
       const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
       if (!isAuthenticated) {
         thunkAPI.dispatch(setIsAuthenticated(true));
-
-        const origin =
-          process.env.NODE_ENV === "development"
-            ? process.env.NEXT_PUBLIC_CLIENT_DEV_URL
-            : process.env.NEXT_PUBLIC_CLIENT_PROD_URL;
-        window.location.href = `${origin}/dashboard/vendor/products`;
       }
     }
     return data;

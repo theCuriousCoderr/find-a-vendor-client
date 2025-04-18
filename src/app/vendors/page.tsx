@@ -117,7 +117,7 @@ function Vendors() {
       <section>
         {/* <div className="size-[600px] bg-red-500"></div> */}
 
-        <div className="sticky xs:max-md:static top-20 z-10 bg-white/50 backdrop-blur-sm pb-5">
+        <div className="sticky xs:max-md:static top-0 z-10 bg-white/50 backdrop-blur-sm pb-5">
           <h1
             className={`${
               loadingVendors ? "text-slate-400" : "text-black"

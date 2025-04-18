@@ -39,7 +39,7 @@ const initialState: PublicSliceState = {
   loadingProduct: true,
   vendorsRound: 1,
   productsRound: 1,
-  slice: 2,
+  slice: 15,
 };
 
 export const publicSlice = createSlice({
