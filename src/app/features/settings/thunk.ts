@@ -10,7 +10,10 @@ import api from "@/utils/axios/api";
 import { CUSTOMER, VENDOR } from "@/endpoints";
 import { AxiosError } from "axios";
 import { updateStatusError } from "../status/statusSlice";
-import { updateSettingsCustomerInfo, updateSettingsVendorInfo } from "./settingsSlice";
+import {
+  updateSettingsCustomerInfo,
+  updateSettingsVendorInfo,
+} from "./settingsSlice";
 import { Customer, Vendor } from "@/types";
 import { getAuthenticatedVendor } from "../vendors/thunk";
 import { getAuthenticatedCustomer } from "../customers/thunk";
@@ -31,9 +34,7 @@ export const updateVendorDetails = createAsyncThunk<
     const response = await api.put(VENDOR.update_vendor, {
       ...vendorInfo,
     });
-    await thunkAPI.dispatch(
-      getAuthenticatedVendor()
-    );
+    await thunkAPI.dispatch(getAuthenticatedVendor());
     thunkAPI.dispatch(updateSettingsVendorInfo({ vendorInfo }));
     return response.data;
   } catch (error) {
@@ -44,28 +45,28 @@ export const updateVendorDetails = createAsyncThunk<
   }
 });
 
-
 export const updateCustomerDetails = createAsyncThunk<
   UpdateCustomerDetailsResponseType,
   UpdateCustomerDetailsArgumentType
 >("settings/updateVendorDetails", async ({ customerInfo }, thunkAPI) => {
-  const _customerInfo = (thunkAPI.getState() as RootState).settings.customerInfo;
+  const _customerInfo = (thunkAPI.getState() as RootState).settings
+    .customerInfo;
 
   customerInfo = customerInfo ? customerInfo : (_customerInfo as Customer);
 
   try {
-    const customer = (thunkAPI.getState() as RootState).customers.authenticatedCustomer;
+    const customer = (thunkAPI.getState() as RootState).customers
+      .authenticatedCustomer;
     if (JSON.stringify(customer) === JSON.stringify(customerInfo)) return;
     const response = await api.put(CUSTOMER.update_customer, {
       ...customerInfo,
     });
-    await thunkAPI.dispatch(
-      getAuthenticatedCustomer({ customer_id: customerInfo.customer_id })
-    );
+    await thunkAPI.dispatch(getAuthenticatedCustomer());
     thunkAPI.dispatch(updateSettingsCustomerInfo({ customerInfo }));
     return response.data;
   } catch (error) {
-    const data = (error as AxiosError).response?.data as UpdateCustomerDetailsResponseType;
+    const data = (error as AxiosError).response
+      ?.data as UpdateCustomerDetailsResponseType;
     console.error("Error Updating Vendor Details:", error);
     thunkAPI.dispatch(updateStatusError({ error: data.message }));
     return thunkAPI.rejectWithValue(error);
