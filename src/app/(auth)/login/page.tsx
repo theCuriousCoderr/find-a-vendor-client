@@ -65,8 +65,8 @@ function VendorLogIn() {
 
     try {
       if (emailVerification === "valid") {
-        const { vendor_id } = await dispatch(logInVendor(vendorInfo)).unwrap();
-        if (vendor_id) router.push(`/dashboard/vendor/products`);
+        dispatch(logInVendor(vendorInfo)).unwrap();
+        // if (vendor_id) router.push(`/dashboard/vendor/products`);
       } else {
         dispatch(updateLoginError("Invalid Email"));
       }
@@ -102,8 +102,8 @@ function VendorLogIn() {
           {emailVerify === "invalid" && <CircleX size={20} color="#FF0000" />}
         </div>
         <Input
-        readOnly={true}
-        value={vendorInfo.email}
+          readOnly={true}
+          value={vendorInfo.email}
           name="email"
           label="Your Email"
           type="email"
@@ -114,8 +114,8 @@ function VendorLogIn() {
 
       {/* Password */}
       <Input
-      readOnly={true}
-      value={vendorInfo.password}
+        readOnly={true}
+        value={vendorInfo.password}
         name="password"
         label="Password"
         onChange={handleInputChange}
@@ -211,12 +211,10 @@ function CustomerLogIn() {
 
     try {
       if (emailVerification === "valid") {
-        const { customer_id } = await dispatch(
-          logInCustomer(customerInfo)
-        ).unwrap();
-        if (customer_id) {
-          router.push(`/dashboard/customer/orders`);
-        }
+        dispatch(logInCustomer(customerInfo)).unwrap();
+        // if (customer_id) {
+        //   router.push(`/dashboard/customer/orders`);
+        // }
       } else {
         dispatch(updateLoginError("Invalid Email"));
       }
