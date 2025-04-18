@@ -186,15 +186,16 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
     const vendor_id = (isUserAuthenticated()?.vendor_id as string) || null;
 
     // if user is an authenticated customer by cookie, fetch customer details
-    if (customer_id) dispatch(getAuthenticatedCustomer({ customer_id }));
+    if (customer_id) dispatch(getAuthenticatedCustomer());
 
     // if user is an authenticated vendor by cookie, fetch vendor details
     if (vendor_id) dispatch(getAuthenticatedVendor());
 
     // if user is not an authenticated vendor/customer by cookie, flag them as unaunthenticated on the frontend
     // the server will handle any unaunthenticated request to aunthenticated routes on the backend
-    if (!isUserAuthenticated()) {
+    if (!isUserAuthenticated() && isProtectedRoute) {
       console.log("No Auth");
+      router.push("/")
       dispatch(setIsAuthenticated(false));
     }
 

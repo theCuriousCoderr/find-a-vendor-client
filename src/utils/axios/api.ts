@@ -71,9 +71,9 @@ api.interceptors.response.use(
     if (_error.response && _error.response.status === 302) {
       window.location.href = data.redirectUrl;
     }
-    if (_error.response && _error.response.status === 403) {
-      window.location.href = window.location.origin;
-    }
+    // if (_error.response && _error.response.status === 403) {
+    //   window.location.href = window.location.origin;
+    // }
     clearUniqueString();
     return Promise.reject(error);
   }

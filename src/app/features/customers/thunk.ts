@@ -8,11 +8,9 @@ import { updateSettingsCustomerInfo } from "../settings/settingsSlice";
 import { setIsAuthenticated } from "../auth/authSlice";
 
 export const getAuthenticatedCustomer = createAsyncThunk<
-  FetchAuthenticatedCustomerResponseType,
-  { customer_id: string }
+  FetchAuthenticatedCustomerResponseType
 >("vendors/getAuthenticatedVendor", async (_, thunkAPI) => {
   try {
-    // const endpoint = `${CUSTOMER.get_customer}/${customer_id}`;
     const response = await api.get(CUSTOMER.get_customer);
     const data = response.data as FetchAuthenticatedCustomerResponseType;
     thunkAPI.dispatch(updateSettingsCustomerInfo({ customerInfo: data.customer }));
@@ -31,7 +29,6 @@ export const getAuthenticatedCustomerNotifications = createAsyncThunk<
   FetchAuthenticatedCustomerNotificationsResponseType
 >("vendors/getAuthenticatedVendorNotifications", async (_, thunkAPI) => {
   try {
-    // const endpoint = `${VENDOR.get_orders}/${vendor_id}`;
     const response = await api.get(CUSTOMER.get_notifications);
     const data = response.data as FetchAuthenticatedCustomerNotificationsResponseType;
     return data;

@@ -7,7 +7,7 @@ import { AppDispatch, RootState } from "@/app/store";
 // import VendorProfileCompleteDisclaimer from "@/components/VendorProfileCompleteDisclaimer";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 // import Image from "next/image";
 import CustomerDashboardAsideNav from "@/components/CustomerDashboardAsideNav";
 import Image from "next/image";
@@ -29,8 +29,7 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     renderCountRef.current++;
-    const customer_id = Cookies.get("customer_id") as string;
-    !customer && dispatch(getAuthenticatedCustomer({ customer_id }));
+    !customer && dispatch(getAuthenticatedCustomer());
     dispatch(clearLoginRedirect());
   }, []);
 
