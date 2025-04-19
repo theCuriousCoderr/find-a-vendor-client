@@ -9,10 +9,7 @@ import {
 } from "./interface";
 import { RootState } from "@/app/store";
 import { setIsAuthenticated } from "../auth/authSlice";
-
-const headers = {
-  "Content-Type": "application/json",
-};
+import Cookies from "js-cookie";
 
 // the login endpoint for a customer
 export const logInCustomer = createAsyncThunk<
@@ -20,16 +17,18 @@ export const logInCustomer = createAsyncThunk<
   CustomerInfo
 >("login/logInCustomer", async (customerInfo, thunkAPI) => {
   try {
-    const response = await api.post(AUTH.login.customer, customerInfo, {
-      headers,
-    });
+    const response = await api.post(AUTH.login.customer, customerInfo);
     const data = response.data as LoginCustomerResponseType;
-    
-      const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
-      if (!isAuthenticated) {
-        thunkAPI.dispatch(setIsAuthenticated(true));
-      }
-    
+    console.log(data);
+
+    const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
+    if (!isAuthenticated) {
+      thunkAPI.dispatch(setIsAuthenticated(true));
+    }
+    Cookies.remove("vendor_id");
+    Cookies.set("role", data.role, { expires: 30 });
+    Cookies.set("customer_id", data.customer_id, { expires: 7 });
+
     return data;
   } catch (error) {
     const data = (error as AxiosError).response?.data as { message: string };
@@ -45,16 +44,18 @@ export const logInVendor = createAsyncThunk<
   VendorInfo
 >("login/logInVendor", async (vendorInfo, thunkAPI) => {
   try {
-    const response = await api.post(AUTH.login.vendor, vendorInfo, {
-      headers,
-    });
+    const response = await api.post(AUTH.login.vendor, vendorInfo);
     const data = response.data as LoginVendorResponseType;
-    if (response.status === 201) {
-      const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
-      if (!isAuthenticated) {
-        thunkAPI.dispatch(setIsAuthenticated(true));
-      }
+
+    const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
+    if (!isAuthenticated) {
+      thunkAPI.dispatch(setIsAuthenticated(true));
     }
+
+    Cookies.remove("customer_id");
+    Cookies.set("role", data.role, { expires: 30 });
+    Cookies.set("vendor_id", data.vendor_id, { expires: 7 });
+
     return data;
   } catch (error) {
     const data = (error as AxiosError).response?.data as { message: string };

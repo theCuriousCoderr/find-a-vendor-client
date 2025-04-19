@@ -8,13 +8,11 @@ import CustomerOrderCard from "@/components/CustomerOrderCard";
 import Spinner from "@/components/Spinner";
 import Link from "next/link";
 import Button from "@/components/Button";
+import { useSearchParams } from "next/navigation";
 
-function CustomerOrdersPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ selectedOrder: string }>;
-}) {
+function CustomerOrdersPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const searchParams = useSearchParams()
   const {
     authenticatedCustomerOrders: orders,
     loadingAuthenticatedCustomerOrders,
@@ -22,7 +20,8 @@ function CustomerOrdersPage({
   const [selectedOrder, setSelectedOrder] = useState("");
 
   async function resolveSearchParams() {
-    const { selectedOrder: _selectedOrder } = await searchParams;
+    const _selectedOrder = (searchParams.get("selectedOrder") || "")
+
     if (_selectedOrder) {
       setSelectedOrder(_selectedOrder);
     }

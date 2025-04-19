@@ -1,11 +1,13 @@
 export interface LoginCustomerResponseType {
   message: string;
-  customer_id?: number | string;
+  role: string;
+  customer_id: string;
 }
 
 export interface LoginVendorResponseType {
   message: string;
-  vendor_id?: number | string;
+  role: string;
+  vendor_id: string;
   isVendorProfileComplete?: boolean;
 }
 

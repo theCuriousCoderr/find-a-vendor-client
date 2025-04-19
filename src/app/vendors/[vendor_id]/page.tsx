@@ -9,6 +9,7 @@ import ImageFallback from "@/components/ImageFallback";
 import { CalendarDays, Instagram, MapPin, Twitter } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -112,13 +113,14 @@ function VendorPageSkeleton() {
   );
 }
 
-function VendorPage({ params }: { params: Promise<{ vendor_id: string }> }) {
+function VendorPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const params = useParams<{ vendor_id: string }>();
   const {
     loadingVendor,
     selectedVendor: vendor,
     selectedVendorProducts: vendorProducts,
-    selectedVendorCompletedOrders: vendorCompletedOrders
+    selectedVendorCompletedOrders: vendorCompletedOrders,
   } = useSelector((state: RootState) => state.public);
 
   const valid_vendor_id = vendor && vendor._id !== "-1";
@@ -128,7 +130,7 @@ function VendorPage({ params }: { params: Promise<{ vendor_id: string }> }) {
 
   // fetch the vendor details by vendor_id
   async function resolveSearchParams() {
-    const { vendor_id } = await params;
+    const vendor_id = params.vendor_id;
     // if the selected vendor is same as the one in state, don't fetch again
     if (vendor_id === vendor?.vendor_id.toString()) {
       dispatch(updateLoadingVendor({ status: false }));
@@ -238,7 +240,6 @@ function VendorPage({ params }: { params: Promise<{ vendor_id: string }> }) {
             </div>
           </div>
         </aside>
-        
       </section>
     );
   }
@@ -308,7 +309,8 @@ function VendorPage({ params }: { params: Promise<{ vendor_id: string }> }) {
 
               <p className="text-slate-400">
                 {/* {vendor?.completedOrders || 10} completed orders */}
-                {vendorCompletedOrders} completed {vendorCompletedOrders === 1 ? "order" : "orders" }
+                {vendorCompletedOrders} completed{" "}
+                {vendorCompletedOrders === 1 ? "order" : "orders"}
               </p>
               <ul className="flex flex-wrap items-center gap-1">
                 {categories &&

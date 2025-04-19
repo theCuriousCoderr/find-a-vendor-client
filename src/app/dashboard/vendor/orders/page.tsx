@@ -4,15 +4,13 @@ import { getAuthenticatedVendorOrders } from "@/app/features/vendors/thunk";
 import { AppDispatch, RootState } from "@/app/store";
 import Spinner from "@/components/Spinner";
 import VendorOrderCard from "@/components/VendorOrderCard";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function VendorOrdersPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ selectedOrder: string }>;
-}) {
+function VendorOrdersPage() {
   const dispatch = useDispatch<AppDispatch>();
+  const searchParams = useSearchParams()
   const {
     authenticatedVendorOrders: orders,
     loadingAuthenticatedVendorOrders,
@@ -21,7 +19,8 @@ function VendorOrdersPage({
   const [selectedOrder, setSelectedOrder] = useState("");
 
   async function resolveSearchParams() {
-    const { selectedOrder: _selectedOrder } = await searchParams;
+   
+    const _selectedOrder = (searchParams.get("selectedOrder") || "")
     if (_selectedOrder) {
       setSelectedOrder(_selectedOrder);
     }

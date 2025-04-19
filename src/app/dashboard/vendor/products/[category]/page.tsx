@@ -11,13 +11,15 @@ import { useSelector } from "react-redux";
 import { motion } from "motion/react";
 import { Edit3, Pointer, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 
 interface AddProductType {
   isModalOpen: boolean;
   categories: string[];
 }
 
-function Page({ params }: { params: Promise<{ category: string }> }) {
+function Page() {
+  const params = useParams<{ category: string }>();
   const { authenticatedVendor: vendor, authenticatedVendorProducts: products } =
     useSelector((state: RootState) => state.vendors);
   const [category, setCategory] = useState("");
@@ -27,13 +29,12 @@ function Page({ params }: { params: Promise<{ category: string }> }) {
   });
 
   async function resolveSearchParams() {
-    const { category: _category } = await params;
+    const _category = params.category;
     setCategory(_category);
   }
 
   useEffect(() => {
     resolveSearchParams();
-    console.log(products);
   }, []);
 
   function openAddProductModal() {

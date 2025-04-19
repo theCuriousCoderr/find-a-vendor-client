@@ -51,6 +51,10 @@ function DesktopHeaderNav() {
       vendor: false,
       customer: false,
     });
+    setIsOpen({
+      notification: false,
+      avatar: false,
+    });
   }, [pathname]);
 
   const isCustomer = Boolean(Cookies.get("customer_id")) ?? false;
