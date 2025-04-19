@@ -11,6 +11,9 @@ import { RootState } from "@/app/store";
 import { setIsAuthenticated } from "../auth/authSlice";
 import Cookies from "js-cookie";
 
+const secure = process.env.NODE_ENV === "production";
+const sameSite = secure ? "None" : "Lax";
+
 // the login endpoint for a customer
 export const logInCustomer = createAsyncThunk<
   LoginCustomerResponseType,
@@ -26,8 +29,8 @@ export const logInCustomer = createAsyncThunk<
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
     Cookies.remove("vendor_id");
-    Cookies.set("role", data.role, { expires: 30 });
-    Cookies.set("customer_id", data.customer_id, { expires: 7 });
+    Cookies.set("role", data.role, { expires: 30, secure, sameSite });
+    Cookies.set("customer_id", data.customer_id, { expires: 7, secure, sameSite  });
 
     return data;
   } catch (error) {
@@ -53,8 +56,8 @@ export const logInVendor = createAsyncThunk<
     }
 
     Cookies.remove("customer_id");
-    Cookies.set("role", data.role, { expires: 30 });
-    Cookies.set("vendor_id", data.vendor_id, { expires: 7 });
+    Cookies.set("role", data.role, { expires: 30, secure, sameSite  });
+    Cookies.set("vendor_id", data.vendor_id, { expires: 7, secure, sameSite  });
 
     return data;
   } catch (error) {

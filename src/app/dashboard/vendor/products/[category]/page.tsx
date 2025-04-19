@@ -34,7 +34,7 @@ function Page() {
   }
 
   useEffect(() => {
-    resolveSearchParams();
+    resolveSearchParams(); 
   }, []);
 
   function openAddProductModal() {
