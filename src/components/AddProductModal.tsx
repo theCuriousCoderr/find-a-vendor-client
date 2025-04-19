@@ -109,7 +109,7 @@ function AddProductModal({
 
   function generateProductObject() {
     return {
-      category: category.toLowerCase() ,
+      category: category.toLowerCase(),
       vendor_id: vendor ? vendor.vendor_id : "",
       product_id: (totalVendorProducts() + 1).toString(),
       images: product.images,
@@ -134,7 +134,7 @@ function AddProductModal({
       if (!imagesLength || !name || !price) return;
 
       const productToAdd = generateProductObject();
-      // console.log(productToAdd);
+
       const { message } = await dispatch(
         addAuthenticatedVendorProduct(productToAdd)
       ).unwrap();

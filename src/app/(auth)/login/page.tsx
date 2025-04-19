@@ -349,7 +349,6 @@ function LogIn() {
   const viewportHeightIsBig = windowHeight > 700;
 
   function setWindowHeightRef() {
-    console.log("resize");
     const newInnerHeight = window.innerHeight;
     if (newInnerHeight === windowHeight) return;
     setWindowHeight(newInnerHeight);

@@ -13,7 +13,6 @@ import { RootState } from "@/app/store";
 import { Product, Vendor } from "@/types";
 // import vendors from "@/static-data/vendors";
 import filterVendors from "@/utils/vendors/filterVendors";
-// import groupProductsByCategory from "@/utils/vendors/groupProductsByCategory";
 import vendorProducts from "@/static-data/products";
 import filterProducts from "@/utils/products/filterProducts";
 import api from "@/utils/axios/api";

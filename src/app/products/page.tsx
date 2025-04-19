@@ -49,13 +49,10 @@ function ProductDetailsPageSkeleton() {
 
                 <Swiper
                   modules={[Navigation]}
-                  // spaceBetween={50}
                   slidesPerView={4}
                   navigation
                   pagination={{ clickable: true }}
                   scrollbar={{ draggable: true }}
-                  // onSwiper={(swiper) => console.log(swiper)}
-                  // onSlideChange={() => console.log("slide change")}
                 >
                   {[1, 2, 3, 4].map((item) => (
                     <SwiperSlide key={item}>
@@ -142,7 +139,7 @@ function ProductDetailsPageSkeleton() {
 
 function ProductDetailsPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const searchParams =  useSearchParams()
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   const {
@@ -172,12 +169,11 @@ function ProductDetailsPage() {
 
   // fetch the product by filter
   async function resolveSearchParams() {
-    const vendor_id = searchParams.get('vendor_id') || '-1';
-    const category = searchParams.get('category') || '-1';
-    const product_id = searchParams.get('product_id') || '-1';
+    const vendor_id = searchParams.get("vendor_id") || "-1";
+    const category = searchParams.get("category") || "-1";
+    const product_id = searchParams.get("product_id") || "-1";
 
-    const _filter = {vendor_id, product_id,  category }
-
+    const _filter = { vendor_id, product_id, category };
 
     setProductFilter(_filter); //Temporarily store filter option in state
 
@@ -200,7 +196,6 @@ function ProductDetailsPage() {
   }, [product]);
 
   async function notifyVendor() {
-    console.log(isWebSocketConnected);
     if (!isWebSocketConnected) {
       dispatch(connectWebSocket());
     }

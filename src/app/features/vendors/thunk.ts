@@ -21,6 +21,7 @@ export const getAuthenticatedVendor = createAsyncThunk<
   try {
     const response = await api.get(VENDOR.get_vendor);
     const data = response.data as FetchAuthenticatedVendorResponseType;
+    thunkAPI.dispatch(getAuthenticatedVendorNotifications())
     thunkAPI.dispatch(updateSettingsVendorInfo({ vendorInfo: data.vendor }));
     thunkAPI.dispatch(setIsAuthenticated(true));
     return data;

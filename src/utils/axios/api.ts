@@ -30,10 +30,9 @@ api.interceptors.request.use(
 // Response Interceptor
 api.interceptors.response.use(
   (response) => {
-    // console.log("response", response);
     const status = response.status;
     const message = response.data.message;
-    // const requestId = getUniqueString();
+
     const isSameRequest =
       status === 200 &&
       message === "Same Request" &&
@@ -41,9 +40,6 @@ api.interceptors.response.use(
     const isOldResponse =
       message !== prevMessage && cacheRequestPrints.length > 0;
     let cacheResponse = response;
-
-    // console.log(status, message);
-    // console.log(requestId);
 
     if (isSameRequest) {
       if (isOldResponse) {
@@ -58,7 +54,6 @@ api.interceptors.response.use(
       // prevMessage = message;
       cacheRequestPrints = [JSON.stringify(response)];
     }
-    // console.log({ cacheRequestPrints });
 
     // clearUniqueString();
     prevMessage = message;

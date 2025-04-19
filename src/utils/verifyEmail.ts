@@ -7,7 +7,6 @@ export async function verifyEmail(
 ): Promise<"valid" | "invalid"> {
   const cachedEmailVerifyStatus = verifiedEmail.getStatus(emailToTest);
   if (cachedEmailVerifyStatus) {
-    console.log("Cache Hit");
     return cachedEmailVerifyStatus as "valid" | "invalid";
   }
 

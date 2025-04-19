@@ -194,8 +194,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
     // if user is not an authenticated vendor/customer by cookie, flag them as unaunthenticated on the frontend
     // the server will handle any unaunthenticated request to aunthenticated routes on the backend
     if (!isUserAuthenticated() && isProtectedRoute) {
-      console.log("No Auth");
-      router.push("/")
+      router.push("/");
       dispatch(setIsAuthenticated(false));
     }
 
@@ -264,19 +263,19 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
         }
 
         break;
-        case "notification":
-          value = response.value as NotificationType;
-          if (id.vendor && id.vendor === value.vendor_id) {
-            // toast("Your order status has been updated");
-            dispatch(getAuthenticatedVendorNotifications());
-          }
-  
-          if (id.customer && id.customer === value.customer_id) {
-            // toast("Your order status has been updated");
-            dispatch(getAuthenticatedCustomerNotifications());
-          }
-  
-          break;
+      case "notification":
+        value = response.value as NotificationType;
+        if (id.vendor && id.vendor === value.vendor_id) {
+          // toast("Your order status has been updated");
+          dispatch(getAuthenticatedVendorNotifications());
+        }
+
+        if (id.customer && id.customer === value.customer_id) {
+          // toast("Your order status has been updated");
+          dispatch(getAuthenticatedCustomerNotifications());
+        }
+
+        break;
       default:
         break;
     }

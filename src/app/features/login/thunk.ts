@@ -9,6 +9,8 @@ import {
 } from "./interface";
 import { RootState } from "@/app/store";
 import { setIsAuthenticated } from "../auth/authSlice";
+import { getAuthenticatedCustomerNotifications } from "../customers/thunk";
+import { getAuthenticatedVendorNotifications } from "../vendors/thunk";
 // the login endpoint for a customer
 export const logInCustomer = createAsyncThunk<
   LoginCustomerResponseType,
@@ -17,12 +19,12 @@ export const logInCustomer = createAsyncThunk<
   try {
     const response = await api.post(AUTH.login.customer, customerInfo);
     const data = response.data as LoginCustomerResponseType;
-    console.log(data);
 
     const { isAuthenticated } = (thunkAPI.getState() as RootState).auth;
     if (!isAuthenticated) {
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
+    await thunkAPI.dispatch(getAuthenticatedCustomerNotifications());
     localStorage.setItem("customer_id", data.customer_id);
     localStorage.removeItem("vendor_id");
 
@@ -48,7 +50,7 @@ export const logInVendor = createAsyncThunk<
     if (!isAuthenticated) {
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
-
+    await thunkAPI.dispatch(getAuthenticatedVendorNotifications());
     localStorage.setItem("vendor_id", data.vendor_id);
     localStorage.removeItem("customer_id");
 

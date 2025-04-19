@@ -22,14 +22,13 @@ export default async function getCloudinaryUrl(files: File[] | FileList) {
         imageUrls.push(data.secure_url);
       }
     } catch (error) {
-      console.error(`File Upload for -${file.name}- failed`)
+      console.error(`File Upload for -${file.name}- failed`);
       console.error(error);
       failedUploads.push(file);
     }
   }
 
   if (failedUploads.length !== 0) {
-    console.log(`Retrying failed uploads`)
     getCloudinaryUrl([...failedUploads] as File[]);
   }
 

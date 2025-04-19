@@ -47,7 +47,6 @@ export default async function analyseProductImage(
     );
   } else {
     try {
-      console.log("Image Analyse Start");
       const fileType = image_url.split(".").reverse()[0];
       const prompt =
         "Respond ONLY in pure JSON format, following this typescript schema {Product Name: string;Item Description: string;Item Specifications: string[];About the Item: string;} without explanations. GIVE A PURE JSON FORMAT RESPONSE THAT CAN BE PASSED TO json.parse() directly without errors. Don't add the ```json before the object. Don't add ``` after the object also. As a professional e-commerce analyst, please analyze the provided product images and provide detailed information as follows:\n\nProduct Name: Clearly state the name of the product.\nItem Description: Provide a comprehensive description of the product, including all relevant details.\nItem Specifications: List all technical and physical attributes of the product, including dimensions , weight, materials, power requirements, and any other relevant specifications.\nAbout the Item: Offer a detailed overview of the product, highlighting key features, specifications, and any other pertinent information.";
@@ -65,11 +64,9 @@ export default async function analyseProductImage(
 
       const result = await model.generateContent([prompt, image]);
       const text = result.response.text();
-      console.log("Image Analyse End");
-      // console.log(text);
+
       const parsedText = JSON.parse(text);
       if (parsedText as GeminiAnalyseProductImageResponseType) {
-        // console.log(parsedText);
         return parsedText as GeminiAnalyseProductImageResponseType;
       } else {
         return onErrorReturnData;

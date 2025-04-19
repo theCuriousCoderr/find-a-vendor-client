@@ -1,6 +1,7 @@
+
+
 export interface LoginCustomerResponseType {
   message: string;
-  role: string;
   customer_id: string;
 }
 

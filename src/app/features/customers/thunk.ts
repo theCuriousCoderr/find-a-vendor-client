@@ -13,6 +13,7 @@ export const getAuthenticatedCustomer = createAsyncThunk<
   try {
     const response = await api.get(CUSTOMER.get_customer);
     const data = response.data as FetchAuthenticatedCustomerResponseType;
+    thunkAPI.dispatch(getAuthenticatedCustomerNotifications())
     thunkAPI.dispatch(updateSettingsCustomerInfo({ customerInfo: data.customer }));
     thunkAPI.dispatch(setIsAuthenticated(true));
     return data;

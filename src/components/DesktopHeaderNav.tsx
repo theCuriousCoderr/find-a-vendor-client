@@ -57,14 +57,14 @@ function DesktopHeaderNav() {
     });
   }, [pathname]);
 
-  const isCustomer = isUserAuthenticated()?.customer_id ?? false
+  const isCustomer = isUserAuthenticated()?.customer_id ?? false;
   const account = isCustomer
     ? {
         route: "/dashboard/customer/orders",
         image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
         notifications: "/dashboard/customer/notifications",
         unread_notif:
-          authenticatedCustomerNotifications.length > 0
+          mounted && authenticatedCustomerNotifications.length > 0
             ? authenticatedCustomerNotifications.filter(
                 (notif) => !notif.opened
               )
@@ -76,7 +76,7 @@ function DesktopHeaderNav() {
         image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
         notifications: "/dashboard/vendor/notifications",
         unread_notif:
-          authenticatedVendorNotifications.length > 0
+          mounted && authenticatedVendorNotifications.length > 0
             ? authenticatedVendorNotifications.filter((notif) => !notif.opened)
             : [],
         dashboard: "Go to Vendor Dashboard",

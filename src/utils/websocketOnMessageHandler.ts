@@ -5,8 +5,6 @@ export default function websocketOnMessageHandler(
   isAuthenticated: boolean
 ) {
   if (data) {
-    // const payload = JSON.parse(event.data);
-    // console.log(isAuthenticated)
     if (data.type === "Auth" && isAuthenticated) {
       return { type: "updateNotif", value: "1" };
     }

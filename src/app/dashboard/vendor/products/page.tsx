@@ -63,7 +63,7 @@ function Page() {
     _categoryToDelete: string
   ) {
     e.stopPropagation();
-    setDeletingCategory(true)
+    setDeletingCategory(true);
     if (vendor) {
       const categories = vendor.categories;
       const newCategories = categories.filter(
@@ -77,7 +77,7 @@ function Page() {
             vendor: vendorInfo,
           })
         ).unwrap();
-        console.log(message)
+
         if (message === "Category Deleted") {
           dispatch(
             updateStatusSuccess({
@@ -102,7 +102,7 @@ function Page() {
       }
     }
 
-    setDeletingCategory(false)
+    setDeletingCategory(false);
     // setCategoryToDelete("")
   }
 
@@ -289,7 +289,10 @@ function Page() {
 
                         <div className="flex justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">
                           <div className="">
-                            <button onClick={() => alert("Coming Soon")} className="p-1 text-sm text-slate-200 hover:bg-slate-300/50 flex gap-1 items-center justify-center">
+                            <button
+                              onClick={() => alert("Coming Soon")}
+                              className="p-1 text-sm text-slate-200 hover:bg-slate-300/50 flex gap-1 items-center justify-center"
+                            >
                               <p>Edit Name</p>
                               <Edit3 size={18} />
                             </button>
