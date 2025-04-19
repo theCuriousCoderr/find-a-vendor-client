@@ -11,7 +11,7 @@ import { Bell } from "lucide-react";
 import Image from "next/image";
 import Spinner from "./Spinner";
 import { signOut } from "@/app/features/auth/thunk";
-import Cookies from "js-cookie";
+import isUserAuthenticated from "@/utils/isUserAuthenticated";
 // import isUserAuthenticated from "@/utils/isUserAuthenticated";
 
 function DesktopHeaderNav() {
@@ -57,7 +57,7 @@ function DesktopHeaderNav() {
     });
   }, [pathname]);
 
-  const isCustomer = Boolean(Cookies.get("customer_id")) ?? false;
+  const isCustomer = isUserAuthenticated()?.customer_id ?? false
   const account = isCustomer
     ? {
         route: "/dashboard/customer/orders",

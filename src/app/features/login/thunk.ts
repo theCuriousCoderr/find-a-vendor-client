@@ -9,11 +9,6 @@ import {
 } from "./interface";
 import { RootState } from "@/app/store";
 import { setIsAuthenticated } from "../auth/authSlice";
-import Cookies from "js-cookie";
-
-const secure = process.env.NODE_ENV === "production";
-const sameSite = secure ? "None" : "Lax";
-
 // the login endpoint for a customer
 export const logInCustomer = createAsyncThunk<
   LoginCustomerResponseType,
@@ -28,9 +23,8 @@ export const logInCustomer = createAsyncThunk<
     if (!isAuthenticated) {
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
-    Cookies.remove("vendor_id");
-    Cookies.set("role", data.role, { expires: 30, secure, sameSite });
-    Cookies.set("customer_id", data.customer_id, { expires: 7, secure, sameSite  });
+    localStorage.setItem("customer_id", data.customer_id);
+    localStorage.removeItem("vendor_id");
 
     return data;
   } catch (error) {
@@ -55,9 +49,8 @@ export const logInVendor = createAsyncThunk<
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
 
-    Cookies.remove("customer_id");
-    Cookies.set("role", data.role, { expires: 30, secure, sameSite  });
-    Cookies.set("vendor_id", data.vendor_id, { expires: 7, secure, sameSite  });
+    localStorage.setItem("vendor_id", data.vendor_id);
+    localStorage.removeItem("customer_id");
 
     return data;
   } catch (error) {

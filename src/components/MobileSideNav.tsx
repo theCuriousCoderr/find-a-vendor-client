@@ -9,12 +9,12 @@ import Button from "./Button";
 import { usePathname } from "next/navigation";
 import VendorDashboardAsideNav from "./VendorDashboardAsideNav";
 import Image from "next/image";
-import Cookies from "js-cookie";
 import Spinner from "./Spinner";
 import { signOut } from "@/app/features/auth/thunk";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import CustomerDashboardAsideNav from "./CustomerDashboardAsideNav";
+import isUserAuthenticated from "@/utils/isUserAuthenticated";
 
 function MobileSideNav() {
   const pathname = usePathname();
@@ -48,7 +48,7 @@ function MobileSideNav() {
     setMounted(true);
   }, []);
 
-  const isCustomer = Cookies.get("customer_id") ?? false;
+  const isCustomer = isUserAuthenticated()?.customer_id ?? false;
   const account = isCustomer
     ? {
         route: "/dashboard/customer/orders",

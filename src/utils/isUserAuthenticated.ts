@@ -1,8 +1,6 @@
-import Cookies from "js-cookie";
-
 export default function isUserAuthenticated() {
-  const customer_id = Cookies.get("customer_id");
-  const vendor_id = Cookies.get("vendor_id");
+  const customer_id = localStorage.getItem("customer_id");
+  const vendor_id = localStorage.getItem("vendor_id");
 
   if (customer_id) {
     return { customer_id: customer_id };
