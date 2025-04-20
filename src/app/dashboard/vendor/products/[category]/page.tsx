@@ -121,7 +121,7 @@ function Page() {
               <div key={product.details.name} className="w-full last:xs:max-md:mb-12">
                 <Link
                   href={`/products?vendor_id=${product.vendor_id}&category=${product.category.toLowerCase()}&product_id=${product.product_id}`}
-                  className="relative group w-full block aspect-square bg-green-40 rounded-md xs:max-md:text-sm"
+                  className="relative group w-full block bg-green-40 rounded-md xs:max-md:text-sm"
                 >
                   {/* pointer  */}
                   <motion.div
@@ -138,7 +138,7 @@ function Page() {
                       className="fill-white stroke-black mt-5"
                     />
                   </motion.div>
-                  <figure className="relative w-full aspect-square max-h-40 bg-white shimmer">
+                  <figure className="relative w-full aspect-square h-[30vh] max-h- bg-white shimmer">
                     <Image
                       src={
                         product.images[0] ||
@@ -153,11 +153,7 @@ function Page() {
                   <p className="text-base text-center ">
                     {product.details.name}
                   </p>
-                  {/* <p className="uppercase">{category}</p>
-                  <p className="text-sm text-slate-500">
-                    You have {getCategoryDetails(category).amount}{" "}
-                    {getCategoryDetails(category).text} here
-                  </p> */}
+                  
                 </Link>
 
                 <div className="flex justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">

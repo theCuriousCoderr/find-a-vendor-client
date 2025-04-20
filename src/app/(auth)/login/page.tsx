@@ -78,7 +78,7 @@ function VendorLogIn() {
   }
 
   return (
-    <form onSubmit={submitVendorLogInForm} className="w-full space-y-5 bg-red-500">
+    <form onSubmit={submitVendorLogInForm} className="w-full space-y-5">
       {/* switch role: show on mobile, hide on desktop*/}
       <div className="hidden xs:max-md:block w-full text-center bg-blue-500/10 py-1 rounded-md">
         {switchForm ? (
