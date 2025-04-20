@@ -323,7 +323,7 @@ function ProductDetailsPage() {
               {/* Desktop Images */}
               <div className="xs:max-md:hidden w-80 xs:max-md:w-full space-y-2">
                 {/* Main Image */}
-                <figure className="relative w-full aspect-square max-h-80 xs:max-md:w-full bg-slate-30 flex items-center justify-center border">
+                <figure className="relative w-full aspect-square h-80 max-h-80 xs:max-md:w-full bg-slate-30 flex items-center justify-center border">
                   {imageError ? (
                     <ImageFallback size="size-20" />
                   ) : (

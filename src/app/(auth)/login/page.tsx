@@ -78,7 +78,7 @@ function VendorLogIn() {
   }
 
   return (
-    <form onSubmit={submitVendorLogInForm} className="w-full space-y-5">
+    <form onSubmit={submitVendorLogInForm} className="w-full space-y-5 bg-red-500">
       {/* switch role: show on mobile, hide on desktop*/}
       <div className="hidden xs:max-md:block w-full text-center bg-blue-500/10 py-1 rounded-md">
         {switchForm ? (
@@ -390,13 +390,13 @@ function LogIn() {
             viewportHeightIsBig ? "h-auto" : "h-full overflow-auto no-scrollbar"
           }  flex flex-col gap-5 items-center space-y-2 xs:max-md:pb-20`}
         >
-          <h1 className="font-bold text-3xl xs:max-md:text-2xl text-center mx-auto ">
+          <h1 className="font-bold text-3xl xs:max-md:text-2xl text-center mx-auto px-10 ">
             Log in to <q className="">{STARTUP_NAME}</q> <br /> ... as a{" "}
             <span className="capitalize text-peach underline">
               {activeRole}
             </span>
           </h1>
-          <div className="w-[90%]">
+          <div className="mx-auto w-[70%]">
             {activeRole === "vendor" ? <VendorLogIn /> : <CustomerLogIn />}
           </div>
         </div>

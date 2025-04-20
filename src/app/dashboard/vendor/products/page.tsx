@@ -264,7 +264,7 @@ function Page() {
                         <Link
                           onClick={() => setSeeCategoryProducts(category)}
                           href={`products/${category.toLowerCase()}`}
-                          className="relative group flex flex-col w-full aspect-square max-h-40 items-center justify-center  rounded-md bg-slate-200/50 xs:max-md:text-sm"
+                          className="relative group flex flex-col w-full aspect-square h-40 max-h-40 items-center justify-center  rounded-md bg-slate-200/50 xs:max-md:text-sm"
                         >
                           {/* pointer  */}
                           <motion.div
@@ -288,22 +288,22 @@ function Page() {
                           </p>
                         </Link>
 
-                        <div className="flex justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">
+                        <div className="flex flex-wrap justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">
                           <div className="">
                             <button
                               onClick={() => alert("Coming Soon")}
-                              className="p-1 text-sm text-slate-200 hover:bg-slate-300/50 flex gap-1 items-center justify-center"
+                              className="p-1 text-sm text-slate-200 bg-transparent hover:bg-slate-300/50 flex gap-1 items-center justify-center"
                             >
-                              <p>Edit Name</p>
+                              {/* <p>Edit Name</p> */}
                               <Edit3 size={18} />
                             </button>
                           </div>
                           <div className="">
                             <button
                               onClick={() => setCategoryToDelete(category)}
-                              className="p-1 text-sm hover:bg-red-500/50 flex gap-1 items-center justify-center"
+                              className="p-1 text-sm bg-transparent hover:bg-red-500/50 flex gap-1 items-center justify-center"
                             >
-                              <p className="text-red-400">Delete</p>
+                              {/* <p className="text-red-400">Delete</p> */}
                               <Trash2 size={18} color="#f87171" />
                             </button>
                           </div>

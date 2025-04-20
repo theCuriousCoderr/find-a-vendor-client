@@ -66,6 +66,7 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
             <figure className="relative size-full">
               <Image
                 fill={true}
+                priority={true}
                 src={vendor ? (vendor.banner as string) : "/banner.jpg"}
                 alt="Vendor banner"
                 className="object-cover object-top"

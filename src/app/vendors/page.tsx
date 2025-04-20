@@ -124,11 +124,7 @@ function Vendors() {
             } px-5 xs:max-md:p-2 text-3xl xs:max-md:text-2xl font-medium py-2`}
           >
             {loadingVendors ? "Applying Filters ..." : "Available Vendors List"}
-            {/* Available Vendors -{" "} */}
-            {/* {vendorsList?.length && !loadingVendors && (
-              <span>({vendorsList?.length})</span>
-            )} */}
-            {/* {isVendorsListFilterActive ? "Filter" : "Scroll"} */}
+          
           </h1>
           <div className="inline-flex px-5 xs:max-md:px-2">
             <Link href="/products/all">

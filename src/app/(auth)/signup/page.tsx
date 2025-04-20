@@ -400,14 +400,14 @@ function SignUp() {
             viewportHeightIsBig ? "h-auto" : "h-full overflow-auto no-scrollbar"
           } flex flex-col gap-5 items-center space-y-2 xs:max-md:pb-20`}
         >
-          <h1 className="font-bold text-3xl xs:max-md:text-2xl text-center mx-auto">
+          <h1 className="font-bold text-3xl xs:max-md:text-2xl text-center mx-auto px-10">
             Join <q className="">{STARTUP_NAME}</q> today! <br /> ... as a{" "}
             <span className="capitalize text-peach underline">
               {activeRole || "Customer"}
             </span>
           </h1>
 
-          <div className="w-[90%]">
+          <div className="mx-auto w-[70%]">
             {activeRole === "vendor" ? <VendorSignUp /> : <CustomerSignUp />}
           </div>
         </div>

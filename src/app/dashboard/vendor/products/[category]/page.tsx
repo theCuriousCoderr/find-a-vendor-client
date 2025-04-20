@@ -115,14 +115,13 @@ function Page() {
             </p>
           )}
         </h2>
-        <ul className="grid grid-cols-4 gap-10 xs:max-400:grid-cols-1">
+        <ul className="grid gap-2 xs:max-400:grid-cols-1 400:max-md:grid-cols-2 md:max-lg:grid-cols-2 lg:grid-cols-3 xs:max-md:pb-12">
           {products[category.toLowerCase()] &&
             products[category.toLowerCase()].map((product) => (
-              <div key={product.details.name} className="last:xs:max-md:mb-12">
+              <div key={product.details.name} className="w-full last:xs:max-md:mb-12">
                 <Link
-                  // onClick={() => setSeeCategoryProducts(category)}
-                  href={`products/${category.toLowerCase()}`}
-                  className="relative group w-full aspect-square bg-green-500 rounded-md xs:max-md:text-sm"
+                  href={`/products?vendor_id=${product.vendor_id}&category=${product.category.toLowerCase()}&product_id=${product.product_id}`}
+                  className="relative group w-full block aspect-square bg-green-40 rounded-md xs:max-md:text-sm"
                 >
                   {/* pointer  */}
                   <motion.div
@@ -164,7 +163,7 @@ function Page() {
                 <div className="flex justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">
                   <div className="">
                     <button className="p-1 text-sm text-slate-200 hover:bg-slate-300/50 flex gap-1 items-center justify-center">
-                      <p>Edit</p>
+                      {/* <p>Edit</p> */}
                       <Edit3 size={18} />
                     </button>
                   </div>
@@ -173,7 +172,7 @@ function Page() {
                       // onClick={(e) => deleteCategory(e, category)}
                       className="p-1 text-sm hover:bg-red-500/50 flex gap-1 items-center justify-center"
                     >
-                      <p className="text-red-400">Delete</p>
+                      {/* <p className="text-red-400">Delete</p> */}
                       <Trash2 size={18} color="#f87171" />
                     </button>
                   </div>

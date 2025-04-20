@@ -1,17 +1,13 @@
 "use client";
 
-// import { updateRound } from "@/app/features/vendors/vendorsSlice";
 import { AppDispatch, RootState } from "@/app/store";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
-// import { updateProductsRound } from "@/app/features/products/productsSlice";
 import STARTUP_NAME from "@/static-data/startupname";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
-
-// import { renewToken } from "@/app/features/auth/thunk";
 import {
   connectWebSocket,
   updateCustomerNotif,
@@ -26,7 +22,6 @@ import {
   clearLoginError,
   clearLoginSuccess,
 } from "@/app/features/login/loginSlice";
-// import { SERVER_WEBSOCKET_URL } from "@/utils/getEnvUrl";
 import ws, { forceWebSocketReconnect } from "@/utils/connectWebSocket";
 import websocketOnMessageHandler from "@/utils/websocketOnMessageHandler";
 import {
@@ -66,6 +61,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
     vendor: "",
     customer: "",
   });
+  const [mounted,setMounted] = useState(false)
   const { isAuthenticated, customer } = useSelector(
     (state: RootState) => state.auth
   );
@@ -175,16 +171,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
   // activated whenevr any page is reloaded
   useEffect(() => {
     // set the screen height
-    if (typeof window !== "undefined") {
-      setWindowHeight(window.innerHeight);
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/eruda";
-      script.onload = () => {
-        // "@ts-expect-error"
-        eruda.init();
-      };
-      document.body.appendChild(script);
-    }
+    if (typeof window !== "undefined") setWindowHeight(window.innerHeight);
 
     // if the websocket is not connected, reconnect it
     !isWebSocketConnected && dispatch(connectWebSocket());
@@ -212,6 +199,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
       vendor: vendor_id ?? "",
       customer: customer_id ?? "",
     });
+    setMounted(true)
   }, []);
 
   // entry point for websocket emit events from the backend into the frontend
@@ -337,6 +325,10 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
     Boolean(logInError) && toast.warn(logInError);
     dispatch(clearLoginError());
   }, [logInError]);
+
+  if (!mounted) {
+    return  <div></div>
+  }
 
   return (
     <div className="no-scrollbar h-screen w-full overflow-auto bg-yellow-40">
