@@ -175,7 +175,16 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
   // activated whenevr any page is reloaded
   useEffect(() => {
     // set the screen height
-    if (typeof window !== "undefined") setWindowHeight(window.innerHeight);
+    if (typeof window !== "undefined") {
+      setWindowHeight(window.innerHeight);
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/eruda";
+      script.onload = () => {
+        // "@ts-expect-error"
+        eruda.init();
+      };
+      document.body.appendChild(script);
+    }
 
     // if the websocket is not connected, reconnect it
     !isWebSocketConnected && dispatch(connectWebSocket());
