@@ -25,6 +25,9 @@ export const signOut = createAsyncThunk<SignOutResponseType>(
       const response = await api.post(AUTH.signOut);
       const data = response.data;
       localStorage.removeItem("cacheIsAuthenticated");
+      localStorage.removeItem("vendor_id");
+      localStorage.removeItem("customer_id");
+
       return data;
     } catch (error) {
       const data = (error as AxiosError).response;

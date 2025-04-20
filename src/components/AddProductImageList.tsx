@@ -63,7 +63,7 @@ function AddProductImageList({
         </div>
       ) : (
         <li>
-          <button onClick={openFileWindow} className="size-10">
+          <button onClick={openFileWindow} className="size-10 hidden">
             <label
               role="button"
               onClick={(e) => {

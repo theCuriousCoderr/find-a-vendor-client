@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import CustomerDashboardAsideNav from "./CustomerDashboardAsideNav";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
+import { HeaderAccountType } from "@/types";
 
 function MobileSideNav() {
   const pathname = usePathname();
@@ -49,29 +50,41 @@ function MobileSideNav() {
   }, []);
 
   const isCustomer = isUserAuthenticated()?.customer_id ?? false;
-  const account = isCustomer
-    ? {
-        route: "/dashboard/customer/orders",
-        image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
-        notifications: "/dashboard/customer/notifications",
-        unread_notif:
-        mounted && authenticatedCustomerNotifications.length > 0
-            ? authenticatedCustomerNotifications.filter(
-                (notif) => !notif.opened
-              )
-            : [],
-        dashboard: "Go to Customer Dashboard",
-      }
-    : {
-        route: "/dashboard/vendor/products",
-        image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
-        notifications: "/dashboard/vendor/notifications",
-        unread_notif:
-        mounted && authenticatedVendorNotifications.length > 0
-            ? authenticatedVendorNotifications.filter((notif) => !notif.opened)
-            : [],
-        dashboard: "Go to Vendor Dashboard",
-      };
+  let account: HeaderAccountType = {
+    route: "/",
+    image: "",
+    notifications: "/",
+    unread_notif: [],
+    dashboard: "Go to Customer Dashboard",
+  };
+
+  if (mounted) {
+    account = isCustomer
+      ? {
+          route: "/dashboard/customer/orders",
+          image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
+          notifications: "/dashboard/customer/notifications",
+          unread_notif:
+            mounted && (authenticatedCustomerNotifications?.length || 0) > 0
+              ? authenticatedCustomerNotifications.filter(
+                  (notif) => !notif.opened
+                )
+              : [],
+          dashboard: "Go to Customer Dashboard",
+        }
+      : {
+          route: "/dashboard/vendor/products",
+          image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
+          notifications: "/dashboard/vendor/notifications",
+          unread_notif:
+            mounted && (authenticatedVendorNotifications?.length || 0) > 0
+              ? authenticatedVendorNotifications.filter(
+                  (notif) => !notif.opened
+                )
+              : [],
+          dashboard: "Go to Vendor Dashboard",
+        };
+  }
 
   function toggleIsOpen(key: "notification" | "avatar") {
     const isKeyOpen = isOpen[key];

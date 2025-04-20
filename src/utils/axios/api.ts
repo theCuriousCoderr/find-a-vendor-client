@@ -64,6 +64,9 @@ api.interceptors.response.use(
     const data = _error.response?.data as { redirectUrl: string };
     // If you receive a 3xx error, redirect the user
     if (_error.response && _error.response.status === 302) {
+      localStorage.removeItem("cacheIsAuthenticated");
+      localStorage.removeItem("vendor_id");
+      localStorage.removeItem("customer_id");
       window.location.href = data.redirectUrl;
     }
     // if (_error.response && _error.response.status === 403) {

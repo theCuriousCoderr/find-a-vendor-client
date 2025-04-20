@@ -214,7 +214,8 @@ function Page() {
       <section className="mt-5 xs:max-md:mt-0 ">
         <div>
           <h2 className="text-2xl xs:max-md:text-lg font-medium">
-            You have <q>{vendor.categories.length}</q> Categories of Products
+            You have created {vendor.categories.length}{" "}product{" "}
+            <span>{vendor.categories.length > 1 ? "categories" : "category"}</span>
           </h2>
           <p className="text-slate-400 text-xl xs:max-md:text-base">
             The things you sell

@@ -12,6 +12,7 @@ import Image from "next/image";
 import Spinner from "./Spinner";
 import { signOut } from "@/app/features/auth/thunk";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
+import { HeaderAccountType } from "@/types";
 // import isUserAuthenticated from "@/utils/isUserAuthenticated";
 
 function DesktopHeaderNav() {
@@ -58,29 +59,41 @@ function DesktopHeaderNav() {
   }, [pathname]);
 
   const isCustomer = isUserAuthenticated()?.customer_id ?? false;
-  const account = isCustomer
-    ? {
-        route: "/dashboard/customer/orders",
-        image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
-        notifications: "/dashboard/customer/notifications",
-        unread_notif:
-          mounted && authenticatedCustomerNotifications.length > 0
-            ? authenticatedCustomerNotifications.filter(
-                (notif) => !notif.opened
-              )
-            : [],
-        dashboard: "Go to Customer Dashboard",
-      }
-    : {
-        route: "/dashboard/vendor/products",
-        image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
-        notifications: "/dashboard/vendor/notifications",
-        unread_notif:
-          mounted && authenticatedVendorNotifications.length > 0
-            ? authenticatedVendorNotifications.filter((notif) => !notif.opened)
-            : [],
-        dashboard: "Go to Vendor Dashboard",
-      };
+  let account: HeaderAccountType = {
+    route: "/",
+    image: "",
+    notifications: "/",
+    unread_notif: [],
+    dashboard: "Go to Customer Dashboard",
+  };
+
+  if (mounted) {
+    account = isCustomer
+      ? {
+          route: "/dashboard/customer/orders",
+          image: customer?.photo || "https://picsum.photos/id/433/4752/3168",
+          notifications: "/dashboard/customer/notifications",
+          unread_notif:
+            mounted && (authenticatedCustomerNotifications?.length || 0) > 0
+              ? authenticatedCustomerNotifications.filter(
+                  (notif) => !notif.opened
+                )
+              : [],
+          dashboard: "Go to Customer Dashboard",
+        }
+      : {
+          route: "/dashboard/vendor/products",
+          image: vendor?.logo || "https://picsum.photos/id/400/4752/3168",
+          notifications: "/dashboard/vendor/notifications",
+          unread_notif:
+            mounted && (authenticatedVendorNotifications?.length || 0) > 0
+              ? authenticatedVendorNotifications.filter(
+                  (notif) => !notif.opened
+                )
+              : [],
+          dashboard: "Go to Vendor Dashboard",
+        };
+  }
 
   const ringValue = 10;
 

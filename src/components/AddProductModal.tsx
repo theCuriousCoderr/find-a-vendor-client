@@ -28,7 +28,7 @@ function AddProductModal({
   const [addingProductImage, setAddingProductImage] = useState(false);
   const [product, setProduct] = useState<AddProductStateType>({
     images: [
-      // "https://res.cloudinary.com/dmiianrhe/image/upload/v1742115240/findAVendor/dii7eoohv2ixnldles8p.jpg",
+      "https://res.cloudinary.com/dmiianrhe/image/upload/v1742115240/findAVendor/dii7eoohv2ixnldles8p.jpg",
       // "https://res.cloudinary.com/dmiianrhe/image/upload/v1744294536/tkghnkbl9n1veswcajc2.jpg",
       // "https://res.cloudinary.com/dmiianrhe/image/upload/v1744294536/findAVendor/tkghnkbl9n1veswcajc2.jpg"
     ],

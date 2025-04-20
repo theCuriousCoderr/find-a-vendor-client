@@ -34,7 +34,7 @@ function Page() {
   }
 
   useEffect(() => {
-    resolveSearchParams(); 
+    resolveSearchParams();
   }, []);
 
   function openAddProductModal() {
@@ -100,10 +100,20 @@ function Page() {
       )}
       <section className="mt-5 xs:max-md:mt-0">
         <h2 className="text-2xl xs:max-md:text-lg font-medium mb-2">
-          You Have {getCategoryDetails(category).amount}{" "}
-          {getCategoryDetails(category).text} Under{" "}
-          <q className="capitalize text-slate-600">{category}</q> category
-          {/* {JSON.stringify(products)} */}
+          {getCategoryDetails(category).amount === 0 && (
+            <p>
+              {" "}
+              Your <q className="capitalize text-slate-600">{category}</q>{" "}
+              category currently has no {getCategoryDetails(category).text}
+            </p>
+          )}
+          {getCategoryDetails(category).amount > 0 && (
+            <p>
+              {getCategoryDetails(category).amount}{" "}
+              {getCategoryDetails(category).text} found in the{" "}
+              <q className="capitalize text-slate-600">{category}</q> category.
+            </p>
+          )}
         </h2>
         <ul className="grid grid-cols-4 gap-10 xs:max-400:grid-cols-1">
           {products[category.toLowerCase()] &&

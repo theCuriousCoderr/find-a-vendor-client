@@ -104,6 +104,7 @@ function CustomerNotificationsPage() {
 
   return (
     <div>
+      <p className="text-sm text-slate-400 my-2 text-center">A notification card is clickable 😉</p>
       <ul className="gap-2 grid grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
         {notifications.map((notif) => {
           return (

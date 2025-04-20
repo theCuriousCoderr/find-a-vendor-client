@@ -42,6 +42,14 @@ export interface Customer {
   phone: string;
 }
 
+export interface HeaderAccountType {
+  route: string;
+  image: string;
+  notifications: string;
+  unread_notif: NotificationType[] | [];
+  dashboard: string;
+}
+
 export interface LogoSize {
   clx?: string;
 }

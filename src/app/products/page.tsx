@@ -196,11 +196,10 @@ function ProductDetailsPage() {
   }, [product]);
 
   async function notifyVendor() {
+    setButtonLoad({ ...buttonLoad, notifyVendor: true });
     if (!isWebSocketConnected) {
       dispatch(connectWebSocket());
     }
-
-    setButtonLoad({ ...buttonLoad, notifyVendor: true });
 
     if (!isAuthenticated) {
       cachePageBeforeRedirect("login", window.location.href);
@@ -229,12 +228,11 @@ function ProductDetailsPage() {
           customer_completed_flag: false,
           createdAt: new Date(),
         };
-        // dispatch(customerNotification(orderDetails))
-        // notifyVendorAboutProduct();
         dispatch(makeOrder(orderDetails));
         setButtonLoad({ ...buttonLoad, notifyVendor: false });
       }
     }
+    setButtonLoad({ ...buttonLoad, notifyVendor: false });
   }
 
   if (!product || loadingProduct || !vendor) {
@@ -538,7 +536,7 @@ function ProductDetailsPage() {
 
               <Button
                 animate={false}
-                onClick={notifyVendor}
+                // onClick={notifyVendor}
                 text="View Vendor Account Details"
                 bgColor="bg-green-500 xs:max-md:text-sm"
                 color="text-white"
