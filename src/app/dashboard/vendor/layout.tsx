@@ -31,10 +31,6 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
     dispatch(clearLoginRedirect());
   }, []);
 
-  // if (!vendor) {
-  //   return <div className="h-screen w-full bg-white flex items-center justify-center"><Spinner color="border-t-blue-500" /> </div>
-  // }
-
   return (
     <div>
       {!isVendorProfileComplete && (

@@ -1,28 +1,22 @@
 "use client";
 
 import { clearLoginRedirect } from "@/app/features/login/loginSlice";
-// import { getAuthenticatedVendor } from "@/app/features/vendors/thunk";
 import { AppDispatch, RootState } from "@/app/store";
-// import VendorDashboardAsideNav from "@/components/VendorDashboardAsideNav";
-// import VendorProfileCompleteDisclaimer from "@/components/VendorProfileCompleteDisclaimer";
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-// import Cookies from "js-cookie";
-// import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";;
 import CustomerDashboardAsideNav from "@/components/CustomerDashboardAsideNav";
 import Image from "next/image";
 import { getAuthenticatedCustomer } from "@/app/features/customers/thunk";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-// import Spinner from "@/components/Spinner";
+
 
 function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
   let pathName = usePathname();
   pathName = pathName.replace("/dashboard/customer/", "");
 
-  //   const [openDisclaimer, setOpenDisclaimer] = useState(true);
   const { authenticatedCustomer: customer, isCustomerProfileComplete } =
     useSelector((state: RootState) => state.customers);
   const renderCountRef = useRef(0);
@@ -33,9 +27,7 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
     dispatch(clearLoginRedirect());
   }, []);
 
-  // if (!vendor) {
-  //   return <div className="h-screen w-full bg-white flex items-center justify-center"><Spinner color="border-t-blue-500" /> </div>
-  // }
+
 
   return (
     <div>
@@ -47,15 +39,7 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
         </Link>
       )}
       <div className="w-full flex bg-slate-100 gap-2 p-2">
-        {/* The disclamier for vendors to complete their profile setup */}
-        {/* {vendor &&
-          openDisclaimer &&
-          renderCountRef.current === 0 &&
-          !isVendorProfileComplete && (
-            <VendorProfileCompleteDisclaimer
-              setOpenDisclaimer={setOpenDisclaimer}
-            />
-          )} */}
+        
 
         {/* The sidebar nav component  */}
         <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px]">

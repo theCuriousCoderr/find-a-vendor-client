@@ -11,6 +11,7 @@ import formattedOrderCardDate from "@/utils/formattedOrderCardDate";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/app/store";
 import { updateOrder } from "@/app/features/order/thunk";
+import OrderCardsButton from "./OrderCardsButton";
 
 function CustomerOrderCard({
   order,
@@ -89,8 +90,19 @@ function CustomerOrderCard({
                 className="absolute z-10 p-1 border bg-white"
               >
                 {statusMessage(order.status, "customer")}
-                {order.status === "received" && <p className="text-slate-500">The associated vendor needs to also mark this order as <q>Delivered</q> before the status can change to <q>Completed</q></p> }
-                {order.status === "delivered" && <p className="text-slate-500">You need to also mark this order as <q>Received</q> before the status can change to <q>Completed</q></p> }
+                {order.status === "received" && (
+                  <p className="text-slate-500">
+                    The associated vendor needs to also mark this order as{" "}
+                    <q>Delivered</q> before the status can change to{" "}
+                    <q>Completed</q>
+                  </p>
+                )}
+                {order.status === "delivered" && (
+                  <p className="text-slate-500">
+                    You need to also mark this order as <q>Received</q> before
+                    the status can change to <q>Completed</q>
+                  </p>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -102,36 +114,29 @@ function CustomerOrderCard({
         </div>
       </div>
       <div className="flex gap-1">
+        {/* View */}
         <div>
           <Link
             href={`/products?vendor_id=${order.vendor_id}&category=${order.category}&product_id=${order.product_id}`}
           >
-            <button className="border px-2 py-1 rounded-md text-sm border-black hover:bg-slate-300">
-              View
-            </button>
+            <OrderCardsButton type="view" />
           </Link>
         </div>
+
+        {/* Cancel */}
         {order.status === "pending" && (
-          <div>
-            <button
-              onClick={() => _updateOrderStatus("cancelled")}
-              className="border bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded-md text-sm border-black"
-            >
-              Cancel
-            </button>
-          </div>
+          <OrderCardsButton
+            type="cancel"
+            onClick={() => _updateOrderStatus("cancelled")}
+          />
         )}
 
-        {(order.status === "ongoing" || order.status === "delivered" ) && (
-          <div>
-            <button
-              disabled={order.customer_completed_flag}
-              onClick={_updateCustomerCompletedFlag}
-              className="border bg-[#16A34A] hover:bg-green-700 disabled:bg-[#16A34A]/30 text-white px-2 py-1 rounded-md text-sm border-black"
-            >
-              Received
-            </button>
-          </div>
+        {/* Received */}
+        {(order.status === "ongoing" || order.status === "delivered") && (
+          <OrderCardsButton
+            type="received"
+            onClick={_updateCustomerCompletedFlag}
+          />
         )}
       </div>
     </article>

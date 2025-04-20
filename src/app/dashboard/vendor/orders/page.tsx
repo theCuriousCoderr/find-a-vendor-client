@@ -10,26 +10,31 @@ import { useDispatch, useSelector } from "react-redux";
 
 function VendorOrdersPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const {
     authenticatedVendorOrders: orders,
     loadingAuthenticatedVendorOrders,
   } = useSelector((state: RootState) => state.vendors);
 
   const [selectedOrder, setSelectedOrder] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   async function resolveSearchParams() {
-   
-    const _selectedOrder = (searchParams.get("selectedOrder") || "")
+    const _selectedOrder = searchParams.get("selectedOrder") || "";
     if (_selectedOrder) {
       setSelectedOrder(_selectedOrder);
     }
+    setMounted(true);
   }
 
   useEffect(() => {
-    if (orders.length === 0) dispatch(getAuthenticatedVendorOrders());
+    if ((orders?.length || 0) === 0) dispatch(getAuthenticatedVendorOrders());
     resolveSearchParams();
   }, []);
+
+  if (!mounted) {
+    return <div></div>;
+  }
 
   if (loadingAuthenticatedVendorOrders) {
     return (
@@ -40,7 +45,7 @@ function VendorOrdersPage() {
     );
   }
 
-  if (orders.length === 0) {
+  if ((orders?.length || 0) === 0) {
     return (
       <div className="my-10 w-full flex flex-col items-center justify-center">
         <p>No orders </p>

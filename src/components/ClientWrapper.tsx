@@ -371,7 +371,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
         <div
           // activate infinte scroll for vendorsList and productsList on scroll
           onScroll={debouncedInfiniteScroll}
-          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40"
+          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40 xs:max-md:pb-20"
         >
           {children}
         </div>

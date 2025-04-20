@@ -12,7 +12,7 @@ import { useSearchParams } from "next/navigation";
 
 function CustomerOrdersPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const {
     authenticatedCustomerOrders: orders,
     loadingAuthenticatedCustomerOrders,
@@ -20,7 +20,7 @@ function CustomerOrdersPage() {
   const [selectedOrder, setSelectedOrder] = useState("");
 
   async function resolveSearchParams() {
-    const _selectedOrder = (searchParams.get("selectedOrder") || "")
+    const _selectedOrder = searchParams.get("selectedOrder") || "";
 
     if (_selectedOrder) {
       setSelectedOrder(_selectedOrder);
@@ -28,7 +28,7 @@ function CustomerOrdersPage() {
   }
 
   useEffect(() => {
-    if (orders.length === 0) dispatch(getAuthenticatedCustomerOrders());
+    if ((orders?.length || 0) === 0) dispatch(getAuthenticatedCustomerOrders());
     resolveSearchParams();
   }, []);
 
@@ -43,7 +43,7 @@ function CustomerOrdersPage() {
   }
 
   //  if orders length is 0
-  if (orders.length === 0) {
+  if ((orders?.length || 0) === 0) {
     return (
       <div className="my-10 w-full flex flex-col items-center justify-center space-y-2">
         <p>No orders </p>

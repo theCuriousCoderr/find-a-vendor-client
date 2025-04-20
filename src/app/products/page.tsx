@@ -396,7 +396,9 @@ function ProductDetailsPage() {
                           item ||
                           "https://picsum.photos/id/300/200/300/?blur=10"
                         }
+                        priority={item === product.images[0]}
                         fill={true}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         alt="Product Preview Image"
                         className="object-scale-down object-botto"
                         onError={() => setImageError(true)}
@@ -483,13 +485,19 @@ function ProductDetailsPage() {
                   <li key={line}>{line}</li>
                 ))}
             </ul>
-            {/* <div className="p-5">{product.details.description.split(".")}</div> */}
           </section>
 
           {/* Product Specifications */}
           <section className="rounded-md bg-white">
             <h2 className="p-5 border-b text-xl">Product Specifications</h2>
-            <div className="p-5">Specifications</div>
+            <ul className="p-5 list-disc list-inside">
+              {product.details.specifications
+                .split("\n")
+                .filter(Boolean)
+                .map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+            </ul>
           </section>
 
           {/* Product Reviews */}

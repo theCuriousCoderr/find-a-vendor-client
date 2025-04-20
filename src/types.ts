@@ -101,6 +101,7 @@ export interface Product {
   details: {
     name: string;
     description: string;
+    specifications: string;
     price: number;
     qty: number;
     status: "In stock" | "Out of stock" | "Pre-order"; // Assuming possible statuses

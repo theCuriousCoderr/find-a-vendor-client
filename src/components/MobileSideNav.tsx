@@ -111,7 +111,7 @@ function MobileSideNav() {
   return (
     <div className="md:hidden bg-white/20 backdrop-blur-md h-20 flex items-center justify-between pl-5 pr-2 xs:max-md:pl-2">
       <div className="flex items-center gap-4 xs:max-md:gap-2">
-        <button onClick={() => setOpenSideBar(true)} className="">
+        <button onClick={() => setOpenSideBar(true)} className="bg-white">
           <Menu />
         </button>
         <LogoName clx="text-xl font-medium" />
@@ -120,11 +120,11 @@ function MobileSideNav() {
       {!openSideBar && isAuthenticated && (
         <div className="flex items-center gap-2">
           {/* Notification */}
-          <div className="relative">
+          <div className="relative ">
             <Link
               onClick={() => setOpenSideBar(false)}
               href={account.notifications}
-              className="relative size-full rounded-ful"
+              className=" size-full rounded-ful"
             >
               {Boolean(account.unread_notif?.length || 0) && (
                 <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
@@ -186,6 +186,7 @@ function MobileSideNav() {
               <Image
                 fill={true}
                 alt="Profile Image"
+                sizes="3rem"
                 src={account.image}
                 className="object-cover object-center rounded-full"
               />
@@ -202,7 +203,7 @@ function MobileSideNav() {
             exit={{ x: "100%" }}
             className="absolute border top-0 left-0 h-screen w-full bg-white"
           >
-            <div className="h-20 flex items-center px-2">
+            <div className="h-20 flex items-center px-2 bg-white">
               <button
                 onClick={() => setOpenSideBar(false)}
                 className="size-full"
@@ -217,7 +218,7 @@ function MobileSideNav() {
                     <Link
                       onClick={() => setOpenSideBar(false)}
                       href={account.notifications}
-                      className="relative size-full rounded-ful"
+                      className=" size-full rounded-ful"
                     >
                       {Boolean(account.unread_notif?.length || 0) && (
                         <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
@@ -280,6 +281,7 @@ function MobileSideNav() {
                       <Image
                         fill={true}
                         alt="Profile Image"
+                         sizes="3rem"
                         src={account.image}
                         className="object-cover object-center rounded-full"
                       />

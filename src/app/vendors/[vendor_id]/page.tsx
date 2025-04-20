@@ -260,10 +260,10 @@ function VendorPage() {
             <Image
               src={vendor.banner || "/image-load-error.png"}
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              priority={true}
               fill={true}
               alt="Vendor Banner"
               className={`object-cover  object-center`}
-              // onError={() => setImageError(true)}
             />
           </figure>
 
@@ -327,14 +327,16 @@ function VendorPage() {
               {/* instagram, twitter */}
               <div className="flex gap-4">
                 <Link
-                  href={vendor?.socials.instagram || ""}
+                  href={`https://www.instagram.com/${
+                    vendor?.socials.instagram || ""
+                  }`}
                   target="_blank"
                   className="hover:text-red-500"
                 >
                   <Instagram size={30} />
                 </Link>
                 <Link
-                  href={vendor?.socials.twitter || ""}
+                  href={`https://x.com/${vendor?.socials.twitter || ""}`}
                   target="_blank"
                   className="hover:text-blue-500"
                 >
@@ -344,13 +346,17 @@ function VendorPage() {
 
               {/* Chat on whatsapp */}
               <div>
-                <Link
-                  href={vendor?.socials.whatsapp || ""}
-                  target="_blank"
-                  className="font-bold text-[#00A884] hover:underline"
-                >
-                  Chat on WhatsApp
-                </Link>
+                {vendor.socials.whatsapp ? (
+                  <Link
+                    href={`https://wa.me/${vendor?.socials.whatsapp || ""}`}
+                    target="_blank"
+                    className="font-bold text-[#00A884] hover:underline"
+                  >
+                    Chat on WhatsApp
+                  </Link>
+                ) : (
+                  <p>This vendor has no WhatsApp contact</p>
+                )}
               </div>
             </div>
           </div>

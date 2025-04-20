@@ -75,14 +75,16 @@ function CustomerNotificationsPage() {
   } = useSelector((state: RootState) => state.customers);
 
   useEffect(() => {
-    if (notifications.length === 0)
+    if ((notifications?.length || 0) === 0)
       dispatch(getAuthenticatedCustomerNotifications());
-    if (orders.length === 0) dispatch(getAuthenticatedCustomerOrders());
+    if ((orders?.length || 0) === 0) dispatch(getAuthenticatedCustomerOrders());
   }, []);
 
- async function _readNotification(notification_id: string) {
-    const {message} = await dispatch(readNotification({ notification_id })).unwrap()
-    if (message) dispatch(getAuthenticatedCustomerNotifications())
+  async function _readNotification(notification_id: string) {
+    const { message } = await dispatch(
+      readNotification({ notification_id })
+    ).unwrap();
+    if (message) dispatch(getAuthenticatedCustomerNotifications());
   }
 
   if (loadingAuthenticatedCustomerNotifications) {
@@ -94,7 +96,7 @@ function CustomerNotificationsPage() {
     );
   }
 
-  if (notifications.length === 0) {
+  if ((notifications?.length || 0) === 0) {
     return (
       <div className="my-10 w-full flex flex-col items-center justify-center">
         <p>No notifications </p>
@@ -104,14 +106,18 @@ function CustomerNotificationsPage() {
 
   return (
     <div>
-      <p className="text-sm text-slate-400 my-2 text-center">A notification card is clickable 😉</p>
+      <p className="text-sm text-slate-400 my-2 text-center">
+        A notification card is clickable 😉
+      </p>
       <ul className="gap-2 grid grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
         {notifications.map((notif) => {
           return (
             <li key={notif.order_id}>
               <Link
                 href={`/dashboard/customer/orders${notif.link}`}
-                onClick={() => !notif.opened && _readNotification(notif.notification_id)}
+                onClick={() =>
+                  !notif.opened && _readNotification(notif.notification_id)
+                }
               >
                 <article className="bg-slate-50 border p-2 rounded-md space-y-2">
                   <div className="relative flex gap-2 items-start">

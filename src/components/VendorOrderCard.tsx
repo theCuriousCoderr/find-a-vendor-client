@@ -13,6 +13,7 @@ import { AppDispatch } from "@/app/store";
 import { updateOrder } from "@/app/features/order/thunk";
 import { getCustomerInfo } from "@/app/features/vendors/thunk";
 import Image from "next/image";
+import OrderCardsButton from "./OrderCardsButton";
 
 function VendorOrderCard({
   order,
@@ -25,6 +26,7 @@ function VendorOrderCard({
   const [showHelpText, setShowHelpText] = useState(false);
   const [showCustomerInfo, setShowCustomerInfo] = useState(false);
   const [customerInfo, setCustomerInfo] = useState<Customer | null>(null);
+  // const [updating, setUpdating] = useState(false);
 
   function toggleShowHelpText() {
     setShowHelpText(!showHelpText);
@@ -89,7 +91,12 @@ function VendorOrderCard({
 
             <div className="flex items-center gap-2">
               <figure className="relative size-10 rounded-full shimmer">
-                <Image fill={true} src={customerInfo.photo} alt="Customer Photo" className="object-cover rounded-full" />
+                <Image
+                  fill={true}
+                  src={customerInfo.photo}
+                  alt="Customer Photo"
+                  className="object-cover rounded-full"
+                />
               </figure>
               <div>
                 <p className="">
@@ -164,8 +171,19 @@ function VendorOrderCard({
                 className="absolute z-10 p-1 border bg-white"
               >
                 {statusMessage(order.status, "vendor")}
-                {order.status === "delivered" && <p className="text-slate-500">The associated customer needs to also mark this order as <q>Received</q> before the status can change to <q>Completed</q></p> }
-                {order.status === "received" && <p className="text-slate-500">You need to also mark this order as <q>Delivered</q> before the status can change to <q>Completed</q></p> }
+                {order.status === "delivered" && (
+                  <p className="text-slate-500">
+                    The associated customer needs to also mark this order as{" "}
+                    <q>Received</q> before the status can change to{" "}
+                    <q>Completed</q>
+                  </p>
+                )}
+                {order.status === "received" && (
+                  <p className="text-slate-500">
+                    You need to also mark this order as <q>Delivered</q> before
+                    the status can change to <q>Completed</q>
+                  </p>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
@@ -175,60 +193,51 @@ function VendorOrderCard({
         </div>
       </div>
       <div className="flex gap-1">
+
+        {/* View */}
         <div>
           <Link
             href={`/products?vendor_id=${order.vendor_id}&category=${order.category}&product_id=${order.product_id}`}
           >
-            <button className="border px-2 py-1 rounded-md text-sm border-black hover:bg-slate-300">
-              View
-            </button>
+            <OrderCardsButton type="view" />
           </Link>
         </div>
 
+        {/* Decline */}
         {order.status === "pending" && (
-          <div>
-            <button
-              onClick={() => _updateOrderStatus("rejected")}
-              className="border bg-red-500 hover:bg-red-700 text-white px-2 py-1 rounded-md text-sm border-black"
-            >
-              Decline
-            </button>
-          </div>
+          <OrderCardsButton
+            type="decline"
+            onClick={() => _updateOrderStatus("rejected")}
+          />
         )}
 
+        {/* Accept */}
         {order.status === "pending" && (
-          <div>
-            <button
-              onClick={() => _updateOrderStatus("ongoing")}
-              className="border bg-[#16A34A] hover:bg-green-700 text-white px-2 py-1 rounded-md text-sm border-black"
-            >
-              Accept
-            </button>
-          </div>
+          <OrderCardsButton
+            type="accept"
+            onClick={() => _updateOrderStatus("ongoing")}
+          />
         )}
 
-        {(order.status === "ongoing" || order.status === "delivered" || order.status === "received" ) && (
-          <div>
-            <button
-              onClick={() => setShowCustomerInfo(true)}
-              className="border bg-[#2563EB] hover:bg-blue-700 text-white px-2 py-1 rounded-md text-sm border-black"
-            >
-              Customer
-            </button>
-          </div>
+        {/* Customer */}
+        {(order.status === "ongoing" ||
+          order.status === "delivered" ||
+          order.status === "received") && (
+          <OrderCardsButton
+            type="customer"
+            onClick={() => setShowCustomerInfo(true)}
+          />
         )}
 
-        {(order.status === "ongoing" || order.status === "received" ) && (
-          <div>
-            <button
-              disabled={order.vendor_completed_flag}
-              onClick={_updateVendorCompletedFlag}
-              className="border bg-[#16A34A] hover:bg-green-700 disabled:bg-[#16A34A]/30 text-white disabled:text-slate-50  px-2 py-1 rounded-md text-sm border-black disabled:border-white"
-            >
-              Delivered
-            </button>
-          </div>
+        {/* Delivered */}
+        {(order.status === "ongoing" || order.status === "received") && (
+          <OrderCardsButton
+            type="delivered"
+            onClick={_updateVendorCompletedFlag}
+            disabled={order.vendor_completed_flag}
+          />
         )}
+        
       </div>
     </article>
   );
