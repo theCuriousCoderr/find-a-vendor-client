@@ -3,6 +3,9 @@
 import axios, { AxiosError } from "axios";
 import { SERVER_URL } from "../getEnvUrl";
 import { clearUniqueString, getUniqueString } from "../getUUID";
+// import isUserAuthenticated from "../isUserAuthenticated";
+// import Cookies from "js-cookie"
+import getToken from "../getToken";
 
 const API_BASE_URL = SERVER_URL;
 let cacheRequestPrints: string[] = [];
@@ -16,10 +19,16 @@ const api = axios.create({
   withCredentials: true, // Enable cookies to be sent with requests
 });
 
+const token = getToken()?.token;
+
 // Request Interceptor
 api.interceptors.request.use(
   (config) => {
     config.headers["X-Request-Print"] = getUniqueString();
+    config.headers["Authorization"] = token ? `Bearer ${token}` : `Bearer `;
+    config.headers["X-Token-Cipher-Key"] =
+      process.env.NEXT_PUBLIC_TOKEN_CIPHER_KEY;
+
     return config;
   },
   (error) => {

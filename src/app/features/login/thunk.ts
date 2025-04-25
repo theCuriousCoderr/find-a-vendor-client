@@ -11,6 +11,9 @@ import { RootState } from "@/app/store";
 import { setIsAuthenticated } from "../auth/authSlice";
 import { getAuthenticatedCustomerNotifications } from "../customers/thunk";
 import { getAuthenticatedVendorNotifications } from "../vendors/thunk";
+
+
+
 // the login endpoint for a customer
 export const logInCustomer = createAsyncThunk<
   LoginCustomerResponseType,
@@ -25,9 +28,10 @@ export const logInCustomer = createAsyncThunk<
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
     await thunkAPI.dispatch(getAuthenticatedCustomerNotifications());
-    localStorage.setItem("customer_id", data.customer_id);
     localStorage.removeItem("vendor_id");
-
+    localStorage.setItem("customer_id", data.customer_id);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("refresh_token", data.refresh_token);
     return data;
   } catch (error) {
     const data = (error as AxiosError).response?.data as { message: string };
@@ -51,8 +55,10 @@ export const logInVendor = createAsyncThunk<
       thunkAPI.dispatch(setIsAuthenticated(true));
     }
     await thunkAPI.dispatch(getAuthenticatedVendorNotifications());
-    localStorage.setItem("vendor_id", data.vendor_id);
     localStorage.removeItem("customer_id");
+    localStorage.setItem("vendor_id", data.vendor_id);
+    localStorage.setItem("token", data.token);
+    localStorage.setItem("refresh_token", data.refresh_token);
 
     return data;
   } catch (error) {

@@ -57,20 +57,25 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+  
   const [id, setId] = useState({
     vendor: "",
     customer: "",
   });
   const [mounted,setMounted] = useState(false)
+
   const { isAuthenticated, customer } = useSelector(
     (state: RootState) => state.auth
   );
+
   const { isWebSocketConnected } = useSelector(
     (state: RootState) => state.notification
   );
+
   const { error, success: signUpSuccess } = useSelector(
     (state: RootState) => state.signup
   );
+
   const { error: logInError, success: logInSuccess } = useSelector(
     (state: RootState) => state.login
   );

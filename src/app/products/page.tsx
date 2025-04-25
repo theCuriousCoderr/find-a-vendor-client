@@ -386,7 +386,7 @@ function ProductDetailsPage() {
                 {product.images.map((item) => (
                   <figure
                     key={item}
-                    className="relative min-w-[80%] h-[50vh] max-h-80  aspect-squar border flex items-center justify-center"
+                    className="relative min-w-[80%] h-[50vh] max-h-80 border flex items-center justify-center"
                   >
                     {imageError ? (
                       <ImageFallback size="size-40" />
