@@ -112,7 +112,7 @@ function CustomerNotificationsPage() {
       <ul className="gap-2 grid grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
         {notifications.map((notif) => {
           return (
-            <li key={notif.order_id}>
+            <li key={notif.notification_id}>
               <Link
                 href={`/dashboard/customer/orders${notif.link}`}
                 onClick={() =>

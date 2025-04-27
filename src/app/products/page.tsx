@@ -27,6 +27,7 @@ import { connectWebSocket } from "../features/notification/notificationSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { getPublicProduct, getPublicVendor } from "../features/public/thunk";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
+// import { updateStatusSuccess } from "../features/status/statusSlice";
 
 const statusColorCode = {
   "In stock": "text-green-500",
@@ -228,8 +229,8 @@ function ProductDetailsPage() {
           customer_completed_flag: false,
           createdAt: new Date(),
         };
-        dispatch(makeOrder(orderDetails));
-        setButtonLoad({ ...buttonLoad, notifyVendor: false });
+        await dispatch(makeOrder(orderDetails));
+        // dispatch(updateStatusSuccess({ success: "Vendor Notified" }));
       }
     }
     setButtonLoad({ ...buttonLoad, notifyVendor: false });

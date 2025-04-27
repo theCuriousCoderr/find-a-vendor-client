@@ -3,14 +3,14 @@
 import { clearLoginRedirect } from "@/app/features/login/loginSlice";
 import { AppDispatch, RootState } from "@/app/store";
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";;
+import { useDispatch, useSelector } from "react-redux";
 import CustomerDashboardAsideNav from "@/components/CustomerDashboardAsideNav";
 import Image from "next/image";
 import { getAuthenticatedCustomer } from "@/app/features/customers/thunk";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-
+import Spinner from "@/components/Spinner";
 
 function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,7 +27,9 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
     dispatch(clearLoginRedirect());
   }, []);
 
-
+  if (!customer) {
+    return <Spinner color="border-t-blue-500" />;
+  }
 
   return (
     <div>
@@ -39,8 +41,6 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
         </Link>
       )}
       <div className="w-full flex bg-slate-100 gap-2 p-2">
-        
-
         {/* The sidebar nav component  */}
         <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px]">
           <CustomerDashboardAsideNav />
@@ -56,6 +56,7 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
             <figure className="relative size-full">
               <Image
                 fill={true}
+                priority={true}
                 src="/banner-2.jpg"
                 alt="Customer banner"
                 className="object-cover object-center "

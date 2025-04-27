@@ -49,6 +49,13 @@ function MobileSideNav() {
     setMounted(true);
   }, []);
 
+  useEffect(() => {
+    setIsOpen({
+      notification: false,
+      avatar: false,
+    });
+  }, [pathname]);
+
   const isCustomer = isUserAuthenticated()?.customer_id ?? false;
   let account: HeaderAccountType = {
     route: "/",
@@ -87,6 +94,7 @@ function MobileSideNav() {
   }
 
   function toggleIsOpen(key: "notification" | "avatar") {
+    if (key === "notification" && pathname.includes("notifications")) return;
     const isKeyOpen = isOpen[key];
     setIsOpen({ ...isOpen, [key]: !isKeyOpen });
   }
@@ -121,19 +129,26 @@ function MobileSideNav() {
         <div className="flex items-center gap-2">
           {/* Notification */}
           <div className="relative ">
-            <Link
-              onClick={() => setOpenSideBar(false)}
-              href={account.notifications}
-              className=" size-full rounded-ful"
-            >
-              {Boolean(account.unread_notif?.length || 0) && (
-                <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
-                  {account.unread_notif.length}
-                </div>
-              )}
+            {isOpen.notification ? (
+              <Spinner color="border-t-blue-500" />
+            ) : (
+              <Link
+                onClick={() => {
+                  toggleIsOpen("notification");
+                  setOpenSideBar(false);
+                }}
+                href={account.notifications}
+                className=" size-full rounded-ful"
+              >
+                {Boolean(account.unread_notif?.length || 0) && (
+                  <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
+                    {account.unread_notif.length}
+                  </div>
+                )}
 
-              <Bell />
-            </Link>
+                <Bell />
+              </Link>
+            )}
           </div>
           {/* Profile */}
           <figure className="size-12 rounded-full">
@@ -215,19 +230,26 @@ function MobileSideNav() {
                 <div className="flex items-center gap-2">
                   {/* Notification */}
                   <div className="relative">
-                    <Link
-                      onClick={() => setOpenSideBar(false)}
-                      href={account.notifications}
-                      className=" size-full rounded-ful"
-                    >
-                      {Boolean(account.unread_notif?.length || 0) && (
-                        <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
-                          {account.unread_notif.length}
-                        </div>
-                      )}
+                    {isOpen.notification ? (
+                      <Spinner color="border-t-blue-500" />
+                    ) : (
+                      <Link
+                        onClick={() => {
+                          toggleIsOpen("notification");
+                          setOpenSideBar(false);
+                        }}
+                        href={account.notifications}
+                        className=" size-full rounded-ful"
+                      >
+                        {Boolean(account.unread_notif?.length || 0) && (
+                          <div className="absolute -top-2 -right-1 bg-green-500 rounded-full border-2 border-white text-xs flex items-center justify-center min-w-3 px-1 aspect-square">
+                            {account.unread_notif.length}
+                          </div>
+                        )}
 
-                      <Bell />
-                    </Link>
+                        <Bell />
+                      </Link>
+                    )}
                   </div>
                   {/* Profile */}
                   <figure className="size-12 rounded-full">
@@ -281,7 +303,7 @@ function MobileSideNav() {
                       <Image
                         fill={true}
                         alt="Profile Image"
-                         sizes="3rem"
+                        sizes="3rem"
                         src={account.image}
                         className="object-cover object-center rounded-full"
                       />

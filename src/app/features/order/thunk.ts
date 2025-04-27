@@ -3,14 +3,23 @@ import { OrderType } from "@/types";
 import api from "@/utils/axios/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
-import { UpdateOrderArgumentType, UpdateOrderResponseType } from "./interface";
+import {
+  MakeOrderResponseType,
+  UpdateOrderArgumentType,
+  UpdateOrderResponseType,
+} from "./interface";
+import { getAuthenticatedCustomerNotifications, getAuthenticatedCustomerOrders } from "../customers/thunk";
 
-export const makeOrder = createAsyncThunk<void, OrderType>(
+
+export const makeOrder = createAsyncThunk<MakeOrderResponseType, OrderType>(
   "order/makeOrder",
   async (orderDetails, thunkAPI) => {
     try {
       const response = await api.post(ORDER.make_order, orderDetails);
-      return response.data;
+      const data = response.data as MakeOrderResponseType;
+      thunkAPI.dispatch(getAuthenticatedCustomerOrders())
+      thunkAPI.dispatch(getAuthenticatedCustomerNotifications())
+      return data;
     } catch (error) {
       const data = (error as AxiosError).response;
       return thunkAPI.rejectWithValue(data);
@@ -40,6 +49,8 @@ export const updateOrder = createAsyncThunk<
       customer_completed_flag,
     });
     const data = response.data as UpdateOrderResponseType;
+    thunkAPI.dispatch(getAuthenticatedCustomerOrders())
+    thunkAPI.dispatch(getAuthenticatedCustomerNotifications())
     return data;
   } catch (error) {
     const data = (error as AxiosError).response;
