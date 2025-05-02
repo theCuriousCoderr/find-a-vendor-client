@@ -3,7 +3,7 @@
 // import Button from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "./store";
 // import productsTopPicksCardsInfo from "@/static-data/products-top-picks-cards";
