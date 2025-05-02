@@ -37,7 +37,7 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div>
+    <div className="max-w-[1300px] mx-auto">
       {!isVendorProfileComplete && (
         <Link href="/dashboard/vendor/settings/profile">
           <p className="bg-pink-100 text-red-500 text-center text-sm rounded-md p-2 my-2 sticky xs:max-md:static top-0 mx-2 z-50">
@@ -45,7 +45,7 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
           </p>
         </Link>
       )}
-      <div className="w-full flex bg-slate-50 gap-2 p-2">
+      <div className="w-full flex bg-lame gap-2 p-2">
         {/* The disclamier for vendors to complete their profile setup */}
         {vendor &&
           openDisclaimer &&
@@ -57,7 +57,7 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
           )}
 
         {/* The sidebar nav component  */}
-        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px]">
+        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px] bg-lame">
           <VendorDashboardAsideNav />
         </div>
 

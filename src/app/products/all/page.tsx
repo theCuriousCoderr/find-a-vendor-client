@@ -99,7 +99,7 @@ function AllProductsPage() {
   }
 
   return (
-    <main id="productsPage" className="">
+    <main id="productsPage" className="max-w-[1300px] mx-auto">
       <ProductFilter
         activeDropdown={activeDropdown}
         setActiveDropdown={setActiveDropdown}

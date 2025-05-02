@@ -13,6 +13,7 @@ import {
 } from "./features/public/thunk";
 // import ImageFallback from "@/components/ImageFallback";
 import {
+  Aperture,
   Badge,
   ChartColumn,
   CheckCheck,
@@ -307,7 +308,6 @@ export default function Home() {
   // sets the laoding state for the "Continue" button
   // const [continueTo, setContinueTo] = useState(false);
 
-
   useEffect(() => {
     // fetch mostOrderedProducts on page load if it hasn't already been fetched before
     if (!mostOrderedProducts && loadingMostOrderedProducts)
@@ -317,7 +317,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="overflow- space-y-32 p-5">
+    <main className="space-y-32 p-5 max-w-[1300px] mx-auto">
+      {/* introduction */}
       <section className="mt-5 xs:max-md:mt-5 flex xs:max-md:flex-col items-center justify-center gap-20 xs:max-md:gap-20">
         <div className="text-left xs:max-md:text-center w-[60%] xs:max-md:flex flex-col items-center xs:max-md:w-[90%] xs:max-md:mx-auto space-y-5 pt-10 xs:max-md:pt-0">
           {/* badge */}
@@ -385,28 +386,30 @@ export default function Home() {
         </div>
       </section>
 
+      {/* what we do */}
       <section>
         <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
           {" "}
-          - What we do -{" "}
+          - What We Do -{" "}
         </h2>
         <p className="xs:max-md:mt-5 font-light text-xl xs:max-md:text-lg text-center w-[80%] xs:max-md:w-[90%] mx-auto">
           {" "}
-          “Find-A-Vendor” is a platform where potential customers can discover a
-          product and choose from multiple online, small-scale vendors who offer
-          it. It helps customers compare offerings and make informed choices,
-          and vendors benefit from public visibility and competition, while also
-          having a credible online presence.{" "}
+          “Find-A-Vendor” is a marketplace platform where potential customers
+          can discover a product and choose from multiple online, small-scale
+          vendors who offer it. It helps customers compare offerings and make
+          informed choices, and vendors benefit from public visibility and
+          competition, while also having a credible online presence.{" "}
           <span className=" italic text-orange-500 font-light">
             All for free.
           </span>
         </p>
       </section>
 
+      {/* how we do it */}
       <section>
         <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
           {" "}
-          - How we do it -{" "}
+          - How We Do It -{" "}
         </h2>
         <ul className="mt-5 w-[80%] xs:max-md:w-[90%] mx-auto space-y-20">
           {points.map(({ title, icon, content }) => (
@@ -428,6 +431,7 @@ export default function Home() {
         </ul>
       </section>
 
+      {/* key features */}
       <section>
         <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
           {" "}
@@ -462,6 +466,99 @@ export default function Home() {
             );
           })}
         </ul>
+      </section>
+
+      {/*  why choose us */}
+      <section>
+        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
+          {" "}
+          - Why Choose Us -{" "}
+        </h2>
+        <div className="mt-5 flex xs:max-md:flex-col items-center gap-5">
+          <div className="w-[70%] xs:max-md:w-full h-full flex flex-col gap-5">
+            <div className="h-1/2 w-full flex xs:max-md:flex-col gap-5">
+              <div className=" w-1/2 xs:max-md:w-full rounded-xl p-5 space-y-5 bg-white">
+                <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
+                  <Aperture />
+                </div>
+                <div>
+                  <h3 className="font-bold text-3xl">
+                    A Space for Growing Vendors
+                  </h3>
+                  <p className="font-medium text-lg text-slate-500">
+                    Not every vendor is a big shot—and that’s okay.
+                  </p>
+                </div>
+
+                <p className="font-light text-xl">
+                  Many small or emerging online vendors can easily be drowned
+                  out on massive marketplaces like Jumia or Konga. Find-A-Vendor
+                  provides them with visibility and a level playing field to
+                  grow organically without being overshadowed.
+                </p>
+              </div>
+              <div className=" w-1/2 xs:max-md:w-full rounded-xl p-5 space-y-5 bg-white">
+                <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
+                  <CircleDollarSign />
+                </div>
+                <div>
+                  <h3 className="font-bold text-3xl">Zero Cuts, Full Profit</h3>
+                  <p className="font-medium text-lg text-slate-500">
+                    Vendors keep 100% of what they earn.
+                  </p>
+                </div>
+
+                <p className="font-light text-xl">
+                  At Find-A-Vendor, all financial transactions happen directly
+                  between customer and vendor. There are no payment gateway
+                  fees, no commissions, and absolutely no middlemen. It’s pure
+                  profit for the seller—just as it should be.
+                </p>
+              </div>
+            </div>
+            <div className="h-1/2 w-full rounded-xl p-5 space-y-5 bg-white">
+              <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
+                <Handshake />
+              </div>
+              <div>
+                <h3 className="font-bold text-3xl">
+                  Simple Needs, Real Connections
+                </h3>
+                <p className="font-medium text-lg text-slate-500">
+                  Not every customer is looking for a big-brand experience.
+                </p>
+              </div>
+
+              <p className="font-light text-xl">
+                Sometimes, people just want to find a small-time vendor who can
+                meet their specific, everyday needs without the cost and
+                formality of shopping at big stores. Find-A-Vendor bridges that
+                gap in a simple, accessible way.
+              </p>
+            </div>
+          </div>
+          <div className="w-[30%] xs:max-md:w-full rounded-xl borde border-slate-40 p-5 space-y-5 bg-white flex items-center justify-center">
+            <div className="space-y-5">
+              <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
+                <Target />
+              </div>
+              <div>
+                <h3 className="font-bold text-3xl">
+                  You Decide How Business Happens
+                </h3>
+                <p className="font-medium text-lg text-slate-500">
+                  The power of every transaction lies in your hands.
+                </p>
+              </div>
+
+              <p className="font-light text-xl">
+                Both customers and vendors have complete control over how they
+                choose to transact—whether it’s the timing, the method, or the
+                terms. We stay out of the way so you can do business your way.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
   );

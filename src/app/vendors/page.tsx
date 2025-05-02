@@ -108,7 +108,7 @@ function Vendors() {
   }
 
   return (
-    <main id="vendorsPage" className="">
+    <main id="vendorsPage" className="max-w-[1300px] mx-auto">
       {/* filter section */}
       <VendorFilter
         activeDropdown={activeDropdown}

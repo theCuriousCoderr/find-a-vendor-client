@@ -32,7 +32,7 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div>
+    <div className="max-w-[1300px] mx-auto">
       {!isCustomerProfileComplete && (
         <Link href="/dashboard/vendor/settings/profile">
           <p className="bg-pink-100 text-red-500 text-center text-sm rounded-md p-2 my-2 sticky xs:max-md:static top-0 mx-2 z-20">
@@ -40,9 +40,9 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
           </p>
         </Link>
       )}
-      <div className="w-full flex bg-slate-100 gap-2 p-2">
+      <div className="w-full flex bg-lame gap-2 p-2">
         {/* The sidebar nav component  */}
-        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px]">
+        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px] bg-lame">
           <CustomerDashboardAsideNav />
         </div>
 

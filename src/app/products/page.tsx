@@ -333,7 +333,7 @@ function ProductDetailsPage() {
 
   // show appropriate UI if necessary information has loaded and product filter options are valid
   return (
-    <div className="bg-slate-100 xs:max-md:pb-20">
+    <div className="bg-slate-100 xs:max-md:pb-20 max-w-[1300px] mx-auto">
       {/* The UI pop-up modal to write reviews */}
       {openReviewModal && (
         <AddReviewModal

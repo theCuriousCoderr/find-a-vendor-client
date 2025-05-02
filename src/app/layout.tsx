@@ -62,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="max-w-[1300px] mx-auto bg-lame">
+      <body className=" bg-lame">
         {/* redux wrapper to handle global state management */}
         <ReduxWrapper>
           {/* client wrapper to handle top-level `use client` stateful codes */}

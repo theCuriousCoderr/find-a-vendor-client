@@ -204,7 +204,7 @@ function Page() {
           onClick={openAddCategoryModal}
           bgColor="bg-black"
           color="text-white"
-          text="Add A Category"
+          text= {vendor.categories.length >= 1 ? "Add Another Category" : "Add A Category" }
         />
 
         {/* <div className="hidden bg-slate-200 xs:max-md:flex justify-center">

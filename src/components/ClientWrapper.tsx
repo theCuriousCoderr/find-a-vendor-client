@@ -366,14 +366,14 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
         {/* container for displaying toast messages */}
         <ToastContainer />
         {/* headers for desktop and mobile */}
-        <nav className="sticky w-full top-0 z-30">
+        <nav className="sticky w-full top-0 z-30 max-w-[1300px] mx-auto">
           <DesktopHeaderNav />
           <MobileSideNav />
         </nav>
         <div
           // activate infinte scroll for vendorsList and productsList on scroll
           onScroll={debouncedInfiniteScroll}
-          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40 xs:max-md:pb-20"
+          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40 xs:max-md:pb-20 "
         >
           {children}
         </div>
