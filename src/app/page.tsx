@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/Button";
+// import Button from "@/components/Button";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ import {
   // Pointer,
   Search,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 // import Spinner from "@/components/Spinner";
 import sizes from "@/utils/imageSizes";
 
@@ -293,7 +293,7 @@ export default function Home() {
     useSelector((state: RootState) => state.public);
 
   // sets the laoding state for the "See available vendors" button
-  const [seeAvailableVendors, setSeeAvailableVendors] = useState(false);
+  // const [seeAvailableVendors, setSeeAvailableVendors] = useState(false);
   // sets the laoding state for the "Continue" button
   // const [continueTo, setContinueTo] = useState(false);
 
