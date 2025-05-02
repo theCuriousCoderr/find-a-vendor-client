@@ -11,6 +11,7 @@ import Link from "next/link";
 import LoadMore from "@/components/LoadMore";
 import { clearLoginRedirect } from "../features/login/loginSlice";
 import {
+  getAvailableProducts,
   getAvailableVendors,
   getFilteredVendors,
 } from "../features/public/thunk";
@@ -68,6 +69,7 @@ function Vendors() {
   const {
     loadingVendors,
     vendorsList,
+    productsList,
     vendorsRound: round,
     slice,
   } = useSelector((state: RootState) => state.public);
@@ -82,25 +84,23 @@ function Vendors() {
 
   useEffect(() => {
     dispatch(clearLoginRedirect()); //removes the redirect loading spinner screen
-    !vendorsList &&
-      dispatch(getAvailableVendors({ round: round, slice: slice }));
+    !vendorsList && dispatch(getAvailableVendors({ round, slice }));
+    !productsList && dispatch(getAvailableProducts({ round: 1, slice }));
   }, []);
 
   // fetches more vendors everytime 'round' changes
   // the function to call for fetch depends on if the filter is active or not
   useEffect(() => {
     if (isVendorsListFilterActive) {
-      dispatch(getFilteredVendors({ round: round, slice: slice }));
+      dispatch(getFilteredVendors({ round, slice }));
     } else {
-      vendorsList &&
-        dispatch(getAvailableVendors({ round: round, slice: slice }));
+      vendorsList && dispatch(getAvailableVendors({ round, slice }));
     }
   }, [round]);
 
   // apply filter to vendors anytime the filter is active
   useEffect(() => {
-    vendorsList &&
-      dispatch(getFilteredVendors({ round: round, slice: slice }));
+    vendorsList && dispatch(getFilteredVendors({ round, slice }));
   }, [vendorFilters, vendorSearch]);
 
   if (!vendorsList) {
@@ -124,7 +124,6 @@ function Vendors() {
             } px-5 xs:max-md:p-2 text-3xl xs:max-md:text-2xl font-medium py-2`}
           >
             {loadingVendors ? "Applying Filters ..." : "Available Vendors List"}
-          
           </h1>
           <div className="inline-flex px-5 xs:max-md:px-2">
             <Link href="/products/all">

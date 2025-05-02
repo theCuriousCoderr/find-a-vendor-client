@@ -57,12 +57,12 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const [id, setId] = useState({
     vendor: "",
     customer: "",
   });
-  const [mounted,setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
   const { isAuthenticated, customer } = useSelector(
     (state: RootState) => state.auth
@@ -204,7 +204,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
       vendor: vendor_id ?? "",
       customer: customer_id ?? "",
     });
-    setMounted(true)
+    setMounted(true);
   }, []);
 
   // entry point for websocket emit events from the backend into the frontend
@@ -255,12 +255,10 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
       case "orderUpdated":
         value = response.value as OrderType;
         if (id.vendor && id.vendor === value.vendor_id) {
-          // toast("Your order status has been updated");
           dispatch(getAuthenticatedVendorOrders());
         }
 
         if (id.customer && id.customer === value.customer_id) {
-          // toast("Your order status has been updated");
           dispatch(getAuthenticatedCustomerOrders());
         }
 
@@ -268,12 +266,10 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
       case "notification":
         value = response.value as NotificationType;
         if (id.vendor && id.vendor === value.vendor_id) {
-          // toast("Your order status has been updated");
           dispatch(getAuthenticatedVendorNotifications());
         }
 
         if (id.customer && id.customer === value.customer_id) {
-          // toast("Your order status has been updated");
           dispatch(getAuthenticatedCustomerNotifications());
         }
 
@@ -332,11 +328,11 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
   }, [logInError]);
 
   if (!mounted) {
-    return  <div></div>
+    return <div></div>;
   }
 
   return (
-    <div className="no-scrollbar h-screen w-full overflow-auto bg-yellow-40">
+    <div className="no-scrollbar h-screen w-full overflow-auto ">
       {/* a disclaimer information to all users on homepage. Show this only once */}
       {openDisclaimer && (
         <div className=" bg-pink-100 w-full fixed z-40 top-0 left-0 p-5 xs:max-md:p-5">
@@ -381,6 +377,7 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
         >
           {children}
         </div>
+       
       </GoogleOAuthProvider>
     </div>
   );

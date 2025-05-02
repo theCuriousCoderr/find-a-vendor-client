@@ -17,6 +17,7 @@ import {
   PublicSliceState,
 } from "./interface";
 import { AxiosError } from "axios";
+import { FetchAProductReviewsResponseType } from "../review/interface";
 
 const initialState: PublicSliceState = {
   mostOrderedProducts: null,
@@ -33,6 +34,7 @@ const initialState: PublicSliceState = {
   selectedVendorProducts: null,
   selectedVendorCompletedOrders: 0,
   selectedProduct: null,
+  selectedProductReviews: [],
   loadingVendors: true,
   loadingProducts: true,
   loadingVendor: true,
@@ -81,6 +83,9 @@ export const publicSlice = createSlice({
     resetFilteredVendors: (state) => {
       state.vendorsList = state.availableVendors;
     },
+    updateProductReviews: (state, action: PayloadAction<FetchAProductReviewsResponseType>) => {
+      state.selectedProductReviews = action.payload.productReviews
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -231,9 +236,10 @@ export const publicSlice = createSlice({
       })
       .addCase(
         getPublicProduct.fulfilled,
-        (state, action: PayloadAction<FetchAProductResponseType>) => {
+        (state, action: PayloadAction<FetchAProductResponseType & FetchAProductReviewsResponseType>) => {
           state.loadingProduct = false;
           state.selectedProduct = action.payload.product;
+          state.selectedProductReviews = action.payload.productReviews
         }
       )
       .addCase(getPublicProduct.rejected, (state, action) => {
@@ -267,6 +273,7 @@ export const {
   updateProductsRound,
   updateFilteredVendors,
   resetFilteredVendors,
+  updateProductReviews
 } = publicSlice.actions;
 
 export default publicSlice.reducer;

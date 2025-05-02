@@ -20,15 +20,15 @@ body::-webkit-scrollbar {
   -ms-overflow-style: none;
 }
 
-.tiny-scrollbar::-webkit-scrollbar {
+/* .tiny-scrollbar::-webkit-scrollbar {
   display: none;
 }
 
 .tiny-scrollbar::-webkit-scrollbar-thumb {
   display: none;
-}
+} */
 
-/* .tiny-scrollbar::-webkit-scrollbar {
+.tiny-scrollbar::-webkit-scrollbar {
   width: 10px;
   background-color: #dcdcdc;
   border-radius: 9999px;
@@ -37,7 +37,7 @@ body::-webkit-scrollbar {
 .tiny-scrollbar::-webkit-scrollbar-thumb {
   background-color: #4a90e2;
   border-radius: 9999px;
-} */
+}
 
 .shimmer {
   background: linear-gradient(-45deg, #eee 40%, #fafafa 50%, #eee 60%);

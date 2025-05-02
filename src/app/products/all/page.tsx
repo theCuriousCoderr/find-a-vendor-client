@@ -2,6 +2,7 @@
 
 import {
   getAvailableProducts,
+  getAvailableVendors,
   getFilteredProducts,
 } from "@/app/features/public/thunk";
 import { AppDispatch, RootState } from "@/app/store";
@@ -59,6 +60,7 @@ function AllProductsPage() {
   const {
     loadingProducts,
     productsList,
+    vendorsList,
     productsRound: round,
     slice,
   } = useSelector((state: RootState) => state.public);
@@ -73,6 +75,7 @@ function AllProductsPage() {
 
   useEffect(() => {
     !productsList && dispatch(getAvailableProducts({ round, slice }));
+    !vendorsList && dispatch(getAvailableVendors({ round: 1, slice }));
   }, []);
 
   // fetches more products everytime 'round' changes
@@ -109,11 +112,9 @@ function AllProductsPage() {
               loadingProducts ? "text-slate-400" : "text-black"
             } px-5 xs:max-md:p-2 text-3xl xs:max-md:text-2xl font-medium py-2`}
           >
-            {loadingProducts ? "Applying Filters ..." : "Available Products List"} 
-            {/* {productsList?.length && !loadingProducts && (
-              <span>({productsList?.length})</span>
-            )} */}
-            {/* Length - {filteredProducts?.length} */}
+            {loadingProducts
+              ? "Applying Filters ..."
+              : "Available Products List"}
           </h1>
           <div className="inline-flex px-5 xs:max-md:px-2 opacity-">
             <Link href="/vendors">

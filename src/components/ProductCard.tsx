@@ -46,7 +46,7 @@ function ProductCard({
         onClick={() => setRedirecting(true)}
       >
         {/* <div className="absolute z-10 bg-white border text-xl size-full flex items-center justify-center rounded-md">{index + 1}</div> */}
-        <figure className="w-full bg-white aspect-square h-[30vh] max-h-80 relative  flex items-center justify-center">
+        <figure className="w-full bg-white aspect-square h-[50vh] max-h-80 relative  flex items-center justify-center">
           {redirecting && (
             <div className="absolute bg-slate-200 z-10 size-full flex items-center justify-center rounded-t-md">
               <Spinner color="border-t-blue-500" />

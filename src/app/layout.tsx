@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: `${STARTUP_NAME} | Marketplace for Online Vendors and Customers`,
   description: `${STARTUP_NAME} connects vendors and customers in a dynamic marketplace where users can discover products, compare vendors, and make informed purchasing decisions.`,
   keywords:
-    "vendor marketplace, vendors, customers, marketplace platform, online shopping, product discovery, e-commerce",
+    "vendor marketplace, vendors, customers, marketplace platform, online shopping, product discovery, e-commerce, find a vendor, nigerian vendors, whatsapp vendors",
   authors: [
     {
       name: "Olalekan Oladimeji",
@@ -62,7 +62,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="max-w-[1300px] mx-auto bg-slate-50 ">
+      <body className="max-w-[1300px] mx-auto bg-lame">
         {/* redux wrapper to handle global state management */}
         <ReduxWrapper>
           {/* client wrapper to handle top-level `use client` stateful codes */}

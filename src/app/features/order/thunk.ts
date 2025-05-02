@@ -8,8 +8,17 @@ import {
   UpdateOrderArgumentType,
   UpdateOrderResponseType,
 } from "./interface";
-import { getAuthenticatedCustomerNotifications, getAuthenticatedCustomerOrders } from "../customers/thunk";
-
+import {
+  getAuthenticatedCustomerNotifications,
+  getAuthenticatedCustomerOrders,
+} from "../customers/thunk";
+import isUserAuthenticated from "@/utils/isUserAuthenticated";
+import {
+  getAuthenticatedVendorNotifications,
+  getAuthenticatedVendorOrders,
+} from "../vendors/thunk";
+const _customer_id = isUserAuthenticated()?.customer_id || null;
+const _vendor_id = isUserAuthenticated()?.vendor_id || null;
 
 export const makeOrder = createAsyncThunk<MakeOrderResponseType, OrderType>(
   "order/makeOrder",
@@ -17,8 +26,11 @@ export const makeOrder = createAsyncThunk<MakeOrderResponseType, OrderType>(
     try {
       const response = await api.post(ORDER.make_order, orderDetails);
       const data = response.data as MakeOrderResponseType;
-      thunkAPI.dispatch(getAuthenticatedCustomerOrders())
-      thunkAPI.dispatch(getAuthenticatedCustomerNotifications())
+      if (_customer_id) {
+        thunkAPI.dispatch(getAuthenticatedCustomerOrders());
+        thunkAPI.dispatch(getAuthenticatedCustomerNotifications());
+      }
+
       return data;
     } catch (error) {
       const data = (error as AxiosError).response;
@@ -49,8 +61,14 @@ export const updateOrder = createAsyncThunk<
       customer_completed_flag,
     });
     const data = response.data as UpdateOrderResponseType;
-    thunkAPI.dispatch(getAuthenticatedCustomerOrders())
-    thunkAPI.dispatch(getAuthenticatedCustomerNotifications())
+    if (_customer_id) {
+      await thunkAPI.dispatch(getAuthenticatedCustomerOrders());
+      await thunkAPI.dispatch(getAuthenticatedCustomerNotifications());
+    }
+    if (_vendor_id) {
+      await thunkAPI.dispatch(getAuthenticatedVendorOrders());
+      await thunkAPI.dispatch(getAuthenticatedVendorNotifications());
+    }
     return data;
   } catch (error) {
     const data = (error as AxiosError).response;

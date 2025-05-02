@@ -4,6 +4,7 @@ const _notification = "/notification";
 const _order = "/order";
 const _product = "/product";
 const _public = "/public";
+const _review = "/review";
 const _vendor = "/vendor";
 
 const AUTH = {
@@ -50,6 +51,11 @@ const PUBLIC = {
   get_customer: `${_public}/get-customer`,
 };
 
+const REVIEW = {
+  add_review: `${_review}/add-review`,
+  get_reviews: `${_review}/get-reviews`,
+};
+
 const VENDOR = {
   get_vendor: `${_vendor}/get-vendor`,
   update_vendor: `${_vendor}/update-vendor`,
@@ -58,4 +64,4 @@ const VENDOR = {
   get_notifications: `${_vendor}/get-notifications`,
 };
 
-export { AUTH, CUSTOMER, NOTIFICATION, ORDER, PRODUCT, PUBLIC, VENDOR };
+export { AUTH, CUSTOMER, NOTIFICATION, ORDER, PRODUCT, PUBLIC, REVIEW, VENDOR };

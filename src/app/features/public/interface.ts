@@ -1,4 +1,4 @@
-import { Product, Vendor } from "@/types";
+import { Product, ReviewType, Vendor } from "@/types";
 
 export interface PublicSliceState {
   mostOrderedProducts: Product[] | null;
@@ -15,6 +15,7 @@ export interface PublicSliceState {
   selectedVendorProducts: Record<string, Product[]> | null;
   selectedVendorCompletedOrders: number;
   selectedProduct: Product | null;
+  selectedProductReviews: ReviewType[] | [];
   loadingVendors: boolean;
   loadingProducts: boolean;
   loadingVendor: boolean;

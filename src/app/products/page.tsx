@@ -13,7 +13,7 @@ import "swiper/css/scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
 import Image from "next/image";
 import Back from "@/components/Back";
 import ImageFallback from "@/components/ImageFallback";
@@ -23,11 +23,11 @@ import {
   clearRedirectCache,
 } from "@/utils/cachePageBeforeRedirect";
 import { makeOrder } from "../features/order/thunk";
-import { connectWebSocket } from "../features/notification/notificationSlice";
 import { toast, ToastContainer } from "react-toastify";
 import { getPublicProduct, getPublicVendor } from "../features/public/thunk";
 import isUserAuthenticated from "@/utils/isUserAuthenticated";
-// import { updateStatusSuccess } from "../features/status/statusSlice";
+import sizes from "@/utils/imageSizes";
+import AddReviewModal from "@/components/AddReviewModal";
 
 const statusColorCode = {
   "In stock": "text-green-500",
@@ -147,75 +147,81 @@ function ProductDetailsPage() {
     loadingProduct,
     selectedProduct: product,
     selectedVendor: vendor,
+    selectedProductReviews: productReviews,
   } = useSelector((state: RootState) => state.public);
 
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-  const { isWebSocketConnected } = useSelector(
-    (state: RootState) => state.notification
-  );
 
   const [productFilter, setProductFilter] = useState<ProductFilter | null>(
     null
   );
+  const [openReviewModal, setOpenReviewModal] = useState(false); // controls the open/close of the "write reviews" UI modal
+  const [reviewSlice, setReviewSlice] = useState(3); // controls the "Load More Reviews" slice increase
 
-  // check to see if user is an authenticated customer by cookie
-  const customer_id = (isUserAuthenticated()?.customer_id as string) || null;
-  const vendor_id = (isUserAuthenticated()?.vendor_id as string) || null;
+  const customer_id = (isUserAuthenticated()?.customer_id as string) || null; // check to see if user is an authenticated customer
 
-  const [imageError, setImageError] = useState(false);
-  const [activeImage, setActiveImage] = useState("");
+  const vendor_id = (isUserAuthenticated()?.vendor_id as string) || null; // check to see if user is an authenticated vendor
+
+  const [imageError, setImageError] = useState(false); // boolean fallback for image load error
+  const [activeImage, setActiveImage] = useState(""); // desktop view: the product image to show on the big section
   const [buttonLoad, setButtonLoad] = useState({
-    notifyVendor: false,
+    notifyVendor: false, // to control the loading state of the "Notify Vendor" button loading state
   });
 
-  // fetch the product by filter
+  // resolve the url search params to get the filter queries
   async function resolveSearchParams() {
-    const vendor_id = searchParams.get("vendor_id") || "-1";
-    const category = searchParams.get("category") || "-1";
-    const product_id = searchParams.get("product_id") || "-1";
+    const vendor_id = searchParams.get("vendor_id") || "-1"; // associated vendor_id
+    const category = searchParams.get("category") || "-1"; // associated category
+    const product_id = searchParams.get("product_id") || "-1"; //associated product_id
 
     const _filter = { vendor_id, product_id, category };
 
     setProductFilter(_filter); //Temporarily store filter option in state
 
-    //GET PRODUCT DETAILS FROM BACKEND USING THE FILTER
-    dispatch(getPublicProduct(_filter));
+    dispatch(getPublicProduct(_filter)); // use the constructed filter to get the associated product details from server
 
-    // if the vendor associated to this product is not found, fetch the vendor
+    // associated vendor details is needed. Fetch vendor if the vendor associated to this product is not found
     vendor?.vendor_id.toString() !== _filter.vendor_id &&
-      dispatch(getPublicVendor({ vendor_id: _filter.vendor_id })); //
+      dispatch(getPublicVendor({ vendor_id: _filter.vendor_id }));
   }
-  const valid_product = product && product._id.toString() !== "-1";
-  // on first page load, fetch product
+
+  const valid_product = product && product._id.toString() !== "-1"; // check if a product search is a valid one
+
   useEffect(() => {
     clearRedirectCache("login");
-    resolveSearchParams();
+    resolveSearchParams(); // resolve the search params to fetch the filter queries
   }, []);
 
+  // desktop view: updates the product image to show on the big section when the product details changes
   useEffect(() => {
     valid_product && setActiveImage(product.images[0]);
   }, [product]);
 
+  // triggered when the "Notify Vendor About This Product" is clicked
   async function notifyVendor() {
+    // set loading state for "Notify Vendor" button
     setButtonLoad({ ...buttonLoad, notifyVendor: true });
-    if (!isWebSocketConnected) {
-      dispatch(connectWebSocket());
-    }
 
+    // a user who is not authenticated can't notify a vendor about an order
     if (!isAuthenticated) {
       cachePageBeforeRedirect("login", window.location.href);
       router.push("/login?role=customer");
+      return;
     }
 
-    if (isAuthenticated && !customer_id) {
+    // a user account who is not a customer can't notify a vendor about an order
+    if (!customer_id) {
       toast.warn("You can't place order as a Vendor.");
       toast.warn("Use a Customer account to place orders.");
       setButtonLoad({ ...buttonLoad, notifyVendor: false });
       return;
     }
 
-    if (isAuthenticated && customer_id) {
+    // only a user who is a customer can notify a vendor about an order
+    if (customer_id) {
+      // only process to make an order if all necessary information are ready
       if (customer_id && vendor && product) {
+        // construct the order details from the necessary information
         const orderDetails = {
           _id: uuidv4(),
           type: "Order Made",
@@ -229,17 +235,33 @@ function ProductDetailsPage() {
           customer_completed_flag: false,
           createdAt: new Date(),
         };
+
+        // send the constructed order details to the server for processing
         await dispatch(makeOrder(orderDetails));
-        // dispatch(updateStatusSuccess({ success: "Vendor Notified" }));
       }
     }
+
+    // remove loading state for "Notify Vendor" button
     setButtonLoad({ ...buttonLoad, notifyVendor: false });
   }
 
+  // triggered to control the open/close of the "write reviews" UI modal
+  function toggleReviewModal(state: "open" | "close") {
+    if (state === "open") setOpenReviewModal(true);
+    if (state === "close") setOpenReviewModal(false);
+  }
+
+  // triggered to increase the reviews slice, "load more reviews"
+  function loadMoreReviews() {
+    setReviewSlice(reviewSlice + 3);
+  }
+
+  // show a loading screen if necessary information are still loading
   if (!product || loadingProduct || !vendor) {
     return <ProductDetailsPageSkeleton />;
   }
 
+  // show appropriate screen if any of the product filter options is invalid
   if (!valid_product) {
     if (product.vendor_id.toString() === "-1")
       return (
@@ -309,15 +331,25 @@ function ProductDetailsPage() {
       );
   }
 
+  // show appropriate UI if necessary information has loaded and product filter options are valid
   return (
     <div className="bg-slate-100 xs:max-md:pb-20">
+      {/* The UI pop-up modal to write reviews */}
+      {openReviewModal && (
+        <AddReviewModal
+          toggleReviewModal={toggleReviewModal}
+          product={product}
+        />
+      )}
+
       <div className="py-5 xs:max-md:py-1 xs:max-md:pb-10 w-[80%] xs:max-md:w-[95%] mx-auto">
-        <ToastContainer />
+        <ToastContainer /> {/* for showing toast notifications */}
         <main className="w-ful space-y-5 bg-green-40">
+          {/* sticky back button shown on desktop view */}
           <div className="sticky z-10 top-0 xs:max-md:hidden bg-white inline-flex rounded-md hover:bg-slate-20">
             <Back />
           </div>
-          {/* Product Info  */}
+          {/* Product Info Section  */}
           <section className="p-5 xs:max-md:px-0 rounded-md bg-white space-y-5">
             <h2 className="text-xl xs:max-md:px-5">Product Info</h2>
             <div className="flex xs:max-md:flex-col gap-3">
@@ -411,16 +443,18 @@ function ProductDetailsPage() {
 
               {/* Info */}
               <div className="space-y-1 xs:max-md:px-5">
+                {/* name */}
                 <h1 className="text-2xl text-slate-400 font-bold xs:max-md:text-xl">
                   {product.details.name}
                 </h1>
 
-                <p className="capitalize font-medium text-lg xs:max-md:text-base">
+                <p className="capitalize font- text-lg xs:max-md:text-base">
                   Category:{" "}
-                  <span className="font-normal text-base">
+                  <span className="font-bold text-base text-slate-400">
                     {product.category}
                   </span>
                 </p>
+
                 <div className="flex gap-2 items-center hover:underline">
                   <Link
                     href={`/vendors/${product.vendor_id}`}
@@ -441,9 +475,11 @@ function ProductDetailsPage() {
                 >
                   ₦{Math.round(product.details.price).toLocaleString()}
                 </data>
+
                 <p className={`${statusColorCode[product.details.status]}`}>
                   {product.details.status}
                 </p>
+
                 <div>
                   <p>
                     This vendor&apos;s delivery service is limited to the
@@ -454,6 +490,7 @@ function ProductDetailsPage() {
                     </span>
                   </p>
                 </div>
+
                 <div className="xs:max-md:hidden space-y-2">
                   <Button
                     animate={false}
@@ -463,19 +500,12 @@ function ProductDetailsPage() {
                     color="text-white"
                     loading={buttonLoad.notifyVendor}
                   />
-                  <Button
-                    animate={false}
-                    // onClick={notifyVendor}
-                    text="View Vendor Account Details"
-                    bgColor="bg-green-500"
-                    color="text-white"
-                  />
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Product Description */}
+          {/* Product Description Section */}
           <section className="rounded-md bg-white">
             <h2 className="p-5 border-b text-xl">Product description</h2>
             <ul className="p-5 list-disc list-inside">
@@ -488,7 +518,7 @@ function ProductDetailsPage() {
             </ul>
           </section>
 
-          {/* Product Specifications */}
+          {/* Product Specifications Section */}
           <section className="rounded-md bg-white">
             <h2 className="p-5 border-b text-xl">Product Specifications</h2>
             <ul className="p-5 list-disc list-inside">
@@ -501,39 +531,110 @@ function ProductDetailsPage() {
             </ul>
           </section>
 
-          {/* Product Reviews */}
+          {/* Product Reviews Section */}
           <section className="rounded-md bg-white">
             <h2 className="p-5 border-b text-xl">Product Reviews</h2>
-            <div className="p-5">Reviews</div>
+            <ul className="p-5 space-y-5">
+              {/* show if there are no reviews  */}
+              {(productReviews?.length || 0) === 0 && (
+                <div>
+                  <p className="text-lg text-slate-400 mb-2">No reviews yet.</p>
+                  <div className="flex gap-5 xs:max-md:gap-2  items-center">
+                    <div>
+                      <button
+                        onClick={() => toggleReviewModal("open")}
+                        className="border bg-gray-900 hover:bg-gray-700 text-white disabled:text-slate-50  px-4 py-2 xs:max-md:px-2 rounded-md text-sm border-black"
+                      >
+                        Write Review
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* the reviews to show after slicing */}
+              {(productReviews?.length || 0) > 0 &&
+                productReviews.slice(0, reviewSlice).map((review) => {
+                  return (
+                    <li
+                      key={review.review_id}
+                      className="bg-slate-50 p-5 xs:max-md:p-2 rounded-md"
+                    >
+                      {/* reviewee */}
+                      <div className="flex gap-2 items-center">
+                        <figure className="relative size-10 bg-white rounded-full">
+                          <Image
+                            fill={true}
+                            src={review.photo}
+                            alt="Reviewer Image"
+                            sizes={sizes}
+                            className="rounded-full object-cover"
+                          />
+                        </figure>
+                        <p className="font-bold">{review.name}</p>
+                      </div>
+                      {/* ratings */}
+                      <div className="flex gap-2 items-center">
+                        <div className="flex">
+                          {Array(review.rating)
+                            .fill(0)
+                            .map((_, index) => (
+                              <Star
+                                key={index}
+                                size={20}
+                                fill="#facc15"
+                                strokeWidth={1}
+                              />
+                            ))}
+                          {Array(5 - review.rating)
+                            .fill(0)
+                            .map((_, index) => (
+                              <Star key={index} size={20} strokeWidth={1} />
+                            ))}
+                        </div>
+
+                        <span className="text-lg  text-slate-500 font-medium">
+                          {review.rating.toFixed(1)}
+                        </span>
+                      </div>
+                      <div>
+                        <p className="font-medium text-lg">{review.title}</p>
+                        <p className="font-light">{review.content}</p>
+                      </div>
+                    </li>
+                  );
+                })}
+
+              {/* "Write review" button, "Load more review" button */}
+              {(productReviews?.length || 0) > 0 && (
+                <div className="flex gap-5 xs:max-md:gap-2  items-center">
+                  <div>
+                    <button
+                      onClick={() => toggleReviewModal("open")}
+                      className="border bg-gray-900 hover:bg-gray-700 text-white disabled:text-slate-50  px-4 py-2 xs:max-md:px-2 rounded-md text-sm border-black"
+                    >
+                      Write Review
+                    </button>
+                  </div>
+                  {(productReviews?.length || 0) > reviewSlice && (
+                    <div>
+                      <button
+                        onClick={loadMoreReviews}
+                        className="border hover:bg-gray-200 text-gray-900 disabled:text-slate-50  px-4 py-2 xs:max-md:px-2  rounded-md text-sm border-black"
+                      >
+                        Load More Review
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </ul>
           </section>
         </main>
-
-        {/* Aside CTA button: For Desktop view */}
-        {/* <aside className="xs:max-md:hidden p-5 rounded-md sticky top-24 w- mt-14 bg-white">
-          <div className="space-y-2">
-            <Button
-              animate={false}
-              onClick={notifyVendor}
-              text="Notify Vendor About This Product"
-              bgColor="bg-green-500"
-              color="text-white"
-              loading={buttonLoad.notifyVendor}
-            />
-
-            <Button
-              animate={false}
-              onClick={notifyVendor}
-              text="View Vendor Account Details"
-              bgColor="bg-green-500"
-              color="text-white"
-            />
-          </div>
-        </aside> */}
-
-        {/* Bottom CTA button: For Mobile View */}
+        {/* fixed bottom CTA button; shown in Mobile View */}
         {(customer_id || vendor_id !== productFilter?.vendor_id) && (
           <div className="hidden xs:max-md:flex fixed bg-slate-100 bottom-0 left-0 right-0 py-2 items-center justify-center">
-            <div className="flex flex-wrap items-center gap-1 px-2">
+            <div className="flex w-full flex-wrap items-center gap-1 px-2">
               <Button
                 animate={false}
                 onClick={notifyVendor}
@@ -543,13 +644,13 @@ function ProductDetailsPage() {
                 loading={buttonLoad.notifyVendor}
               />
 
-              <Button
+              {/* <Button
                 animate={false}
                 // onClick={notifyVendor}
                 text="View Vendor Account Details"
                 bgColor="bg-green-500 xs:max-md:text-sm"
                 color="text-white"
-              />
+              /> */}
             </div>
           </div>
         )}

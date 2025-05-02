@@ -56,7 +56,7 @@ function CustomerDashboardAsideNav({
       <div
         className={`hidden 700:block sticky ${
           isCustomerProfileComplete ? "top-0" : "top-10"
-        } h-[calc(95vh_-_5rem)] max-h-96 bg-black/10 tiny-scrollbar overflow-auto w-full  space-y-2 rounded-md border border-slate-300 p-1`}
+        } h-[calc(95vh_-_5rem)] max-h-96 bg-lame tiny-scrollbar overflow-auto w-full  space-y-2 rounded-md p-1`}
       >
         <div className="sticky z-10 -top-1 bg-slate-50">
           <Back />

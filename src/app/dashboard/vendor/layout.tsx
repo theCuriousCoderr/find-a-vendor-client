@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronRight } from "lucide-react";
+import Spinner from "@/components/Spinner";
 // import Spinner from "@/components/Spinner";
 
 function VendorAccountLayout({ children }: { children: React.ReactNode }) {
@@ -30,6 +31,10 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
     !vendor && dispatch(getAuthenticatedVendor());
     dispatch(clearLoginRedirect());
   }, []);
+
+  if (!vendor) {
+    return <Spinner color="border-t-blue-500" />;
+  }
 
   return (
     <div>
@@ -85,7 +90,7 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
                 </li>
               ))}
             </ul>
-            <div className="bg-white rounded-md  p-5 xs:max-md:p-2 xs:max-md:mx-1">
+            <div className=" bg-white rounded-md  p-5 xs:max-md:p-2 xs:max-md:mx-1">
               {children}
             </div>
           </div>

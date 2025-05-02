@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
 import { updateVendorDetails } from "@/app/features/settings/thunk";
 import { Vendor } from "@/types";
-import { updateStatusSuccess } from "@/app/features/product/productSlice";
+import { updateStatusSuccess } from "@/app/features/status/statusSlice";
 
 interface AddCategoryModalPropType {
   closeAddCategoryModal: () => void;

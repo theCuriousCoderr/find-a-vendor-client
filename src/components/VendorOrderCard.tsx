@@ -2,7 +2,7 @@
 
 import { Customer, OrderType, StatusVariants } from "@/types";
 import statusColorCode from "@/utils/statusColorCode";
-import { CircleHelp, TriangleAlert, Zap } from "lucide-react";
+import { CircleHelp, Phone, TriangleAlert, Zap } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import statusMessage from "@/utils/statusMessage";
@@ -110,6 +110,9 @@ function VendorOrderCard({
                 Chat customer on WhatsApp
               </p>
             </Link>
+            <div className="flex items-center gap-2 fill-black">
+              <Phone size={15} /> <p className="text-sm text-slate-500">{customerInfo.phone}</p>
+            </div>
 
             <div className="flex items-start gap-3 border-l-4 border-[#e27c51] bg-[#ffe8d9] p-5 xs:max-md:p-3 rounded-sm">
               <div className="size-5 flex items-center justify-center">

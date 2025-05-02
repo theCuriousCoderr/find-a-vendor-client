@@ -61,7 +61,7 @@ function OrderCardsButton({ type, onClick, disabled }: OrderCardsButtonType) {
   return (
     <div>
       <button
-        disabled={disabled}
+        disabled={disabled || isClicked}
         onClick={_isClicked}
         className={options[type].style}
       >

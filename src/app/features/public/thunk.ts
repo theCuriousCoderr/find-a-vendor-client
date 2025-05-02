@@ -19,6 +19,8 @@ import api from "@/utils/axios/api";
 import { PUBLIC } from "@/endpoints";
 import { AxiosError } from "axios";
 import { updateStatusError } from "../status/statusSlice";
+import { getProductReviews } from "../review/thunk";
+import { FetchAProductReviewsResponseType } from "../review/interface";
 
 // populate vendors list on /vendors by scrolling
 // get list of vendors by default (as you scroll)
@@ -130,9 +132,10 @@ export const getPublicVendor = createAsyncThunk<
   }
 });
 
+
 // get details about a product using search params
 export const getPublicProduct = createAsyncThunk<
-  FetchAProductResponseType,
+  FetchAProductResponseType & FetchAProductReviewsResponseType,
   FetchAProductArgumentsType
 >(
   "public/getPublicProduct",
@@ -143,7 +146,10 @@ export const getPublicProduct = createAsyncThunk<
       const fullEndpoint = `${PUBLIC.get_product}${queryParam}`;
       const response = await api.get(fullEndpoint);
       const data = response.data as FetchAProductResponseType;
-      return data;
+      const { productReviews } = await thunkAPI
+        .dispatch(getProductReviews({ vendor_id, category, product_id }))
+        .unwrap();
+      return { ...data, productReviews };
     } catch (error) {
       console.error("Error fetching services:", error);
       const _error = error as AxiosError;

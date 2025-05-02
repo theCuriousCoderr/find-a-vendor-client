@@ -263,3 +263,12 @@ export interface AddProductStateType {
   price: string;
   specifications: string;
 }
+
+export interface ReviewType {
+  review_id: string;
+  title: string;
+  content: string;
+  name: string;
+  photo: string;
+  rating: number;
+}

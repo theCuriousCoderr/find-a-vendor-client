@@ -105,17 +105,18 @@ function VendorNotificationsPage() {
       <p className="text-sm text-slate-400 my-2 text-center">
         A notification card is clickable 😉
       </p>
-      <ul className="gap-2 grid grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
+      <ul className="gap-2 grid auto-rows-fr grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
         {notifications.map((notif) => {
           return (
-            <li key={notif.notification_id}>
-              <Link
+            <li key={notif.notification_id} className="h-full">
+              {notif.type === "orders" && <Link
                 href={`/dashboard/vendor/orders${notif.link}`}
                 onClick={() =>
                   !notif.opened && _readNotification(notif.notification_id)
                 }
+                className="h-full"
               >
-                <article className="bg-slate-50 border p-2 rounded-md space-y-2">
+                <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full">
                   <div className="relative flex gap-2 items-start">
                     <div
                       className={`${
@@ -148,7 +149,46 @@ function VendorNotificationsPage() {
                     </div>
                   </div>
                 </article>
-              </Link>
+              </Link> }
+
+              {notif.type === "reviews" && <Link
+                href={`/products${notif.link}`}
+                onClick={() =>
+                  !notif.opened && _readNotification(notif.notification_id)
+                }
+                className="h-full"
+              >
+                <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full">
+                  <div className="relative flex gap-2 items-start">
+                    <div
+                      className={`${
+                        notif.opened ? "bg-transparent" : "bg-lime-400/50"
+                      } size-6 rounded-full  flex items-center justify-center mt-1`}
+                    >
+                      {notif.opened ? (
+                        <BellMinus size={20} color="#94a3b8" strokeWidth={1} />
+                      ) : (
+                        <BellDot size={20} strokeWidth={1} />
+                      )}
+                    </div>
+                    <div
+                      className={`${notif.opened && "text-slate-400"} text-sm`}
+                    >
+                      <p>
+                      You received a new product review.
+                      </p>
+                      <p className="text-slate-500">{notif.status}</p>
+                      <p
+                        className={`${
+                          notif.opened ? "text-slate-400" : "text-slate-600"
+                        }`}
+                      >
+                        {formattedOrderCardDate(notif.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              </Link> }
             </li>
           );
         })}
