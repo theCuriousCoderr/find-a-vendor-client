@@ -14,8 +14,18 @@ import {
 // import ImageFallback from "@/components/ImageFallback";
 import {
   Badge,
+  ChartColumn,
+  CheckCheck,
+  CircleDollarSign,
+  Handshake,
+  MessageCircle,
+  PackageOpen,
+  RefreshCcw,
+  Scale,
   // Pointer,
   Search,
+  Shield,
+  Target,
 } from "lucide-react";
 import { motion } from "motion/react";
 // import Spinner from "@/components/Spinner";
@@ -203,61 +213,61 @@ import sizes from "@/utils/imageSizes";
 const points = [
   {
     title: "Transparent Vendor Listings",
-    icon: "🛍️",
+    icon: <PackageOpen />,
     content:
       "Customers can see all available vendors for a product — no hidden promotions or biased placements. Vendors are displayed fairly and equally.",
   },
   {
     title: "Verified Vendor Profiles",
-    icon: "✅",
+    icon: <CheckCheck />,
     content:
       "Every vendor goes through a verification process to ensure legitimacy and accurate business information.",
   },
   {
     title: "Real Customer Reviews",
-    icon: "🗣️",
+    icon: <MessageCircle />,
     content:
       "All reviews are from actual customers who interacted with vendors, helping others shop with confidence and vendors build credibility.",
   },
   {
     title: "Up-to-Date Product Information",
-    icon: "📦",
+    icon: <RefreshCcw />,
     content:
       "Product details and availability are regularly updated to reflect current vendor offerings. No stale listings or false promises.",
   },
   {
     title: "Equal Opportunity for Vendors",
-    icon: "⚖️",
+    icon: <Scale />,
     content:
       "Big or small, all vendors have equal chances of being discovered — no paid boosts or unfair visibility algorithms.",
   },
   {
     title: "Customer Choice First",
-    icon: "🎯",
+    icon: <Target />,
     content:
       "The customer always chooses. Find-A-Vendor never pushes a specific seller — selection is based entirely on user preference.",
   },
   {
     title: "Reliable Vendor Metrics",
-    icon: "📊",
+    icon: <ChartColumn />,
     content:
       "Customers see performance indicators like completed orders, responsiveness, and ratings — vendors earn trust through performance.",
   },
   {
     title: "Dispute Support System",
-    icon: "🛡️",
+    icon: <Shield />,
     content:
       "If issues arise, Find-A-Vendor provides a clear path for reporting and resolving conflicts between vendors and customers.",
   },
   {
     title: "No Middleman Pricing",
-    icon: "💸",
+    icon: <CircleDollarSign />,
     content:
       "Vendors set their own prices and get 100% of their sales. Customers see exactly what each vendor offers — no platform-imposed markups.",
   },
   {
     title: "Community-Driven Trust",
-    icon: "🤝",
+    icon: <Handshake />,
     content:
       "Our platform thrives on honest interactions. Both customers and vendors build trust through consistent, transparent engagement.",
   },
@@ -404,7 +414,7 @@ export default function Home() {
               key={title}
               className="group flex xs:max-md:flex-col even:flex-row-reverse xs:max-md:even:flex-col even:justify-start xs:max-md:even:text-left even:text-right gap-5 xs:max-md:gap-3 items-center xs:max-md:items-start"
             >
-              <figure className=" border-slate-500 border-2 transition-all size-24 xs:max-md:size-16 bg-white rounded-xl flex items-center justify-center">
+              <figure className=" border-slate-200 border-2 transition-all size-24 xs:max-md:size-16 bg-white rounded-xl flex items-center justify-center">
                 {icon}
               </figure>
               <div className="space-y-2 w-[50%] xs:max-md:w-full">
@@ -421,9 +431,9 @@ export default function Home() {
       <section>
         <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
           {" "}
-          - Key Features Designed for You -{" "}
+          - Key Features -{" "}
         </h2>
-        <ul className=" w-full p-1 space-y-[20vh] mt-20">
+        <ul className=" w-full p-1 space-y-[20vh] mt-20 xs:max-md:mt-5">
           {userFeatures.map(({ title, content, img }) => {
             return (
               <li
