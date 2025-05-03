@@ -18,7 +18,7 @@ import { AppDispatch, RootState } from "@/app/store";
 import { signOut } from "@/app/features/auth/thunk";
 import Spinner from "./Spinner";
 import { updateStatusSuccess } from "@/app/features/status/statusSlice";
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "motion/react";
 
 const navItems = [
   {

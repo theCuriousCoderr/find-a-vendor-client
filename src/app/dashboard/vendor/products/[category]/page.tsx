@@ -9,7 +9,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { motion } from "motion/react";
-import { Edit3, Pointer, Trash2 } from "lucide-react";
+import { Pointer } from "lucide-react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 
