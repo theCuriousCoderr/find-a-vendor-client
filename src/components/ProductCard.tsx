@@ -58,7 +58,7 @@ function ProductCard({
           ) : (
             <Image
               src={
-                product.images[0] ||
+                product.images[0].secure_url ||
                 "https://picsum.photos/id/300/200/300/?blur=10"
               }
               fill={true}
@@ -82,7 +82,7 @@ function ProductCard({
           <p>
             Delivery Range:{" "}
             <span className="text-sm text-slate-500">
-              {["Ibadan", "Lagos"].join(", ")}
+              {product.deliveryRange.join(", ")}
             </span>
           </p>
           <div className="">

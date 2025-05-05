@@ -13,7 +13,8 @@ import ListCount from "@/components/ListCount";
 import LoadMore from "@/components/LoadMore";
 import ProductCard from "@/components/ProductCard";
 import ProductFilter from "@/components/ProductFilter";
-import { Star } from "lucide-react";
+import isUserAuthenticated from "@/utils/isUserAuthenticated";
+import { FilterX, ListX, Star } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,6 +73,7 @@ function AllProductsPage() {
 
   const isProductsListFilterActive =
     productFilters.length > 0 || productSearch.length > 0;
+  const vendor_id = isUserAuthenticated()?.vendor_id || null;
 
   useEffect(() => {
     !productsList && dispatch(getAvailableProducts({ round, slice }));
@@ -106,7 +108,7 @@ function AllProductsPage() {
       />
 
       <section>
-        <div className="sticky  xs:max-md:static top-20 z-10 bg-white/50 backdrop-blur-sm pb-5">
+        <div className="sticky  xs:max-md:static top-20 z-10 bg-lame/50 backdrop-blur-sm pb-5">
           <h1
             className={`${
               loadingProducts ? "text-slate-400" : "text-black"
@@ -129,13 +131,13 @@ function AllProductsPage() {
           </div>
         </div>
 
-        <ul className="grid auto-rows-fr grid-cols-5 gap-5 xs:max-500:grid-cols-1 500:max-700:grid-cols-2 700:max-lg:grid-cols-3 lg:max-xl:grid-cols-4 xl:max-2xl:grid-cols-5 md:gap-x-5 p-5 xs:max-md:px-3">
-          {/* <ProductCardSkeleton length={1} /> */}
-          {loadingProducts && !productsList && (
-            <ProductCardSkeleton length={10} />
-          )}
-          {productsList &&
-            productsList.map((product, index) => (
+        {productsList.length > 0 && (
+          <ul className="grid auto-rows-fr grid-cols-5 gap-5 xs:max-500:grid-cols-1 500:max-700:grid-cols-2 700:max-lg:grid-cols-3 lg:max-xl:grid-cols-4 xl:max-2xl:grid-cols-5 md:gap-x-5 p-5 xs:max-md:px-3">
+            {/* <ProductCardSkeleton length={1} /> */}
+            {loadingProducts && !productsList && (
+              <ProductCardSkeleton length={10} />
+            )}
+            {productsList.map((product, index) => (
               <ProductCard
                 key={product._id}
                 index={index}
@@ -143,7 +145,40 @@ function AllProductsPage() {
                 productsLength={productsList.length}
               />
             ))}
-        </ul>
+          </ul>
+        )}
+
+        {productsList.length === 0 && (
+          <div className="space-y-3 w-[50%] xs:max-md:w-[90%] mx-auto">
+            <div className="w-full flex flex-col items-center justify-center">
+              <div className="size-20 bg-slate-500/20 rounded-full flex items-center justify-center">
+                <ListX />
+              </div>
+              <p className="py-5 text-slate-500 text-center">
+                No available products to showcase for now
+              </p>
+            </div>
+
+            {vendor_id && (
+              <div>
+                <p className=" text-slate-600 text-lg xs:max-md:text-base mb-3 text-center">
+                  Visit your dashboard to begin adding products that will be
+                  featured here.
+                </p>
+
+                <Link href="/dashboard/vendor/products">
+                  <Button
+                    // loading={goToAvailableVendors}
+                    // onClick={() => setGoToAvailableVendors(true)}
+                    text="Go to Vendor Dashboard  >"
+                    bgColor="bg-black"
+                    color="text-white"
+                  />
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
       </section>
 
       {loadingProducts && <LoadMore />}

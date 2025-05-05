@@ -67,12 +67,16 @@ body::-webkit-scrollbar {
   }
 }
 
-@media (min-width: 300px) and (max-width: 1000px) {
+@media (min-width: 200px) and (max-width: 1000px) {
   .tiny-scrollbar::-webkit-scrollbar {
-    display: none;
+    width: 5px;
+    height: 5px;
+    background-color: #dcdcdc;
+    border-radius: 9999px;
   }
-
+  
   .tiny-scrollbar::-webkit-scrollbar-thumb {
-    display: none;
+    background-color: #4a90e2;
+    border-radius: 9999px;
   }
 }

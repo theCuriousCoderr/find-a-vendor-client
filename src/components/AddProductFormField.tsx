@@ -1,11 +1,12 @@
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, FormEvent } from "react";
 import Input from "./Input";
-import { AddProductStateType } from "@/types";
+import { AddProductStateType, Product } from "@/types";
 import Button from "./Button";
 
-
 interface AddProductFormFieldType {
-  addProduct: (e: ChangeEvent<HTMLFormElement>) => void;
+  addProduct: (e: FormEvent<HTMLFormElement>) => void;
+  editProduct:(e: FormEvent<HTMLFormElement>) => void;
+  productToEdit?: Product | null;
   thinkingAI: boolean;
   addingProduct: boolean;
   product: AddProductStateType;
@@ -17,6 +18,8 @@ interface AddProductFormFieldType {
 
 function AddProductFormField({
   addProduct,
+  editProduct,
+  productToEdit,
   thinkingAI,
   addingProduct,
   product,
@@ -24,8 +27,8 @@ function AddProductFormField({
   clearAllProductDetails,
 }: AddProductFormFieldType) {
   return (
-    <form onSubmit={addProduct} className="space-y-1">
-      {/* <p className="text-slate-400">Add Product Details</p> */}
+    <form onSubmit={(e) => { productToEdit ? editProduct(e) : addProduct(e) }} className="space-y-1">
+     
       <div className="space-y-2">
         <Input
           disabled={thinkingAI}
@@ -77,7 +80,7 @@ function AddProductFormField({
 
         <Input
           disabled={thinkingAI}
-          value={product.price}
+          value={product.price.toString()}
           required={true}
           onChange={handleProductDetailsChange}
           name="price"
@@ -88,27 +91,29 @@ function AddProductFormField({
         />
       </div>
       {/* submit button */}
-      <div className="flex justify-end mt-5">
+      <div className="flex justify-end">
         {product.images.length > 0 ? (
-          <div className="flex gap-2">
+          <div className="flex gap-2 mt-5">
             <div>
               <button
                 type="button"
                 onClick={clearAllProductDetails}
-                className="w-32 py-2 px-4 hover:bg-slate-300"
+                className="py-2 px-4 hover:bg-slate-300 text-nowrap"
               >
                 Clear All
               </button>
             </div>
             <Button
               loading={thinkingAI || addingProduct}
-              text="Add Product"
+              text={productToEdit ? "Edit Product" : "Add Product"}
               bgColor="bg-blue-500"
               color="text-white"
             />
           </div>
         ) : (
-          <p className="py-2 px-4 bg-slate-200 text-slate-300">Add Product</p>
+          <p className="py-2 px-4 bg-slate-200 text-slate-300 text-nowrap">
+            {productToEdit ? "Edit Product" : "Add Product"}
+          </p>
         )}
       </div>
     </form>

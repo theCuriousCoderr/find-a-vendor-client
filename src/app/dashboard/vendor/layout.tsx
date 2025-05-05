@@ -37,7 +37,8 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="max-w-[1300px] mx-auto">
+    <div className="max-w-[1300px] mx-auto min-h-[70vh] xs:max-md:min-h-0">
+      {/* banner to show if a vendor has an incomplete profile */}
       {!isVendorProfileComplete && (
         <Link href="/dashboard/vendor/settings/profile">
           <p className="bg-pink-100 text-red-500 text-center text-sm rounded-md p-2 my-2 sticky xs:max-md:static top-0 mx-2 z-50">
@@ -45,6 +46,8 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
           </p>
         </Link>
       )}
+
+      {/* disclaimer to show if a vendor has an incomplete profile */}
       <div className="w-full flex bg-lame gap-2 p-2">
         {/* The disclamier for vendors to complete their profile setup */}
         {vendor &&
@@ -57,12 +60,12 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
           )}
 
         {/* The sidebar nav component  */}
-        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px] bg-lame">
+        <div className="xs:max-md:hidden w-[200px] bg-lame">
           <VendorDashboardAsideNav />
         </div>
 
         {/* The main view of the sidebar nav */}
-        <main className="relative w-full bg-red-40">
+        <main className="relative w-[calc(100%_-_200px)] xs:max-md:w-full">
           <div
             className={`sticky xs:max-md:static z-10 ${
               isVendorProfileComplete ? "top-0" : "top-10"
@@ -81,16 +84,19 @@ function VendorAccountLayout({ children }: { children: React.ReactNode }) {
 
           <div className=" relative z-10 -mt-32 space-y-2 ">
             <ul className="inline-flex bg-white text-slate-500 font-medium px-2 items-center mx-2 rounded-sm">
-              {pathName.split("/").map((frag) => (
+              {pathName.split("/").map((frag, idx) => (
                 <li key={frag} className="capitalize group flex items-center">
+                  <Link href={`/dashboard/vendor/${pathName.split("/").slice(0,idx + 1).join("/")}`} className="text-blue-500 hover:underline group-last:no-underline group-last:text-slate-500 py-1">
                   {frag}{" "}
+                  </Link>
+                  
                   <div className="group-last:hidden">
                     <ChevronRight size={20} />{" "}
                   </div>{" "}
                 </li>
               ))}
             </ul>
-            <div className=" bg-white rounded-md  p-5 xs:max-md:p-2 xs:max-md:mx-1">
+            <div className=" bg-white rounded-md p-5 xs:max-md:p-2 xs:max-md:mx-1">
               {children}
             </div>
           </div>

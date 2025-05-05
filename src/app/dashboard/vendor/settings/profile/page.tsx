@@ -7,7 +7,7 @@ import Spinner from "@/components/Spinner";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-function Page() {
+function SettingsProfilePage() {
   const dispatch = useDispatch<AppDispatch>();
  
  const { authenticatedVendor:vendor } = useSelector((state: RootState) => state.vendors);
@@ -112,4 +112,4 @@ function Page() {
   );
 }
 
-export default Page;
+export default SettingsProfilePage;

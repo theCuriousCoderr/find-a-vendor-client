@@ -95,9 +95,9 @@ export interface CustomDropdownPropsType extends VendorFilterPropsType {
 export interface Product {
   _id: number;
   category: string;
-  vendor_id: number;
+  vendor_id: string;
   product_id: string;
-  images: string[];
+  images: ImageUploadResponse[];
   details: {
     name: string;
     description: string;
@@ -256,11 +256,19 @@ export interface GeminiAnalyseProductImageResponseType {
   "About the Item": string;
 }
 
+export interface ImageUploadResponse {
+  original_filename: string;
+  public_id: string;
+  resource_type: string;
+  secure_url: string;
+  signature: string;
+}
+
 export interface AddProductStateType {
-  images: string[];
+  images: ImageUploadResponse[];
   name: string;
   description: string;
-  price: string;
+  price: number;
   specifications: string;
 }
 

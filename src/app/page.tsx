@@ -31,6 +31,7 @@ import {
 import { motion } from "motion/react";
 // import Spinner from "@/components/Spinner";
 import sizes from "@/utils/imageSizes";
+import Footer from "@/components/Footer";
 
 // skeleton loader for most ordered products on desktop view
 // function DesktopMostOrderedProductsSkeleton() {
@@ -317,10 +318,10 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="space-y-32 p-5 max-w-[1300px] mx-auto">
+    <main className="space-y-32 p-5 xs:max-md:p-0 xs:max-md:w-[90%] max-w-[1300px] mx-auto">
       {/* introduction */}
-      <section className="mt-5 xs:max-md:mt-5 flex xs:max-md:flex-col items-center justify-center gap-20 xs:max-md:gap-20">
-        <div className="text-left xs:max-md:text-center w-[60%] xs:max-md:flex flex-col items-center xs:max-md:w-[90%] xs:max-md:mx-auto space-y-5 pt-10 xs:max-md:pt-0">
+      <section className="mt-5 xs:max-md:mt-5 flex xs:max-md:flex-col w-full xs:max-md:items-start items-center justify-center gap-20 xs:max-md:gap-10">
+        <div className="text-left xs:max-md:text-center w-[60%] xs:max-md:flex flex-col xs:max-md:items-start items-center xs:max-md:w-full space-y-5 pt-10 xs:max-md:pt-0">
           {/* badge */}
           <div className="group px-4 py-3 bg-blue-900 hover:bg-black transition-all rounded-full inline-flex gap-3 items-center">
             <div className="relative size-5 flex items-center justify-center">
@@ -336,10 +337,11 @@ export default function Home() {
               </div>
             </div>
             <p className="text-white font-medium xs:max-md:text-xs">
-              Vendors at your fingertips.
+            Pick your plug. We’ve got options.
             </p>
           </div>
 
+          {/* desktop */}
           <h1 className="xs:max-md:hidden text-5xl xs:max-md:text-4xl font-bold ">
             Find Products and Connect <br />
             With Online Vendors
@@ -347,15 +349,16 @@ export default function Home() {
             <br />
             With Minimal Efforts.
           </h1>
-          <h1 className="md:hidden text-3xl font-bold">
+          {/* mobile */}
+          <h1 className="md:hidden text-3xl font-bold xs:max-md:text-left">
             Find Products and Connect With Online Vendors From The Comfort Of
             Your Home With Minimal Efforts.
           </h1>
-          <h2 className="text-blue-900 font-medium">
+          <h2 className="text-blue-900 font-medium xs:max-md:text-left w-full">
             Explore | Discover | Connect
           </h2>
 
-          <div className="flex w-full flex-wrap gap-5 xs:max-md:gap-2 items-center xs:max-md:justify-center">
+          <div className="flex w-full flex-wrap gap-5 xs:max-md:gap-2 items-center xs:max-md:justify-start">
             <div>
               <Link href="/vendors">
                 <button className="border border-gray-900 hover:bg-gray-300 text-gray-900 disabled:text-slate-50 px-4 py-2 xs:max-md:px-2 rounded-md text-lg xs:max-md:text-sm">
@@ -372,8 +375,8 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="relative p-3 xs:max-md:p-2 bg-white rounded-md w-[40%] xs:max-md:mt- xs:max-md:w-[95%] xs:max-md:max-w-full max-w-[400px] aspect-square">
-          <figure className="relative size-full p-3 rounded-md  ">
+        <div className="relative p-3 xs:max-md:p-2 bg-white rounded-md w-[40%] xs:max-md:w-[95%] xs:max-md:max-w-full aspect-square">
+          <figure className="relative size-full p-3 rounded-md">
             <Image
               fill={true}
               src="/home_banner.avif"
@@ -388,11 +391,11 @@ export default function Home() {
 
       {/* what we do */}
       <section>
-        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
+        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900 xs:max-md:text-left">
           {" "}
           - What We Do -{" "}
         </h2>
-        <p className="xs:max-md:mt-5 font-light text-xl xs:max-md:text-lg text-center w-[80%] xs:max-md:w-[90%] mx-auto">
+        <p className="xs:max-md:mt-5 font-light text-xl xs:max-md:text-lg text-center w-[80%] xs:max-md:w-full mx-auto xs:max-md:text-left">
           {" "}
           “Find-A-Vendor” is a marketplace platform where potential customers
           can discover a product and choose from multiple online, small-scale
@@ -407,11 +410,11 @@ export default function Home() {
 
       {/* how we do it */}
       <section>
-        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
+        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center xs:max-md:text-left text-blue-900">
           {" "}
           - How We Do It -{" "}
         </h2>
-        <ul className="mt-5 w-[80%] xs:max-md:w-[90%] mx-auto space-y-20">
+        <ul className="mt-5 w-[80%] xs:max-md:w-full mx-auto space-y-20">
           {points.map(({ title, icon, content }) => (
             <li
               key={title}
@@ -433,22 +436,22 @@ export default function Home() {
 
       {/* key features */}
       <section>
-        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
+        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center xs:max-md:text-left text-blue-900">
           {" "}
           - Key Features -{" "}
         </h2>
-        <ul className=" w-full p-1 space-y-[20vh] mt-20 xs:max-md:mt-5">
+        <ul className="w-full space-y-[20vh] mt-20 xs:max-md:mt-5">
           {userFeatures.map(({ title, content, img }) => {
             return (
               <li
                 key={title}
                 className=" group flex xs:max-md:flex-col justify-center gap-10 w-full"
               >
-                <div className="w-[30%] xs:max-md:w-[90%] pt-40 xs:max-md:py-0 pb-[30rem] space-y-5 xs:max-md:pl-3">
+                <div className="w-[30%] xs:max-md:w-full pt-40 xs:max-md:py-0 pb-[30rem] space-y-5 xs:max-md:space-y-2 xs:max-md:pl-0">
                   <p className="font-bold text-4xl xs:max-md:text-2xl">
                     {title}
                   </p>
-                  <p className="font-light text-xl">{content}</p>
+                  <p className="font-light text-xl xs:max-md:text-lg">{content}</p>
                 </div>
 
                 <div className="size-[30rem] xs:max-md:w-[80%] xs:max-md:h-[80vh] xs:max-md:mx-auto rounded-tl-lg sticky xs:max-md:static top-[10vh]">
@@ -470,19 +473,21 @@ export default function Home() {
 
       {/*  why choose us */}
       <section>
-        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center text-blue-900">
+        <h2 className="text-[3rem] xs:max-md:text-3xl font-bold text-center xs:max-md:text-left text-blue-900">
           {" "}
           - Why Choose Us -{" "}
         </h2>
         <div className="mt-5 flex xs:max-md:flex-col items-center gap-5">
           <div className="w-[70%] xs:max-md:w-full h-full flex flex-col gap-5">
+            {/* one, two */}
             <div className="h-1/2 w-full flex xs:max-md:flex-col gap-5">
+            {/* one */}
               <div className=" w-1/2 xs:max-md:w-full rounded-xl p-5 space-y-5 bg-white">
                 <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
                   <Aperture />
                 </div>
                 <div>
-                  <h3 className="font-bold text-3xl">
+                  <h3 className="font-bold text-3xl xs:max-md:text-2xl">
                     A Space for Growing Vendors
                   </h3>
                   <p className="font-medium text-lg text-slate-500">
@@ -490,25 +495,26 @@ export default function Home() {
                   </p>
                 </div>
 
-                <p className="font-light text-xl">
+                <p className="font-light text-xl xs:max-md:text-lg">
                   Many small or emerging online vendors can easily be drowned
                   out on massive marketplaces like Jumia or Konga. Find-A-Vendor
                   provides them with visibility and a level playing field to
                   grow organically without being overshadowed.
                 </p>
               </div>
+              {/* two */}
               <div className=" w-1/2 xs:max-md:w-full rounded-xl p-5 space-y-5 bg-white">
                 <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
                   <CircleDollarSign />
                 </div>
                 <div>
-                  <h3 className="font-bold text-3xl">Zero Cuts, Full Profit</h3>
+                  <h3 className="font-bold text-3xl xs:max-md:text-2xl">Zero Cuts, Full Profit</h3>
                   <p className="font-medium text-lg text-slate-500">
                     Vendors keep 100% of what they earn.
                   </p>
                 </div>
 
-                <p className="font-light text-xl">
+                <p className="font-light text-xl xs:max-md:text-lg">
                   At Find-A-Vendor, all financial transactions happen directly
                   between customer and vendor. There are no payment gateway
                   fees, no commissions, and absolutely no middlemen. It’s pure
@@ -516,12 +522,13 @@ export default function Home() {
                 </p>
               </div>
             </div>
+            {/* three */}
             <div className="h-1/2 w-full rounded-xl p-5 space-y-5 bg-white">
               <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
                 <Handshake />
               </div>
               <div>
-                <h3 className="font-bold text-3xl">
+                <h3 className="font-bold text-3xl xs:max-md:text-2xl">
                   Simple Needs, Real Connections
                 </h3>
                 <p className="font-medium text-lg text-slate-500">
@@ -529,7 +536,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <p className="font-light text-xl">
+              <p className="font-light text-xl xs:max-md:text-lg">
                 Sometimes, people just want to find a small-time vendor who can
                 meet their specific, everyday needs without the cost and
                 formality of shopping at big stores. Find-A-Vendor bridges that
@@ -537,13 +544,14 @@ export default function Home() {
               </p>
             </div>
           </div>
+          {/* four */}
           <div className="w-[30%] xs:max-md:w-full rounded-xl borde border-slate-40 p-5 space-y-5 bg-white flex items-center justify-center">
             <div className="space-y-5">
               <div className="size-20 border border-slate-200 bg-lame rounded-xl flex items-center justify-center">
                 <Target />
               </div>
               <div>
-                <h3 className="font-bold text-3xl">
+                <h3 className="font-bold text-3xl xs:max-md:text-2xl">
                   You Decide How Business Happens
                 </h3>
                 <p className="font-medium text-lg text-slate-500">
@@ -551,7 +559,7 @@ export default function Home() {
                 </p>
               </div>
 
-              <p className="font-light text-xl">
+              <p className="font-light text-xl xs:max-md:text-lg">
                 Both customers and vendors have complete control over how they
                 choose to transact—whether it’s the timing, the method, or the
                 terms. We stay out of the way so you can do business your way.

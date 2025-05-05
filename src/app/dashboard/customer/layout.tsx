@@ -42,12 +42,12 @@ function CustomerDashboardLayout({ children }: { children: React.ReactNode }) {
       )}
       <div className="w-full flex bg-lame gap-2 p-2">
         {/* The sidebar nav component  */}
-        <div className="xs:max-md:hidden w-[20%] max-w-[300px] min-w-[200px] bg-lame">
+        <div className="xs:max-md:hidden w-[200px] bg-lame">
           <CustomerDashboardAsideNav />
         </div>
 
         {/* The main view of the sidebar nav */}
-        <main className="relative w-full bg-red-40">
+        <main className="relative w-[calc(100%_-_200px)] xs:max-md:w-full">
           <div
             className={`sticky xs:max-md:static z-10 ${
               isCustomerProfileComplete ? "top-0" : "top-10"

@@ -129,8 +129,32 @@ function Page() {
 
   if (!vendor || !products) {
     return (
-      <div>
-        <Spinner />
+      <div className="my-10">
+        <Spinner color="border-t-blue-500" />
+      </div>
+    );
+  }
+
+  if (vendor.categories.length === 0) {
+    return (
+      <div className="space-y-5">
+        {addCategory.isModalOpen && (
+          <AddCategoryModal closeAddCategoryModal={closeAddCategoryModal} />
+        )}
+        <p className="text-slate-500">
+          You have not added any product category yet.
+          <br />
+          The things you sell
+        </p>
+
+        <div className="">
+          <Button
+            onClick={openAddCategoryModal}
+            bgColor="bg-black"
+            color="text-white"
+            text="Add A Category"
+          />
+        </div>
       </div>
     );
   }
@@ -141,7 +165,7 @@ function Page() {
         <AddCategoryModal closeAddCategoryModal={closeAddCategoryModal} />
       )}
       {categoryToDelete && (
-        <div className="fixed z-30 top-0 left-0 h-screen w-full bg-slate-400 flex items-center justify-center">
+        <div className="fixed z-50 top-0 left-0 h-screen w-full bg-lame flex items-center justify-center">
           <div className="bg-slate-50 max-w-[95%] p-5 xs:max-md:p-2 rounded-md shadow-md shadow-slate-900 space-y-5 xs:max-md:space-y-3">
             <p className="text-center font-bold text-xl xs:max-md:text-lg">
               Delete this category?
@@ -155,43 +179,45 @@ function Page() {
                 You can&apos;t undo this action.
               </p>
             </div>
-            <div className="flex items-start gap-3 border-l-4 border-[#e27c51] bg-[#ffe8d9] p-5 xs:max-md:p-3 rounded-sm">
-              <div className="size-5 flex items-center justify-center">
-                <TriangleAlert fill="#e15624" stroke="#ffffff" className="" />
+            {Number(getCategoryDetails(categoryToDelete).amount) > 0 && (
+              <div className="flex items-start gap-3 border-l-4 border-[#e27c51] bg-[#ffe8d9] p-5 xs:max-md:p-3 rounded-sm">
+                <div className="size-5 flex items-center justify-center">
+                  <TriangleAlert fill="#e15624" stroke="#ffffff" className="" />
+                </div>
+                <div>
+                  <p className="text-[#773d34] font-medium text-lg xs:max-md:text-base">
+                    Warning
+                  </p>
+                  <p className="text-[#773d34] xs:max-md:text-sm">
+                    By deleting this category,{" "}
+                    {getCategoryDetails(categoryToDelete).amount}{" "}
+                    {getCategoryDetails(categoryToDelete).text} under this
+                    category will also be deleted.{" "}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-[#773d34] font-medium text-lg xs:max-md:text-base">
-                  Warning
-                </p>
-                <p className="text-[#773d34] xs:max-md:text-sm">
-                  By deleting this category,{" "}
-                  {getCategoryDetails(categoryToDelete).amount}{" "}
-                  {getCategoryDetails(categoryToDelete).text} under this
-                  category will also be deleted{" "}
-                </p>
-              </div>
-            </div>
+            )}
             <div className="flex justify-center gap-10 xs:max-md:gap-2 mt-2 rounded-md py-2">
-              <div className="border border-slate-400">
+              <div className=" bg-[#e22e3b] rounded-md">
                 <button
                   onClick={() => setCategoryToDelete("")}
-                  className="py-1 px-4 text-sm text-slate-500 hover:bg-slate-300/50 flex gap-1 items-center justify-center"
+                  className="py-1 px-4 text-sm text-white hover:bg-red-500 rounded-md flex gap-1 items-center justify-center"
                 >
                   <p>Cancel</p>
                 </button>
               </div>
-              <div className="bg-[#e22e3b]">
+              <div className="border border-[#e22e3b] rounded-md">
                 {deletingCategory ? (
                   <div className="py-1 px-4">
-                    <Spinner />{" "}
+                    <Spinner color="border-t-red-500" />{" "}
                   </div>
                 ) : (
                   <button
                     onClick={(e) => deleteCategory(e, categoryToDelete)}
-                    className="py-1 px-4 text-sm hover:bg-red-500 flex gap-1 items-center justify-center"
+                    className="py-1 px-4 text-sm hover:bg-[#e22e3b]/10 flex gap-1 items-center justify-center"
                   >
-                    <p className="text-white">Delete category</p>
-                    <Trash2 size={18} color="#ffffff" />
+                    <p className="text-[#e22e3b]">Delete category</p>
+                    <Trash2 size={18} color="#e22e3b" />
                   </button>
                 )}
               </div>
@@ -199,55 +225,35 @@ function Page() {
           </div>
         </div>
       )}
+
       <div className="xs:max-md:fixed xs:max-md:z-20 bottom-0 left-0 right-0 xs:max-md:bg-black">
         <Button
           onClick={openAddCategoryModal}
           bgColor="bg-black"
           color="text-white"
-          text= {vendor.categories.length >= 1 ? "Add Another Category" : "Add A Category" }
+          text={
+            vendor.categories.length >= 1
+              ? "Add Another Category"
+              : "Add A Category"
+          }
         />
-
-        {/* <div className="hidden bg-slate-200 xs:max-md:flex justify-center">
-          <Back />
-        </div> */}
       </div>
       <section className="mt-5 xs:max-md:mt-0 ">
         <div>
           <h2 className="text-2xl xs:max-md:text-lg font-medium">
-            You have created {vendor.categories.length}{" "}product{" "}
-            <span>{vendor.categories.length > 1 ? "categories" : "category"}</span>
+            You have created {vendor.categories.length} product{" "}
+            <span>
+              {vendor.categories.length > 1 ? "categories" : "category"}
+            </span>
           </h2>
           <p className="text-slate-400 text-xl xs:max-md:text-base">
             The things you sell
           </p>
         </div>
 
-        {vendor.categories.length === 0 && (
-          <div>
-            <p className="text-slate-500">
-              You have not added any product categories yet.
-              <br />
-              The things you sell
-            </p>
-            <p className="text-slate-500">
-              Add at least one (1) category to your vendor profile.
-            </p>
-            <p className="text-slate-500">
-              You can also go to{" "}
-              <q className="text-slate-600 font-medium">Settings</q>{" "}
-              <span>-&gt;</span>{" "}
-              <q className="text-slate-600 font-medium">Profile</q>{" "}
-              <span>-&gt;</span>{" "}
-              <q className="text-slate-600 font-medium">
-                Your Store&apos;s Categories
-              </q>
-            </p>
-          </div>
-        )}
-
         {vendor.categories.length > 0 && (
           <ul className="grid gap-2 xs:max-400:grid-cols-1 400:max-md:grid-cols-2 md:max-lg:grid-cols-2 lg:grid-cols-3 xs:max-md:pb-12">
-            {vendor.categories.map(
+            {vendor.categories.toSorted().map(
               (category) =>
                 Boolean(category) && (
                   <li
@@ -291,8 +297,8 @@ function Page() {
                         <div className="flex flex-wrap justify-center gap-5 mt-2 bg-slate-800 rounded-md py-2">
                           <div className="">
                             <button
-                              onClick={() => alert("Coming Soon")}
-                              className="p-1 text-sm text-slate-200 bg-transparent hover:bg-slate-300/50 flex gap-1 items-center justify-center"
+                              // onClick={() => alert("Coming Soon")}
+                              className="p-1 text-sm hover:text-slate-700 text-white xs:max-md:text-slate-700 bg-transparent flex gap-1 items-center justify-center"
                             >
                               {/* <p>Edit Name</p> */}
                               <Edit3 size={18} />
@@ -301,10 +307,10 @@ function Page() {
                           <div className="">
                             <button
                               onClick={() => setCategoryToDelete(category)}
-                              className="p-1 text-sm bg-transparent hover:bg-red-500/50 flex gap-1 items-center justify-center"
+                              className="p-1 text-sm hover:text-red-500 text-white bg-transparent xs:max-md:text-red-500 flex gap-1 items-center justify-center"
                             >
                               {/* <p className="text-red-400">Delete</p> */}
-                              <Trash2 size={18} color="#f87171" />
+                              <Trash2 size={18} />
                             </button>
                           </div>
                         </div>

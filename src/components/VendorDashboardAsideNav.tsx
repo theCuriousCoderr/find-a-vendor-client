@@ -8,6 +8,7 @@ import {
   Bell,
   CircleCheck,
   Copy,
+  Package,
   PackageSearch,
   Settings,
   ShoppingCart,
@@ -17,13 +18,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { signOut } from "@/app/features/auth/thunk";
 import Spinner from "./Spinner";
-import { updateStatusSuccess } from "@/app/features/status/statusSlice";
 import { motion } from "motion/react";
 
 const navItems = [
   {
     label: "Products",
-    icon: <PackageSearch className="fill-slate-300 stroke-black" />,
+    icon: <Package className="fill-slate-300 stroke-black" />,
     url: "/dashboard/vendor/products",
   },
   {
@@ -71,7 +71,7 @@ function VendorDashboardAsideNav({
     setTimeout(() => {
       setProfileLink(false);
     }, 1000);
-    dispatch(updateStatusSuccess({ success: "Profile Link Copied!" }));
+
   }
   return (
     <>
@@ -100,12 +100,11 @@ function VendorDashboardAsideNav({
               className={`mt-1 flex gap-2 items-center text-sm ${
                 profileLink
                   ? "text-green-700"
-                  : "text-blue-500 hover:text-blue-700 hover:underline"
+                  : "text-blue-500 hover:text-blue-700"
               } `}
             >
-              <button onClick={copyProfileLink}>
-                {" "}
-                {profileLink ? "Profile Link Copied" : "Copy Profile Link"}
+              <button disabled={profileLink} onClick={copyProfileLink}>
+                Copy Profile Link
               </button>
 
               {profileLink && (
@@ -189,12 +188,11 @@ function VendorDashboardAsideNav({
               className={`mt-1 flex gap-2 items-center text-sm px-2 ${
                 profileLink
                   ? "text-green-700"
-                  : "text-blue-500 hover:text-blue-700 hover:underline"
+                  : "text-blue-500 hover:text-blue-700"
               } `}
             >
-              <button onClick={copyProfileLink}>
-                {" "}
-                {profileLink ? "Profile Link Copied" : "Copy Profile Link"}
+              <button disabled={profileLink} onClick={copyProfileLink}>
+                Copy Profile Link
               </button>
 
               {profileLink && (

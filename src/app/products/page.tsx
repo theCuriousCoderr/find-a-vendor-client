@@ -194,7 +194,7 @@ function ProductDetailsPage() {
 
   // desktop view: updates the product image to show on the big section when the product details changes
   useEffect(() => {
-    valid_product && setActiveImage(product.images[0]);
+    valid_product && setActiveImage(product.images[0].secure_url);
   }, [product]);
 
   // triggered when the "Notify Vendor About This Product" is clicked
@@ -382,19 +382,19 @@ function ProductDetailsPage() {
                   navigation
                   pagination={{ clickable: true }}
                 >
-                  {product.images.map((item) => (
-                    <SwiperSlide key={item}>
+                  {product.images.map((image) => (
+                    <SwiperSlide key={image.public_id}>
                       <figure className="relative size-16 min-w-16 border flex items-center justify-center">
                         {imageError ? (
                           <ImageFallback size="size-10" />
                         ) : (
                           <button
-                            onClick={() => setActiveImage(item)}
+                            onClick={() => setActiveImage(image.secure_url)}
                             className="relative size-full overflow-hidden"
                           >
                             <Image
                               src={
-                                item ||
+                                image.secure_url ||
                                 "https://picsum.photos/id/300/200/300/?blur=10"
                               }
                               fill={true}
@@ -416,9 +416,9 @@ function ProductDetailsPage() {
 
               {/* Mobile Images */}
               <div className="hidden xs:max-md:flex gap-5 px-5 w-full overflow-auto no-scrollbar">
-                {product.images.map((item) => (
+                {product.images.map((image) => (
                   <figure
-                    key={item}
+                    key={image.public_id}
                     className="relative min-w-[80%] h-[50vh] max-h-80 border flex items-center justify-center"
                   >
                     {imageError ? (
@@ -426,10 +426,10 @@ function ProductDetailsPage() {
                     ) : (
                       <Image
                         src={
-                          item ||
+                          image.secure_url ||
                           "https://picsum.photos/id/300/200/300/?blur=10"
                         }
-                        priority={item === product.images[0]}
+                        priority={image.secure_url === product.images[0].secure_url}
                         fill={true}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         alt="Product Preview Image"
@@ -633,7 +633,7 @@ function ProductDetailsPage() {
         </main>
         {/* fixed bottom CTA button; shown in Mobile View */}
         {(customer_id || vendor_id !== productFilter?.vendor_id) && (
-          <div className="hidden xs:max-md:flex fixed bg-slate-100 bottom-0 left-0 right-0 py-2 items-center justify-center">
+          <div className="hidden xs:max-md:flex fixed z-10 bg-slate-100 bottom-0 left-0 right-0 py-2 items-center justify-center">
             <div className="flex w-full flex-wrap items-center gap-1 px-2">
               <Button
                 animate={false}

@@ -1,8 +1,10 @@
+import { ImageUploadResponse } from "@/types";
+
 const CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUD_NAME;
 const UPLOAD_PRESET = process.env.NEXT_PUBLIC_UPLOAD_PRESET;
 
 let failedUploads: File[] = [];
-let imageUrls: string[] = [];
+let imageUrls: ImageUploadResponse[] = [];
 
 export default async function getCloudinaryUrl(files: File[] | FileList) {
   for (const file of files) {
@@ -17,9 +19,23 @@ export default async function getCloudinaryUrl(files: File[] | FileList) {
           body: formData,
         }
       );
-      const data = await response.json();
+      const data = (await response.json()) as ImageUploadResponse;
+      console.log("data: ", data);
       if (data.secure_url) {
-        imageUrls.push(data.secure_url);
+        const {
+          original_filename,
+          public_id,
+          resource_type,
+          secure_url,
+          signature,
+        } = data;
+        imageUrls.push({
+          original_filename,
+          public_id,
+          resource_type,
+          secure_url,
+          signature,
+        });
       }
     } catch (error) {
       console.error(`File Upload for -${file.name}- failed`);

@@ -1,5 +1,6 @@
 import {
   Customer,
+  ImageUploadResponse,
   NotificationType,
   OrderType,
   Product,
@@ -8,7 +9,7 @@ import {
 
 export interface VendorsSliceState {
   authenticatedVendor: Vendor | null;
-  authenticatedVendorProducts: Record<string, Product[]> | null;
+  authenticatedVendorProducts: Record<string, Product[] | []> | null;
   authenticatedVendorOrders: OrderType[] | [];
   authenticatedVendorNotifications: NotificationType[] | [];
   loadingAuthenticatedVendor: boolean;
@@ -42,7 +43,8 @@ export interface FetchAuthenticatedVendorNotificationsResponseType {
 export interface AddAuthenticatedVendorProductArgumentsType {
   vendor_id: string;
   category: string;
-  images: string[];
+  product_id: string;
+  images: ImageUploadResponse[];
   details: {
     name: string;
     description: string;

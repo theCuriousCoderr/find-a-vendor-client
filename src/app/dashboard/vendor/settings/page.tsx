@@ -1,7 +1,14 @@
-import React from "react";
+"use client";
 
-function Page() {
-  return <div>Ompa</div>;
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+function SettingsPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard/vendor/settings/profile");
+  }, []);
 }
 
-export default Page;
+export default SettingsPage;

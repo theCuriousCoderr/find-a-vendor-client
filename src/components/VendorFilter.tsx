@@ -163,6 +163,7 @@ function VendorFilter({
             <div className="xs:max-md:hidden absolute h-full aspect-square flex items-center justify-center">
               <Search />
             </div>
+            {/* desktop */}
             <input
               onChange={handleInputChange}
               value={searchFilter}
@@ -172,6 +173,7 @@ function VendorFilter({
               placeholder="Search by location, products, or minimum price"
               className="xs:max-sm:hidden xs:max-sm:placeholder:text-xs h-12 w-full pl-14 xs:max-md:pl-2  focus-within:outline-[1px] focus-within:outline-peach"
             />
+            {/* mobile */}
             <input
               onChange={handleInputChange}
               value={searchFilter}
@@ -182,6 +184,7 @@ function VendorFilter({
             />
           </div>
           <div className="xs:max-500:w-full">
+            {/* desktop */}
             <div className="xs:max-500:hidden flex gap-2">
               {searchFilter.length > 0 && (
                 <Button
@@ -195,14 +198,15 @@ function VendorFilter({
               <Button
                 onClick={filterVendorsBySearch}
                 animate={false}
-                text="Find vendors"
+                text="Search"
                 bgColor="bg-[#5c1b86]"
                 color="text-white"
               />
             </div>
+            {/* mobile */}
             <div className="hidden xs:max-500:block w-full ">
               <button className="size-full py-2 bg-[#5C1B86] hover:bg-[#5C1B86]/50 flex items-center justify-center outline-offset-2">
-                <p className="text-white">Find vendors</p>
+                <p className="text-white">Search</p>
               </button>
             </div>
           </div>

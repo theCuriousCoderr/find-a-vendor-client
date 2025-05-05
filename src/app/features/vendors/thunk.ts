@@ -91,6 +91,37 @@ export const addAuthenticatedVendorProduct = createAsyncThunk<
   }
 });
 
+export const editAuthenticatedVendorProduct = createAsyncThunk<
+  { message: string },
+  AddAuthenticatedVendorProductArgumentsType
+>("vendors/addAuthenticatedVendorProduct", async (productToEdit, thunkAPI) => {
+  try {
+    const response = await api.put(PRODUCT.edit_product, productToEdit);
+    const data = response.data;
+    await thunkAPI.dispatch(getAuthenticatedVendor());
+    return data;
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const deleteAuthenticatedVendorProduct = createAsyncThunk<
+  { message: string },
+  AddAuthenticatedVendorProductArgumentsType
+>("vendors/addAuthenticatedVendorProduct", async (productToDelete, thunkAPI) => {
+  try {
+    const { category, vendor_id, product_id } = productToDelete;
+    const response = await api.post(PRODUCT.delete_product, { category, vendor_id, product_id });
+    const data = response.data;
+    await thunkAPI.dispatch(getAuthenticatedVendor());
+    return data;
+  } catch (error) {
+    console.error("Error fetching services:", error);
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
 export const deleteAuthenticatedVendorCategory = createAsyncThunk<
   { message: string },
   { category: string; vendor: Vendor }

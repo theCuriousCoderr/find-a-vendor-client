@@ -40,6 +40,8 @@ const ORDER = {
 
 const PRODUCT = {
   add_product: `${_product}/add-product`,
+  edit_product: `${_product}/edit-product`,
+  delete_product: `${_product}/delete-product`,
   delete_category: `${_product}/delete-category`,
 };
 

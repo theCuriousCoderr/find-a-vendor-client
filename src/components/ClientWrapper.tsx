@@ -46,6 +46,10 @@ import {
   getAuthenticatedCustomerNotifications,
   getAuthenticatedCustomerOrders,
 } from "@/app/features/customers/thunk";
+import LogoName from "./LogoName";
+import { Instagram, Twitter } from "lucide-react";
+import Link from "next/link";
+import Footer from "./Footer";
 
 interface TimerRefType {
   vendors: NodeJS.Timeout | null;
@@ -373,11 +377,11 @@ function ClientWrapper({ children }: { children: React.ReactNode }) {
         <div
           // activate infinte scroll for vendorsList and productsList on scroll
           onScroll={debouncedInfiniteScroll}
-          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40 xs:max-md:pb-20 "
+          className="h-[calc(100%_-_5rem)] w-full overflow-auto tiny-scrollbar bg-green-40"
         >
           {children}
+          <Footer />
         </div>
-       
       </GoogleOAuthProvider>
     </div>
   );

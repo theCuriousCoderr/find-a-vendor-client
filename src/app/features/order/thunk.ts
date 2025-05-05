@@ -52,7 +52,7 @@ export const updateOrder = createAsyncThunk<
       vendor_completed_flag,
       customer_completed_flag,
     } = order;
-    const response = await api.post(ORDER.update_order, {
+    const response = await api.put(ORDER.update_order, {
       status,
       order_id,
       vendor_id,

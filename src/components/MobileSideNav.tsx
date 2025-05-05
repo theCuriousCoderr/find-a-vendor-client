@@ -99,8 +99,18 @@ function MobileSideNav() {
     setIsOpen({ ...isOpen, [key]: !isKeyOpen });
   }
 
-  function _signOut() {
-    dispatch(signOut());
+  async function _signOut() {
+    try {
+      let { message } = await dispatch(signOut()).unwrap();
+
+      if (message === "Logged out successfully") {
+        setTimeout(() => {
+          setOpenSideBar(false);
+        }, 500);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   if (!mounted) {
@@ -119,7 +129,7 @@ function MobileSideNav() {
   return (
     <div className="md:hidden bg-white/20 backdrop-blur-md h-20 flex items-center justify-between pl-5 pr-2 xs:max-md:pl-2">
       <div className="flex items-center gap-4 xs:max-md:gap-2">
-        <button onClick={() => setOpenSideBar(true)} className="bg-white">
+        <button onClick={() => setOpenSideBar(true)} className="bg-lame">
           <Menu />
         </button>
         <LogoName clx="text-xl font-medium" />
@@ -376,15 +386,19 @@ function MobileSideNav() {
                         </p>
                       </Link>
                     </li>
+                    <li className="group ">
+                      <button
+                        onClick={_signOut}
+                        className="bg-red-500 hover:bg-red-700 rounded-md size-full text-white h-10 mt-2"
+                      >
+                        {loggingOut ? (
+                          <Spinner color="border-t-white" />
+                        ) : (
+                          "Sign Out"
+                        )}
+                      </button>
+                    </li>
                   </ul>
-                  // <p className="px-2">
-                  //   <Link
-                  //     href={account.route}
-                  //     className="font-medium hover:text-black/70 text-nowrap hover:underline"
-                  //   >
-                  //     {account.dashboard}
-                  //   </Link>
-                  // </p>
                 )}
             </div>
           </motion.aside>

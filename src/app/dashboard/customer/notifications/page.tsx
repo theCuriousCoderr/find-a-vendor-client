@@ -5,66 +5,31 @@ import {
   getAuthenticatedCustomerOrders,
 } from "@/app/features/customers/thunk";
 import { AppDispatch, RootState } from "@/app/store";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { BellDot, BellMinus } from "lucide-react";
+import { Bell, BellDot, BellMinus, FilterX } from "lucide-react";
 import Link from "next/link";
 import Spinner from "@/components/Spinner";
 import formattedOrderCardDate from "@/utils/formattedOrderCardDate";
 import notificationMessage from "@/utils/notificationMessage";
 import { StatusVariants } from "@/types";
 import { readNotification } from "@/app/features/notification/thunk";
+import notificationColorCode from "@/utils/notificationColorCode";
 
-// const notifs = [
-//   {
-//     order_id: "1",
-//     link: "/dashboard/customer/orders?selectedOrder=1",
-//     text: "A vendor declined an order",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: true,
-//     type: "orders",
-//   },
-//   {
-//     order_id: "2",
-//     link: "/dashboard/customer/orders?selectedOrder=2",
-//     text: "You cancelled an order.",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: true,
-//     type: "orders",
-//   },
-//   {
-//     order_id: "3",
-//     link: "/dashboard/customer/orders?selectedOrder=3",
-//     text: "An order was completed",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: false,
-//     type: "orders",
-//   },
-//   {
-//     order_id: "4",
-//     link: "/dashboard/customer/orders?selectedOrder=4",
-//     text: "An order was completed",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: true,
-//     type: "orders",
-//   },
-//   {
-//     order_id: "5",
-//     link: "/dashboard/customer/orders?selectedOrder=5",
-//     text: "A vendor declined an order",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: false,
-//     type: "orders",
-//   },
-//   {
-//     order_id: "6",
-//     link: "/dashboard/customer/orders?selectedOrder=6",
-//     text: "An order was completed",
-//     time: "Apr 16, 2025 - 2:52:51 PM",
-//     opened: false,
-//     type: "orders",
-//   },
-// ];
+const FILTERS = [
+  {
+    icon: <Bell size={20} />,
+    text: "all",
+  },
+  {
+    icon: <BellDot size={20} />,
+    text: "unread",
+  },
+  {
+    icon: <BellMinus size={20} />,
+    text: "read",
+  },
+];
 
 function CustomerNotificationsPage() {
   const dispatch = useDispatch<AppDispatch>();
@@ -80,11 +45,27 @@ function CustomerNotificationsPage() {
     if ((orders?.length || 0) === 0) dispatch(getAuthenticatedCustomerOrders());
   }, []);
 
+  const [notificationFilter, setNotificationFilter] = useState<
+    "read" | "unread" | "all"
+  >("all");
+
   async function _readNotification(notification_id: string) {
     const { message } = await dispatch(
       readNotification({ notification_id })
     ).unwrap();
     if (message) dispatch(getAuthenticatedCustomerNotifications());
+  }
+
+  function filterNotificationList() {
+    if (notificationFilter === "read")
+      return notifications.filter((notification) => notification.opened);
+    if (notificationFilter === "unread")
+      return notifications.filter((notification) => !notification.opened);
+    return notifications;
+  }
+
+  function getTextColor(text: "read" | "unread" | "all") {
+    return notificationColorCode(text).textColor;
   }
 
   if (loadingAuthenticatedCustomerNotifications) {
@@ -105,96 +86,154 @@ function CustomerNotificationsPage() {
   }
 
   return (
-    <div>
+    <div className="space-y-5">
+      <nav>
+        <p className="capitalize text-nowrap mb-2 ml-2 hidden xs:max-md:block">
+          {notificationFilter} notifications
+        </p>
+        <ul className="flex xs:max-md:justify-normal w-full overflow-auto no-scrollbar gap-5">
+          {FILTERS.map((filter) => {
+            return (
+              <li key={filter.text}>
+                <button
+                  onClick={() =>
+                    setNotificationFilter(
+                      filter.text as "read" | "unread" | "all"
+                    )
+                  }
+                  className={`${
+                    notificationFilter === filter.text
+                      ? `border-slate-500 ${getTextColor(
+                          filter.text
+                        )} bg-[#1e1e1e]`
+                      : "text-slate-400"
+                  } flex items-center text-sm gap-1 px-2 py-1 xs:max-md:p-2 rounded-full border hover:bg-[#1e1e1e] `}
+                >
+                  {filter.icon}
+                  <p className="capitalize text-nowrap xs:max-md:hidden">
+                    {filter.text} notifications
+                  </p>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
       <p className="text-sm text-slate-400 my-2 text-center">
         A notification card is clickable 😉
       </p>
-      <ul className="gap-2 grid auto-rows-fr grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
-        {notifications.map((notif) => {
+      {filterNotificationList().length > 0 && <ul className="gap-2 grid auto-rows-fr grid-cols-3 500:max-md:grid-cols-2 md:max-lg:grid-cols-2 xs:max-md:grid-cols-1">
+        {filterNotificationList().map((notif) => {
           return (
             <li key={notif.notification_id} className="h-full">
-              {notif.type === "orders" && <Link
-                href={`/dashboard/customer/orders${notif.link}`}
-                onClick={() =>
-                  !notif.opened && _readNotification(notif.notification_id)
-                }
-                className="h-full"
-              >
-                <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full" >
-                  <div className="relative flex gap-2 items-start">
-                    <div
-                      className={`${
-                        notif.opened ? "bg-transparent" : "bg-lime-400/50"
-                      } size-6 rounded-full  flex items-center justify-center mt-1`}
-                    >
-                      {notif.opened ? (
-                        <BellMinus size={20} color="#94a3b8" strokeWidth={1} />
-                      ) : (
-                        <BellDot size={20} strokeWidth={1} />
-                      )}
-                    </div>
-                    <div
-                      className={`${notif.opened && "text-slate-400"} text-sm`}
-                    >
-                      <p>
-                        {notificationMessage(
-                          notif.status as StatusVariants,
-                          "customer"
+              {notif.type === "orders" && (
+                <Link
+                  href={`/dashboard/customer/orders${notif.link}`}
+                  onClick={() =>
+                    !notif.opened && _readNotification(notif.notification_id)
+                  }
+                  className="h-full"
+                >
+                  <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full">
+                    <div className="relative flex gap-2 items-start">
+                      <div
+                        className={`${
+                          notif.opened ? "bg-transparent" : "bg-lime-400/50"
+                        } size-6 rounded-full  flex items-center justify-center mt-1`}
+                      >
+                        {notif.opened ? (
+                          <BellMinus
+                            size={20}
+                            color="#94a3b8"
+                            strokeWidth={1}
+                          />
+                        ) : (
+                          <BellDot size={20} strokeWidth={1} />
                         )}
-                      </p>
-                      <p
+                      </div>
+                      <div
                         className={`${
-                          notif.opened ? "text-slate-400" : "text-slate-600"
-                        }`}
+                          notif.opened && "text-slate-400"
+                        } text-sm`}
                       >
-                        {formattedOrderCardDate(notif.createdAt)}
-                      </p>
+                        <p>
+                          {notificationMessage(
+                            notif.status as StatusVariants,
+                            "customer"
+                          )}
+                        </p>
+                        <p
+                          className={`${
+                            notif.opened ? "text-slate-400" : "text-slate-600"
+                          }`}
+                        >
+                          {formattedOrderCardDate(notif.createdAt)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </Link> }
-              {notif.type === "reviews" && <Link
-                href={`/products${notif.link}`}
-                onClick={() =>
-                  !notif.opened && _readNotification(notif.notification_id)
-                }
-                className="h-full"
-              >
-                <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full">
-                  <div className="relative flex gap-2 items-start">
-                    <div
-                      className={`${
-                        notif.opened ? "bg-transparent" : "bg-lime-400/50"
-                      } size-6 rounded-full  flex items-center justify-center mt-1`}
-                    >
-                      {notif.opened ? (
-                        <BellMinus size={20} color="#94a3b8" strokeWidth={1} />
-                      ) : (
-                        <BellDot size={20} strokeWidth={1} />
-                      )}
-                    </div>
-                    <div
-                      className={`${notif.opened && "text-slate-400"} text-sm`}
-                    >
-                      <p>
-                      You submitted a review.
-                      </p>
-                      <p className="text-slate-500">{notif.status}</p>
-                      <p
+                  </article>
+                </Link>
+              )}
+              {notif.type === "reviews" && (
+                <Link
+                  href={`/products${notif.link}`}
+                  onClick={() =>
+                    !notif.opened && _readNotification(notif.notification_id)
+                  }
+                  className="h-full"
+                >
+                  <article className="bg-slate-50 border p-2 rounded-md space-y-2 h-full">
+                    <div className="relative flex gap-2 items-start">
+                      <div
                         className={`${
-                          notif.opened ? "text-slate-400" : "text-slate-600"
-                        }`}
+                          notif.opened ? "bg-transparent" : "bg-lime-400/50"
+                        } size-6 rounded-full  flex items-center justify-center mt-1`}
                       >
-                        {formattedOrderCardDate(notif.createdAt)}
-                      </p>
+                        {notif.opened ? (
+                          <BellMinus
+                            size={20}
+                            color="#94a3b8"
+                            strokeWidth={1}
+                          />
+                        ) : (
+                          <BellDot size={20} strokeWidth={1} />
+                        )}
+                      </div>
+                      <div
+                        className={`${
+                          notif.opened && "text-slate-400"
+                        } text-sm`}
+                      >
+                        <p>You submitted a review.</p>
+                        <p className="text-slate-500">{notif.status}</p>
+                        <p
+                          className={`${
+                            notif.opened ? "text-slate-400" : "text-slate-600"
+                          }`}
+                        >
+                          {formattedOrderCardDate(notif.createdAt)}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </Link> }
+                  </article>
+                </Link>
+              )}
             </li>
           );
         })}
-      </ul>
+      </ul>}
+
+
+      {filterNotificationList().length === 0 && (
+        <div className="h-[30vh] w-full flex flex-col items-center justify-center">
+          <div className="size-20 bg-slate-500/20 rounded-full flex items-center justify-center">
+            <FilterX />
+          </div>
+          <p className="py-5 text-slate-500">
+            No notification matches this filter
+          </p>
+        </div>
+      )}
     </div>
   );
 }

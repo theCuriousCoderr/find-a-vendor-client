@@ -6,12 +6,19 @@ import { AppDispatch, RootState } from "@/app/store";
 import Back from "@/components/Back";
 import Button from "@/components/Button";
 import ImageFallback from "@/components/ImageFallback";
-import { CalendarDays, Instagram, MapPin, Twitter } from "lucide-react";
+import {
+  CalendarDays,
+  Instagram,
+  MapPin,
+  Twitter,
+  Pointer,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { motion } from "motion/react";
 
 function VendorPageSkeleton() {
   return (
@@ -372,45 +379,74 @@ function VendorPage() {
                 <h2 className="bg-lavender text-white h-10 flex items-center px-5 text-xl capitalize ">
                   {tag}
                 </h2>
-                <ul className="grid grid-cols-4 xs:max-400:grid-cols-1 400:max-600:grid-cols-2 600:max-md:grid-cols-3 gap-4 p-4">
-                  {vendorProducts &&
-                    vendorProducts[tag.toLowerCase()].map((item) => (
-                      <li
-                        key={item._id}
-                        className="shadow-sm border border- shadow-transparent hover:relative hover:z-10 hover:border-slate-300 hover:shadow-slate-300 rounded-md transition-all"
-                      >
-                        <Link
-                          href={constructProductUrl(
-                            vendor.vendor_id.toString(),
-                            tag.toLowerCase(),
-                            item?.product_id || "none"
-                          )}
+                {vendorProducts ? (
+                  <ul className="grid grid-cols-4 xs:max-400:grid-cols-1 400:max-600:grid-cols-2 600:max-md:grid-cols-3 gap-4 p-4">
+                    {(vendorProducts[tag.toLowerCase()]?.length || 0) > 0 ? (
+                      vendorProducts[tag.toLowerCase()].map((item) => (
+                        <li
+                          key={item._id}
+                          className="relative shadow-sm border border- shadow-transparent hover:relative hover:z-10 hover:border-slate-300 hover:shadow-slate-300 rounded-md transition-all"
                         >
-                          <div className="relative h-52 flex items-center justify-center">
-                            <Image
-                              src={item.images[0] || "/image-load-error.png"}
-                              fill={true}
-                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                              alt={item.details.name}
-                              className="object-contain object-botto "
-                              // onError={() => setImageError(true)}
-                            />{" "}
-                            {/* <ImageFallback size="size-20" /> */}
-                          </div>
-                          <p className="text-center text-sm p-1">
-                            {" "}
-                            {item.details.name}
-                          </p>
-                        </Link>
-                      </li>
-                    ))}
-                </ul>
+                          <Link
+                            href={constructProductUrl(
+                              vendor.vendor_id.toString(),
+                              tag.toLowerCase(),
+                              item?.product_id || "none"
+                            )}
+                          >
+                            <div className="relative h-52 flex items-center justify-center">
+                              {/* pointer  */}
+                              <motion.div
+                                animate={{ y: [-2, 2] }}
+                                transition={{
+                                  repeat: Infinity,
+                                  duration: 1,
+                                  ease: "easeInOut",
+                                }}
+                                className=" absolute z-10"
+                              >
+                                <Pointer
+                                  color="#FFFFFF"
+                                  className="fill-white stroke-black mt-5"
+                                />
+                              </motion.div>
+                              <Image
+                                src={
+                                  item.images[0].secure_url ||
+                                  "/image-load-error.png"
+                                }
+                                fill={true}
+                                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                alt={item.details.name}
+                                className="object-contain object-botto "
+                                // onError={() => setImageError(true)}
+                              />{" "}
+                              {/* <ImageFallback size="size-20" /> */}
+                            </div>
+                            <p className="text-center text-sm p-1">
+                              {" "}
+                              {item.details.name}
+                            </p>
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      <p>
+                        This Vendor currently has no product under this
+                        category.
+                      </p>
+                    )}
+                  </ul>
+                ) : (
+                  <p className="p-5 text-slate-600 text-lg xs:max-md:text-base">
+                    This Vendor currently has no product under this category,
+                    but they do offer services for this category of product.
+                  </p>
+                )}
               </section>
             );
           })}
       </main>
-
-      {/* <div className="fixed size-10 bg-red-500 bottom-5 right-5"></div> */}
     </section>
   );
 }

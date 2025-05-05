@@ -1,7 +1,8 @@
 import { StatusVariants } from "@/types";
 
-export default function statusColorCode(status: StatusVariants) {
+export default function statusColorCode(status: StatusVariants | "all") {
   const colorCodes = {
+    all: { bgColor: "bg-[#ffffff]", color: "text-[#ffffff]" },
     pending: { bgColor: "bg-[#FACC15]", color: "text-[#FACC15]" },
     ongoing: { bgColor: "bg-[#3B82F6]", color: "text-[#3B82F6]" },
     received: { bgColor: "bg-[#3B82F6]", color: "text-[#3B82F6]" },

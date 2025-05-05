@@ -64,6 +64,21 @@ function SettingsEdit({
         );
         return;
       }
+
+       // handles updating of the nested acct field
+       if (["name", "number", "bank"].includes(id)) {
+        dispatch(
+          updateSettingsVendorInfo({
+            vendorInfo: {
+              ...vendorInfo,
+              acct: { ...vendorInfo.acct, [id]: edit.value },
+            },
+          })
+        );
+        return;
+      }
+
+      
       // convert the string to array and store as an array
       if (id === "categories" || id === "deliveryRange") {
         dispatch(

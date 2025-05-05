@@ -12,8 +12,8 @@ function Button({
   loading,
 }: ButtonPropsType) {
   const btnStyles =
-    "hover:bg-opacity-80 disabled:bg-opacity-80 size-full py-2 px-4 xs:max-md:px-2 xs:max-md:text-base rounded-sm text-nowrap outline-offset-2";
-    
+    "hover:bg-opacity-80 xs:max-md:hover:bg-opacity-100 disabled:bg-opacity-80 size-full px-4 py-2 rounded-md border-black disabled:border-white";
+
   return (
     <div className="w-full flex">
       <div className="w-full">
@@ -25,7 +25,9 @@ function Button({
             disabled={loading}
             initial={{ width: "100%" }}
             whileHover={{ width: ["110%", "90%", "105%", "95%", "100%"] }}
-            className={`${bgColor} ${color} ${btnStyles} ${loading && "bg-slate-300"} `}
+            className={`${bgColor} ${color} ${btnStyles} ${
+              loading && "bg-slate-300"
+            } `}
           >
             {loading ? <Spinner /> : text}
           </motion.button>
@@ -35,7 +37,9 @@ function Button({
               onClick && onClick();
             }}
             disabled={loading}
-            className={`${bgColor} ${color} ${btnStyles} ${loading && "bg-slate-300"}`}
+            className={`${bgColor} ${color} ${btnStyles} ${
+              loading && "bg-slate-300"
+            }`}
           >
             {loading ? <Spinner /> : text}
           </button>

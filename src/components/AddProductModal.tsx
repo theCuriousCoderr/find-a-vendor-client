@@ -1,24 +1,39 @@
 import getCloudinaryUrl from "@/utils/getCloudinaryUrl";
 import { X } from "lucide-react";
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
-import { addAuthenticatedVendorProduct } from "@/app/features/vendors/thunk";
+import {
+  addAuthenticatedVendorProduct,
+  editAuthenticatedVendorProduct,
+} from "@/app/features/vendors/thunk";
 import analyseProductImage from "@/utils/analyseProductImage";
-import { AddProductStateType } from "@/types";
+import { AddProductStateType, Product } from "@/types";
 import AddProductFormField from "./AddProductFormField";
 import GenerateProductDetailsWithAI from "./GenerateProductDetailsWithAI";
 import AddProductImageList from "./AddProductImageList";
 import { GeminiAnalyseProductImageResponseType } from "@/types";
-import { updateStatusSuccess } from "@/app/features/status/statusSlice";
+import {
+  updateStatusError,
+  updateStatusSuccess,
+} from "@/app/features/status/statusSlice";
+import { AxiosError } from "axios";
 
 interface AddProductModalPropType {
   category: string;
+  productToEdit?: Product | null;
   closeAddProductModal: () => void;
 }
 
 function AddProductModal({
   category,
+  productToEdit,
   closeAddProductModal,
 }: AddProductModalPropType) {
   const dispatch = useDispatch<AppDispatch>();
@@ -28,18 +43,32 @@ function AddProductModal({
   const [addingProductImage, setAddingProductImage] = useState(false);
   const [product, setProduct] = useState<AddProductStateType>({
     images: [
-      "https://res.cloudinary.com/dmiianrhe/image/upload/v1742115240/findAVendor/dii7eoohv2ixnldles8p.jpg",
-      // "https://res.cloudinary.com/dmiianrhe/image/upload/v1744294536/tkghnkbl9n1veswcajc2.jpg",
-      // "https://res.cloudinary.com/dmiianrhe/image/upload/v1744294536/findAVendor/tkghnkbl9n1veswcajc2.jpg"
+      {
+        original_filename: "bag-3",
+        public_id: "findAVendor/products/bag-3_qza68s",
+        resource_type: "image",
+        secure_url:
+          "https://res.cloudinary.com/dvc76hnjd/image/upload/v1746412224/findAVendor/products/bag-3_qza68s.jpg",
+        signature: "f99dc37ef7a30cdc37b1ef5b94c071859d9a3af2",
+      },
     ],
     name: "",
     description: "",
-    price: "",
     specifications: "",
+    price: 0,
   });
 
   const [thinkingAI, setThinkingAI] = useState(false);
   const [addingProduct, setAddingProduct] = useState(false);
+
+  useEffect(() => {
+    if (productToEdit) {
+      const { name, description, price, specifications } =
+        productToEdit.details;
+      const images = productToEdit.images;
+      setProduct({ images, name, description, price, specifications });
+    }
+  }, []);
 
   function openFileWindow() {
     (inputLabelRef.current as HTMLLabelElement).click();
@@ -57,7 +86,9 @@ function AddProductModal({
   }
 
   function deleteAddedImage(id: string) {
-    const existingUrls = product.images.filter((image) => image !== id);
+    const existingUrls = product.images.filter(
+      (image) => image.public_id !== id
+    );
     setProduct({ ...product, images: existingUrls });
   }
 
@@ -74,7 +105,7 @@ function AddProductModal({
       ...product,
       name: "",
       description: "",
-      price: "",
+      price: 0,
       specifications: "",
     });
   }
@@ -82,7 +113,10 @@ function AddProductModal({
   async function analyseImageWithGemini() {
     setThinkingAI(true);
     try {
-      const response = await analyseProductImage(product.images[0], false);
+      const response = await analyseProductImage(
+        product.images[0].secure_url,
+        false
+      );
       const productSpecifications = response["Item Specifications"];
       const isProductSpecificationsPresent = productSpecifications.length > 0;
       setProduct({
@@ -111,7 +145,9 @@ function AddProductModal({
     return {
       category: category.toLowerCase(),
       vendor_id: vendor ? vendor.vendor_id : "",
-      product_id: (totalVendorProducts() + 1).toString(),
+      product_id: productToEdit
+        ? productToEdit.product_id
+        : (totalVendorProducts() + 1).toString(),
       images: product.images,
       deliveryRange: vendor ? vendor.deliveryRange : [],
       details: {
@@ -119,12 +155,12 @@ function AddProductModal({
         description: product.description,
         specifications: product.specifications,
         price: Number(product.price),
-        status: "In stock",
+        status: productToEdit ? productToEdit.details.status : "In stock",
       },
     };
   }
 
-  async function addProduct(e: ChangeEvent<HTMLFormElement>) {
+  async function addProduct(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setAddingProduct(true);
     try {
@@ -139,6 +175,36 @@ function AddProductModal({
         addAuthenticatedVendorProduct(productToAdd)
       ).unwrap();
       if (message === "Product Added Successfully") {
+        dispatch(updateStatusSuccess({ success: message }));
+        closeAddProductModal();
+      }
+    } catch (error) {
+      dispatch(
+        updateStatusError({
+          error: "Failed to add product. \nPlease try again",
+        })
+      );
+      console.error(error);
+    }
+
+    setAddingProduct(false);
+  }
+
+  async function editProduct(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setAddingProduct(true);
+    try {
+      const imagesLength = product.images.length;
+      const name = product.name;
+      const price = product.price;
+      if (!imagesLength || !name || !price) return;
+
+      const productToEdit = generateProductObject();
+
+      const { message } = await dispatch(
+        editAuthenticatedVendorProduct(productToEdit)
+      ).unwrap();
+      if (message === "Product Editted Successfully") {
         dispatch(updateStatusSuccess({ success: message }));
         closeAddProductModal();
       }
@@ -184,7 +250,14 @@ function AddProductModal({
             <div className="space-y-5">
               {/* product images list */}
               <div className="space-y-2">
-                <p className="text-slate-400">Add Product Image(s)</p>
+                <div>
+                  <p className="text-slate-500">Add Product Image(s)</p>
+                  <p className="text-slate-400 text-xs">
+                    For better visual consistency and appearance, we recommend
+                    uploading images with a white background, or close enough.
+                  </p>
+                </div>
+
                 <AddProductImageList
                   productImages={product.images}
                   deleteAddedImage={deleteAddedImage}
@@ -209,6 +282,8 @@ function AddProductModal({
             {product.images.length > 0 && (
               <AddProductFormField
                 addProduct={addProduct}
+                editProduct={editProduct}
+                productToEdit={productToEdit}
                 thinkingAI={thinkingAI}
                 addingProduct={addingProduct}
                 // setAddingProduct={setAddingProduct}

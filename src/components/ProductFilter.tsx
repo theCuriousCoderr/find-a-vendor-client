@@ -101,14 +101,7 @@ function ProductFilter({
                     </button>
                   </li>
                 ))}
-                {/* {filters.length > 0 && (
-                  <button
-                    onClick={clearAppliedFilters}
-                    className="font-bold text-sm text-[#5c1b86] hover:text-red-500 "
-                  >
-                    Clear applied filters
-                  </button>
-                )} */}
+                
               </ul>
             </div>
 
@@ -175,19 +168,17 @@ function ProductFilter({
               <Button
                 onClick={filterProductsBySearch}
                 animate={false}
-                text="Find products"
+                text="Search"
                 bgColor="bg-[#5c1b86]"
                 color="text-white"
               />
             </div>
             <div className="hidden xs:max-500:block w-full  bg-red-500">
               <button className="size-full py-2 bg-[#5C1B86] hover:bg-[#5C1B86]/50 flex items-center justify-center outline-offset-2">
-                {/* <Search color="#FFFFFF" /> */}
-                <p className="text-white">Find vendors</p>
+                
+                <p className="text-white">Search</p>
               </button>
-              {/* <button className="size-full py-2 bg-[#5C1B86] hover:bg-[#5C1B86]/50 flex items-center justify-center rounded-md outline-offset-2">
-                <Search color="#FFFFFF" />
-              </button> */}
+              
             </div>
           </div>
         </div>
@@ -195,12 +186,7 @@ function ProductFilter({
         <div className="xs:max-500:hidden">
           {/* Filter Options by dropdown */}
           <div className="px-5 py-2 flex items-center gap-3">
-            {/* <ProductsCustomDropdown
-              setActiveDropdown={setActiveDropdown}
-              activeDropdown={activeDropdown}
-              name="Name"
-              multiple={false}
-            /> */}
+           
             <ProductsCustomDropdown
               setActiveDropdown={setActiveDropdown}
               activeDropdown={activeDropdown}
@@ -266,14 +252,7 @@ function ProductFilter({
               </button>
             </li>
           ))}
-          {/* {filters.length > 0 && (
-              <button
-                onClick={clearAppliedFilters}
-                className="font-bold text-sm text-[#5c1b86] hover:text-red-500 "
-              >
-                Clear applied filters
-              </button>
-            )} */}
+         
         </ul>
       </div>
     </section>

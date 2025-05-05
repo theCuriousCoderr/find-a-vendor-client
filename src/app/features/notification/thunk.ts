@@ -10,7 +10,7 @@ export const readNotification = createAsyncThunk<
   { notification_id: string }
 >("notification/readNotification", async ({ notification_id }, thunkAPI) => {
   try {
-    const response = await api.post(NOTIFICATION.read_notification, {
+    const response = await api.put(NOTIFICATION.read_notification, {
       notification_id,
     });
     return response.data as {message: string};
